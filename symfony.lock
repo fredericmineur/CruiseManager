@@ -144,8 +144,32 @@
             "./config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "squizlabs/php_codesniffer": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
+        },
+        "files": [
+            "./phpcs.xml.dist"
+        ]
+    },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.1"
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "c82bead70f9a4f656354a193df7bf0ca2114efa0"
+        },
+        "files": [
+            "./public/.htaccess"
+        ]
     },
     "symfony/asset": {
         "version": "v4.3.4"
