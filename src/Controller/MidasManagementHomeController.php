@@ -12,8 +12,9 @@ class MidasManagementHomeController extends AbstractController
      */
     public function index()
     {
-        return $this->render('midas_management_home/index.html.twig', [
+        return $this->render('midas_management_home/home.html.twig', [
             'controller_name' => 'MidasManagementHomeController',
         ]);
     }
+
 }

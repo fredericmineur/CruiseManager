@@ -1,0 +1,6 @@
+/*https://cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.dataTables.min.css*/
+/*                                            Downloaded on 14 October 2019*/
+/*https://datatables.net/download/release*/
+
+table.fixedHeader-floating{position:fixed !important;background-color:white}table.fixedHeader-floating.no-footer{border-bottom-width:0}table.fixedHeader-locked{position:absolute !important;background-color:white}@media print{table.fixedHeader-floating{display:none}}
+
