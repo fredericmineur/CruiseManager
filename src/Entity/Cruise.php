@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Cruise
  *
- * @ORM\Table(name="Cruise", indexes={@ORM\Index(name="CruizeID", columns={"CruiseID"})})
+ * @ORM\Table(name="Cruise")
  * @ORM\Entity
  */
 class Cruise
@@ -80,7 +80,7 @@ class Cruise
     private $purpose;
 
     /**
-     * @var Collection
+     * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Campaign", mappedBy="cruise")
      */
@@ -92,6 +92,8 @@ class Cruise
      * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid")
      */
     private $trips;
+
+
 
     /**
      * Constructor
@@ -261,10 +263,5 @@ class Cruise
 
         return $this;
     }
-
-
-
-
-
 
 }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Tripactions
  *
- * @ORM\Table(name="TripActions", indexes={@ORM\Index(name="NonClusteredIndex-20180716-133118", columns={"StartDate"}), @ORM\Index(name="NonClusteredIndex-20180718-StartDate_EndDate", columns={"ActionType", "StartDate", "EndDate"}),@ORM\Index(name="IDX_5A55FB8D5C8FDA67", columns={"TripNR"}), @ORM\Index(name="IDX_5A55FB8D53E08564", columns={"TripStationNR"})})
+ * @ORM\Table(name="TripActions", indexes={@ORM\Index(name="IDX_5A55FB8D5C8FDA67", columns={"TripNR"}), @ORM\Index(name="IDX_5A55FB8D53E08564", columns={"TripStationNR"})})
  * @ORM\Entity
  */
 class Tripactions

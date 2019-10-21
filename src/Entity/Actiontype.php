@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Actiontype
  *
- * @ORM\Table(name="ActionType", indexes={@ORM\Index(name="IDX_13207C7D51C95720", columns={"Equipment"})})
+ * @ORM\Table(name="ActionType", indexes={@ORM\Index(name="IDX_13207C7D51C95720", columns={"Equipment"}), @ORM\Index(name="IDX_13207C7DB323AD87", columns={"RoscopCode"})})
  * @ORM\Entity
  */
 class Actiontype
@@ -31,13 +31,6 @@ class Actiontype
     /**
      * @var string|null
      *
-     * @ORM\Column(name="RoscopCode", type="string", length=50, nullable=true)
-     */
-    private $roscopcode;
-
-    /**
-     * @var string|null
-     *
      * @ORM\Column(name="Description", type="string", length=50, nullable=true)
      */
     private $description;
@@ -52,6 +45,16 @@ class Actiontype
      */
     private $equipment;
 
+    /**
+     * @var \Roscopcode
+     *
+     * @ORM\ManyToOne(targetEntity="Roscopcode")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="RoscopCode", referencedColumnName="RoscopCode")
+     * })
+     */
+    private $roscopcode;
+
     public function getActiontypeid(): ?int
     {
         return $this->actiontypeid;
@@ -65,18 +68,6 @@ class Actiontype
     public function setResearch(?int $research): self
     {
         $this->research = $research;
-
-        return $this;
-    }
-
-    public function getRoscopcode(): ?string
-    {
-        return $this->roscopcode;
-    }
-
-    public function setRoscopcode(?string $roscopcode): self
-    {
-        $this->roscopcode = $roscopcode;
 
         return $this;
     }
@@ -101,6 +92,18 @@ class Actiontype
     public function setEquipment(?Equipment $equipment): self
     {
         $this->equipment = $equipment;
+
+        return $this;
+    }
+
+    public function getRoscopcode(): ?Roscopcode
+    {
+        return $this->roscopcode;
+    }
+
+    public function setRoscopcode(?Roscopcode $roscopcode): self
+    {
+        $this->roscopcode = $roscopcode;
 
         return $this;
     }

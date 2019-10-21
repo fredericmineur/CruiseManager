@@ -23,7 +23,7 @@
                 <th>Plan Code</th>
                 <th>Ship</th>
                 <th>Campaigns</th>
-                <th>Trips</th>
+                <th>Number of<br>Trips</th>
             </tr>
         </thead>
         <tbody>
@@ -35,9 +35,10 @@
                 <tr>
                     <td>{{ cruise.cruiseid}}</td>
                     <td>
-{#                        {% for principalInvestigator in principalInvestigators %}#}
-{#                            {% if principalInvestigator.investigatorid == cruise.principalinvestigator %}#}
-{#                            {% endif %}#}
+{#                        {% for investigator in investigators %}#}
+{#                                                    {% if investigator.investigatorid == cruise.principalinvestigator %}#}
+{#                        {{ cruise.principalinvestigator}}#}
+{#                                                    {% endif %}#}
 {#                        {% endfor %}#}
                         {{ cruise.principalinvestigator}}
                     </td>
@@ -47,9 +48,13 @@
                     <td>{{ cruise.memo}}</td>
                     <td>{{ cruise.plancode}}</td>
                     <td>{{ cruise.ship}}</td>
-                    <td>{% for singleCampaign in cruise.campaign %}{{ singleCampaign.campaign  }}{% if loop.index0 > 0 %} }}<hr>{% endif %}{% endfor %}</td>
+                    <td>{% for singleCampaign in cruise.campaign %}
+                            {{ singleCampaign.campaign  }}<br>
+                            <a href="{{ path('campaign_details', {'campaignId':singleCampaign.campaignid}) }}"><i>More</i></a><br>
+                        {% endfor %}</td>
 {#                    <td>{% for trip in cruise.trips %}{{ trip.destinationarea }}<br>{% endfor %}</td>#}
                     <td>{{ cruise.trips | length }}</td>
+
                 </tr>
 
 
@@ -58,6 +63,8 @@
 
     </table>
     </div>
+
+{#    {{ dump(investigators) }}#}
 
 {% endblock %}
 
