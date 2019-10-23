@@ -129,7 +129,7 @@ class Tripactions
     /**
      * @var \Trip
      *
-     * @ORM\ManyToOne(targetEntity="Trip")
+     * @ORM\ManyToOne(targetEntity="Trip", inversedBy="tripactions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNR", referencedColumnName="TripID")
      * })
@@ -139,7 +139,7 @@ class Tripactions
     /**
      * @var \Tripstations
      *
-     * @ORM\ManyToOne(targetEntity="Tripstations")
+     * @ORM\ManyToOne(targetEntity="Tripstations", inversedBy="tripactions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripStationNR", referencedColumnName="ID")
      * })

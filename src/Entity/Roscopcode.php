@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use mysql_xdevapi\Collection;
 
 /**
  * Roscopcode
@@ -35,6 +37,18 @@ class Roscopcode
      */
     private $roscopdivision;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Actiontype", mappedBy="roscopcode")
+     */
+    private $actiontypes;
+
+    public function __construct()
+    {
+        $this->actiontypes = new ArrayCollection();
+    }
+
     public function getRoscopcode(): ?string
     {
         return $this->roscopcode;
@@ -60,6 +74,37 @@ class Roscopcode
     public function setRoscopdivision(?string $roscopdivision): self
     {
         $this->roscopdivision = $roscopdivision;
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Actiontype[]
+     */
+    public function getActiontypes(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->actiontypes;
+    }
+
+    public function addActiontype(Actiontype $actiontype): self
+    {
+        if (!$this->actiontypes->contains($actiontype)) {
+            $this->actiontypes[] = $actiontype;
+            $actiontype->setRoscopcode($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiontype(Actiontype $actiontype): self
+    {
+        if ($this->actiontypes->contains($actiontype)) {
+            $this->actiontypes->removeElement($actiontype);
+            // set the owning side to null (unless already changed)
+            if ($actiontype->getRoscopcode() === $this) {
+                $actiontype->setRoscopcode(null);
+            }
+        }
 
         return $this;
     }

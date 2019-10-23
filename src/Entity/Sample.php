@@ -59,7 +59,7 @@ class Sample
     /**
      * @var \Actiontype
      *
-     * @ORM\ManyToOne(targetEntity="Actiontype")
+     * @ORM\ManyToOne(targetEntity="Actiontype", inversedBy="samples")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="ActionType", referencedColumnName="ActionTypeID")
      * })
@@ -69,7 +69,7 @@ class Sample
     /**
      * @var \Campaign
      *
-     * @ORM\ManyToOne(targetEntity="Campaign")
+     * @ORM\ManyToOne(targetEntity="Campaign", inversedBy="samples")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="Campaign", referencedColumnName="CampaignID")
      * })

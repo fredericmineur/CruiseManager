@@ -51,9 +51,17 @@ class Equipment
      */
     private $tripequipments;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Actiontype", mappedBy="equipment")
+     */
+    private $actiontypes;
+
     public function __construct()
     {
         $this->tripequipments = new ArrayCollection();
+        $this->actiontypes = new ArrayCollection();
     }
 
 
@@ -123,6 +131,37 @@ class Equipment
             // set the owning side to null (unless already changed)
             if ($tripequipment->getEquipmentnr() === $this) {
                 $tripequipment->setEquipmentnr(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Actiontype[]
+     */
+    public function getActiontypes(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->actiontypes;
+    }
+
+    public function addActiontype(Actiontype $actiontype): self
+    {
+        if (!$this->actiontypes->contains($actiontype)) {
+            $this->actiontypes[] = $actiontype;
+            $actiontype->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActiontype(Actiontype $actiontype): self
+    {
+        if ($this->actiontypes->contains($actiontype)) {
+            $this->actiontypes->removeElement($actiontype);
+            // set the owning side to null (unless already changed)
+            if ($actiontype->getEquipment() === $this) {
+                $actiontype->setEquipment(null);
             }
         }
 

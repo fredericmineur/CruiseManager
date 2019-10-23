@@ -159,11 +159,27 @@ class Trip
      */
     private $tripequipments;
 
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr")
+     */
+    private $tripstations;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripactions", mappedBy="tripnr")
+     */
+    private $tripactions;
+
     public function __construct()
     {
         $this->tripinvestigators = new ArrayCollection();
         $this->tripnotes = new ArrayCollection();
         $this->tripequipments = new ArrayCollection();
+        $this->tripstations = new ArrayCollection();
+        $this->tripactions = new ArrayCollection();
     }
 
     public function getTripid(): ?int
@@ -450,6 +466,68 @@ class Trip
             // set the owning side to null (unless already changed)
             if ($tripequipment->getTripnr() === $this) {
                 $tripequipment->setTripnr(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripstations[]
+     */
+    public function getTripstations(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripstations;
+    }
+
+    public function addTripstation(Tripstations $tripstation): self
+    {
+        if (!$this->tripstations->contains($tripstation)) {
+            $this->tripstations[] = $tripstation;
+            $tripstation->setTripnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripstation(Tripstations $tripstation): self
+    {
+        if ($this->tripstations->contains($tripstation)) {
+            $this->tripstations->removeElement($tripstation);
+            // set the owning side to null (unless already changed)
+            if ($tripstation->getTripnr() === $this) {
+                $tripstation->setTripnr(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripactions[]
+     */
+    public function getTripactions(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripactions;
+    }
+
+    public function addTripaction(Tripactions $tripaction): self
+    {
+        if (!$this->tripactions->contains($tripaction)) {
+            $this->tripactions[] = $tripaction;
+            $tripaction->setTripnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripaction(Tripactions $tripaction): self
+    {
+        if ($this->tripactions->contains($tripaction)) {
+            $this->tripactions->removeElement($tripaction);
+            // set the owning side to null (unless already changed)
+            if ($tripaction->getTripnr() === $this) {
+                $tripaction->setTripnr(null);
             }
         }
 

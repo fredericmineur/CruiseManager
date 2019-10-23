@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,7 +40,7 @@ class Actiontype
     /**
      * @var \Equipment
      *
-     * @ORM\ManyToOne(targetEntity="Equipment")
+     * @ORM\ManyToOne(targetEntity="Equipment", inversedBy="actiontypes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="Equipment", referencedColumnName="EquipmentID")
      * })
@@ -48,12 +50,24 @@ class Actiontype
     /**
      * @var \Roscopcode
      *
-     * @ORM\ManyToOne(targetEntity="Roscopcode")
+     * @ORM\ManyToOne(targetEntity="Roscopcode", inversedBy="actiontypes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="RoscopCode", referencedColumnName="RoscopCode")
      * })
      */
     private $roscopcode;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Sample", mappedBy="actiontype")
+     */
+    private $samples;
+
+    public function __construct()
+    {
+        $this->samples = new ArrayCollection();
+    }
 
     public function getActiontypeid(): ?int
     {
@@ -104,6 +118,37 @@ class Actiontype
     public function setRoscopcode(?Roscopcode $roscopcode): self
     {
         $this->roscopcode = $roscopcode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sample[]
+     */
+    public function getSamples(): Collection
+    {
+        return $this->samples;
+    }
+
+    public function addSample(Sample $sample): self
+    {
+        if (!$this->samples->contains($sample)) {
+            $this->samples[] = $sample;
+            $sample->setActiontype($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSample(Sample $sample): self
+    {
+        if ($this->samples->contains($sample)) {
+            $this->samples->removeElement($sample);
+            // set the owning side to null (unless already changed)
+            if ($sample->getActiontype() === $this) {
+                $sample->setActiontype(null);
+            }
+        }
 
         return $this;
     }

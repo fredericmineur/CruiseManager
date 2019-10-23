@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Cassandra\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -57,9 +59,16 @@ class Stations
     private $code;
 
     /**
-     * 
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="stationnr")
      */
-    private tripstations;
+    private $tripstations;
+
+    public function __construct()
+    {
+        $this->tripstations = new ArrayCollection();
+    }
 
     public function getNr(): ?int
     {
@@ -122,6 +131,37 @@ class Stations
     public function setCode(?string $code): self
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripstations[]
+     */
+    public function getTripstations(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripstations;
+    }
+
+    public function addTripstation(Tripstations $tripstation): self
+    {
+        if (!$this->tripstations->contains($tripstation)) {
+            $this->tripstations[] = $tripstation;
+            $tripstation->setStationnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripstation(Tripstations $tripstation): self
+    {
+        if ($this->tripstations->contains($tripstation)) {
+            $this->tripstations->removeElement($tripstation);
+            // set the owning side to null (unless already changed)
+            if ($tripstation->getStationnr() === $this) {
+                $tripstation->setStationnr(null);
+            }
+        }
 
         return $this;
     }

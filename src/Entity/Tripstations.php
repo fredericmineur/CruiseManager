@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Cassandra\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -115,7 +117,7 @@ class Tripstations
     /**
      * @var \Stations
      *
-     * @ORM\ManyToOne(targetEntity="Stations")
+     * @ORM\ManyToOne(targetEntity="Stations", inversedBy="tripstations")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="StationNR", referencedColumnName="NR")
      * })
@@ -125,12 +127,24 @@ class Tripstations
     /**
      * @var \Trip
      *
-     * @ORM\ManyToOne(targetEntity="Trip")
+     * @ORM\ManyToOne(targetEntity="Trip", inversedBy="tripstations")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNr", referencedColumnName="TripID")
      * })
      */
     private $tripnr;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripactions", mappedBy="tripstationnr")
+     */
+    private $tripactions;
+
+    public function __construct()
+    {
+        $this->tripactions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -313,6 +327,37 @@ class Tripstations
     public function setTripnr(?Trip $tripnr): self
     {
         $this->tripnr = $tripnr;
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripactions[]
+     */
+    public function getTripactions(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripactions;
+    }
+
+    public function addTripaction(Tripactions $tripaction): self
+    {
+        if (!$this->tripactions->contains($tripaction)) {
+            $this->tripactions[] = $tripaction;
+            $tripaction->setTripstationnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripaction(Tripactions $tripaction): self
+    {
+        if ($this->tripactions->contains($tripaction)) {
+            $this->tripactions->removeElement($tripaction);
+            // set the owning side to null (unless already changed)
+            if ($tripaction->getTripstationnr() === $this) {
+                $tripaction->setTripstationnr(null);
+            }
+        }
 
         return $this;
     }
