@@ -73,7 +73,7 @@ class Tripnotes
     /**
      * @var \Trip
      *
-     * @ORM\ManyToOne(targetEntity="Trip")
+     * @ORM\ManyToOne(targetEntity="Trip", inversedBy="tripnotes")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNr", referencedColumnName="TripID")
      * })

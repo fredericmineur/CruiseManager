@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Cruise
  *
- * @ORM\Table(name="Cruise")
+ * @ORM\Table(name="Cruise", indexes={@ORM\Index(name="CruizeID", columns={"CruiseID"}), @ORM\Index(name="IDX_9931752D77093E2", columns={"PrincipalInvestigator"})})
  * @ORM\Entity
  */
 class Cruise
@@ -23,12 +23,7 @@ class Cruise
      */
     private $cruiseid;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="PrincipalInvestigator", type="integer", nullable=true)
-     */
-    private $principalinvestigator = '0';
+
 
     /**
      * @var \DateTime|null
@@ -93,6 +88,16 @@ class Cruise
      */
     private $trips;
 
+    /**
+     * @var \Investigators
+     *
+     * @ORM\ManyToOne(targetEntity="Investigators", inversedBy="cruises")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="PrincipalInvestigator", referencedColumnName="InvestigatorID")
+     * })
+     */
+    private $principalinvestigator;
+
 
 
     /**
@@ -109,17 +114,7 @@ class Cruise
         return $this->cruiseid;
     }
 
-    public function getPrincipalinvestigator(): ?int
-    {
-        return $this->principalinvestigator;
-    }
 
-    public function setPrincipalinvestigator(?int $principalinvestigator): self
-    {
-        $this->principalinvestigator = $principalinvestigator;
-
-        return $this;
-    }
 
     public function getStartdate(): ?\DateTimeInterface
     {
@@ -201,6 +196,18 @@ class Cruise
     public function setPurpose(?string $purpose): self
     {
         $this->purpose = $purpose;
+
+        return $this;
+    }
+
+    public function getPrincipalinvestigator(): ?Investigators
+    {
+        return $this->principalinvestigator;
+    }
+
+    public function setPrincipalinvestigator(?Investigators $principalinvestigator): self
+    {
+        $this->principalinvestigator = $principalinvestigator;
 
         return $this;
     }

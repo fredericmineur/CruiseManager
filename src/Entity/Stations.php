@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Stations
  *
- * @ORM\Table(name="Stations")
+ * @ORM\Table(name="Stations", uniqueConstraints={@ORM\UniqueConstraint(name="ST_codes", columns={"Code"})})
  * @ORM\Entity
  */
 class Stations
@@ -55,6 +55,11 @@ class Stations
      * @ORM\Column(name="Code", type="string", length=10, nullable=true, options={"fixed"=true})
      */
     private $code;
+
+    /**
+     * 
+     */
+    private tripstations;
 
     public function getNr(): ?int
     {

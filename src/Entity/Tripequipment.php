@@ -38,7 +38,7 @@ class Tripequipment
     /**
      * @var \Equipment
      *
-     * @ORM\ManyToOne(targetEntity="Equipment")
+     * @ORM\ManyToOne(targetEntity="Equipment", inversedBy="tripequipments")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="EquipmentNR", referencedColumnName="EquipmentID")
      * })
@@ -48,7 +48,7 @@ class Tripequipment
     /**
      * @var \Trip
      *
-     * @ORM\ManyToOne(targetEntity="Trip")
+     * @ORM\ManyToOne(targetEntity="Trip", inversedBy="tripequipments")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNR", referencedColumnName="TripID")
      * })

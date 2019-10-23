@@ -27,20 +27,17 @@
             </tr>
         </thead>
         <tbody>
-{#            {% set principalInvestigators = [] %}#}
-{#            {% for investigator in investigators %}#}
-{#                {% set principalInvestigators = principalInvestigators|merge([investigator]) %}#}
-{#            {% endfor %}#}
-            {% for cruise in cruises %}
+
+            {% for cruise in cruises  %}
                 <tr>
                     <td>{{ cruise.cruiseid}}</td>
                     <td>
-{#                        {% for investigator in investigators %}#}
-{#                                                    {% if investigator.investigatorid == cruise.principalinvestigator %}#}
-{#                        {{ cruise.principalinvestigator}}#}
-{#                                                    {% endif %}#}
-{#                        {% endfor %}#}
-                        {{ cruise.principalinvestigator}}
+                        {% set arrayOrphanIds = [0, 264, 549, 556, 637] %}
+                        {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanIds %}
+
+                        {{ cruise.principalinvestigator.firstname }}
+                        {{ cruise.principalinvestigator.surname}}
+                    {% endif %}
                     </td>
                     <td>{{ cruise.startdate|date('Y-m-d')}}</td>
                     <td>{{ cruise.enddate|date('Y-m-d')}}</td>

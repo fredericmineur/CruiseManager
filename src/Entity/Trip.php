@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Cassandra\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Trip
  *
- * @ORM\Table(name="Trip", indexes={@ORM\Index(name="IDX_D6645A0511962557", columns={"CruiseID"})})
+ * @ORM\Table(name="Trip", indexes={@ORM\Index(name="CruiseID", columns={"CruiseID"}), @ORM\Index(name="EndDate", columns={"Enddate"}), @ORM\Index(name="GpsStart", columns={"GPSStart"}), @ORM\Index(name="GpsStop", columns={"GPSStop"}), @ORM\Index(name="StartDate", columns={"Startdate"}), @ORM\Index(name="TripID", columns={"TripID"})})
  * @ORM\Entity
  */
 class Trip
@@ -135,6 +137,34 @@ class Trip
      * })
      */
     private $cruiseid;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="tripnr")
+     */
+    private $tripinvestigators;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripnotes", mappedBy="tripnr")
+     */
+    private $tripnotes;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripequipment", mappedBy="tripnr")
+     */
+    private $tripequipments;
+
+    public function __construct()
+    {
+        $this->tripinvestigators = new ArrayCollection();
+        $this->tripnotes = new ArrayCollection();
+        $this->tripequipments = new ArrayCollection();
+    }
 
     public function getTripid(): ?int
     {
@@ -329,6 +359,99 @@ class Trip
     public function setCruiseid(?Cruise $cruiseid): self
     {
         $this->cruiseid = $cruiseid;
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripinvestigators[]
+     */
+    public function getTripinvestigators(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripinvestigators;
+    }
+
+    public function addTripinvestigator(Tripinvestigators $tripinvestigator): self
+    {
+        if (!$this->tripinvestigators->contains($tripinvestigator)) {
+            $this->tripinvestigators[] = $tripinvestigator;
+            $tripinvestigator->setTripnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripinvestigator(Tripinvestigators $tripinvestigator): self
+    {
+        if ($this->tripinvestigators->contains($tripinvestigator)) {
+            $this->tripinvestigators->removeElement($tripinvestigator);
+            // set the owning side to null (unless already changed)
+            if ($tripinvestigator->getTripnr() === $this) {
+                $tripinvestigator->setTripnr(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripnotes[]
+     */
+    public function getTripnotes(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripnotes;
+    }
+
+    public function addTripnote(Tripnotes $tripnote): self
+    {
+        if (!$this->tripnotes->contains($tripnote)) {
+            $this->tripnotes[] = $tripnote;
+            $tripnote->setTripnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripnote(Tripnotes $tripnote): self
+    {
+        if ($this->tripnotes->contains($tripnote)) {
+            $this->tripnotes->removeElement($tripnote);
+            // set the owning side to null (unless already changed)
+            if ($tripnote->getTripnr() === $this) {
+                $tripnote->setTripnr(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripequipment[]
+     */
+    public function getTripequipments(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripequipments;
+    }
+
+    public function addTripequipment(Tripequipment $tripequipment): self
+    {
+        if (!$this->tripequipments->contains($tripequipment)) {
+            $this->tripequipments[] = $tripequipment;
+            $tripequipment->setTripnr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripequipment(Tripequipment $tripequipment): self
+    {
+        if ($this->tripequipments->contains($tripequipment)) {
+            $this->tripequipments->removeElement($tripequipment);
+            // set the owning side to null (unless already changed)
+            if ($tripequipment->getTripnr() === $this) {
+                $tripequipment->setTripnr(null);
+            }
+        }
 
         return $this;
     }

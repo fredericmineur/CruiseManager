@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Campaign;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,8 +34,16 @@ class DisplayController extends AbstractController
         $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
         $campaign = $repoCampaigns->findOneBy(['campaignid'=> $campaignId]);
         $cruises = $campaign->getCruise();
-        dump($cruises);
-//        usort($cruises, function($a, $b) {return strcmp($a->name, $b->name);});
+
+//        $iterator = $cruises->getIterator();
+//        $iterator->uasort(function($a, $b) {
+//            return ($a->getStartdate() < $b->getStartdate()) ? -1 : 1;
+//        });
+//        $collectionCruises = new ArrayCollection(iterator_to_array($iterator));
+//        dump($collectionCruises);
+
+//        dump($cruises);
+
         return $this->render('display/display_campaign.html.twig',[
                 'campaign' => $campaign,
                 'cruises' => $cruises

@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use Cassandra\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Investigators
  *
- * @ORM\Table(name="Investigators")
+ * @ORM\Table(name="Investigators", indexes={@ORM\Index(name="InvestigatorID", columns={"InvestigatorID"})})
  * @ORM\Entity
  */
 class Investigators
@@ -83,6 +85,26 @@ class Investigators
      * @ORM\Column(name="Passengertype", type="string", length=35, nullable=true)
      */
     private $passengertype;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Cruise", mappedBy="principalinvestigator")
+     */
+    private $cruises;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="investigatornr")
+     */
+    private $tripinvestigators;
+
+    public function __construct()
+    {
+        $this->cruises = new ArrayCollection();
+        $this->tripinvestigators = new ArrayCollection();
+    }
 
     public function getInvestigatorid(): ?int
     {
@@ -193,6 +215,68 @@ class Investigators
     public function setPassengertype(?string $passengertype): self
     {
         $this->passengertype = $passengertype;
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Cruise[]
+     */
+    public function getCruises(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->cruises;
+    }
+
+    public function addCruise(Cruise $cruise): self
+    {
+        if (!$this->cruises->contains($cruise)) {
+            $this->cruises[] = $cruise;
+            $cruise->setInvestigatorid($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCruise(Cruise $cruise): self
+    {
+        if ($this->cruises->contains($cruise)) {
+            $this->cruises->removeElement($cruise);
+            // set the owning side to null (unless already changed)
+            if ($cruise->getInvestigatorid() === $this) {
+                $cruise->setInvestigatorid(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|Tripinvestigators[]
+     */
+    public function getTripinvestigators(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->tripinvestigators;
+    }
+
+    public function addTripinvestigator(Tripinvestigators $tripinvestigator): self
+    {
+        if (!$this->tripinvestigators->contains($tripinvestigator)) {
+            $this->tripinvestigators[] = $tripinvestigator;
+            $tripinvestigator->setInvestigatornr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripinvestigator(Tripinvestigators $tripinvestigator): self
+    {
+        if ($this->tripinvestigators->contains($tripinvestigator)) {
+            $this->tripinvestigators->removeElement($tripinvestigator);
+            // set the owning side to null (unless already changed)
+            if ($tripinvestigator->getInvestigatornr() === $this) {
+                $tripinvestigator->setInvestigatornr(null);
+            }
+        }
 
         return $this;
     }

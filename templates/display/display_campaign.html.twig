@@ -8,8 +8,8 @@
 {% block body %}
 
 <div class="container">
-    <h1>Campaign :</h1>
-    <h2>"{{ campaign.campaign }}"</h2>
+    <h1>Campaign:</h1>
+    <h2>"{{ campaign.campaign }}" ID {{ campaign.campaignid }}</h2>
     <h3>Memo:</h3>
     <p>{{ campaign.memo }}</p>
     <h3>Imis Project Number: {{ campaign.imisprojectnr }}</h3>
@@ -26,6 +26,7 @@
             </tr>
 
         </thead>
+{#        {{ dump(cruises) }}#}
         <tbody>
         {% for cruise in cruises|sort %}
 {#            ((a,b)=>a.startdate<=>b.startdate)#}

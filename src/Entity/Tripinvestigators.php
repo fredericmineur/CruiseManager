@@ -108,7 +108,7 @@ class Tripinvestigators
     /**
      * @var \Investigators
      *
-     * @ORM\ManyToOne(targetEntity="Investigators")
+     * @ORM\ManyToOne(targetEntity="Investigators", inversedBy="tripinvestigators")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="InvestigatorNR", referencedColumnName="InvestigatorID")
      * })
@@ -118,7 +118,7 @@ class Tripinvestigators
     /**
      * @var \Trip
      *
-     * @ORM\ManyToOne(targetEntity="Trip")
+     * @ORM\ManyToOne(targetEntity="Trip", inversedBy="tripinvestigators")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNr", referencedColumnName="TripID")
      * })
