@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <h1>Details of the cruise</h1>
+    <h3>Campaigns:</h3>
+    {% for campaign in cruise.campaign%}
+        {{ campaign.campaign }} <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

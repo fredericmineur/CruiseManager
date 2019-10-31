@@ -8,10 +8,11 @@
 {% block body %}
 
 <div class="container">
-    <h1>Campaign:</h1>
-    <h2>"{{ campaign.campaign }}" ID {{ campaign.campaignid }}</h2>
-    <h3>Memo:</h3>
-    <p>{{ campaign.memo }}</p>
+    <h3>Campaign description</h3>
+    <h2>"{{ campaign.campaign |convert_encoding('UTF-8','CP1252') }}" </h2>
+    <p>Midas db ID: {{ campaign.campaignid }}</p>
+    <h2>Memo:</h2>
+    <p><i>{{ campaign.memo |convert_encoding('UTF-8','CP1252') }}</i></p>
     <h3>Imis Project Number: {{ campaign.imisprojectnr }}</h3>
     <h3>Cruises</h3>
 
@@ -20,6 +21,7 @@
     <table class="table-hover table-bordered display" id="myDataTable">
         <thead>
             <tr>
+                <th></th>
                 <th class="searchable">Start date</th>
                 <th>End date</th>
                 <th>Shared campaigns</th>
@@ -31,13 +33,15 @@
         {% for cruise in cruises|sort %}
 {#            ((a,b)=>a.startdate<=>b.startdate)#}
             <tr>
-
-                <td>{{ cruise.startdate |date("d/m/Y") }} </td>
+                <td><a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></a></td>
+                <td><span style="display: none">{{ cruise.startdate |date("Y/m/d") }}</span>{{ cruise.startdate |date("d/m/Y") }} </td>
                 <td>{{ cruise.enddate |date("d/m/Y") }} </td>
                 <td>
                     {% for singleCampaign in cruise.campaign %}
                         {% if singleCampaign.campaign != nameOfPresentCampaign %}
-                        - {{ singleCampaign.campaign }}<br>
+                            {{ singleCampaign.campaign  }}
+
+                            <a href="{{ path('campaign_details', {'campaignId':singleCampaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
                         {% endif %}
                     {% endfor %}
                 </td>
