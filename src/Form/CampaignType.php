@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Campaign;
+use App\Entity\Cruise;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -28,10 +29,10 @@ class CampaignType extends AbstractType
                 TextType::class,
                 $this->getConfiguration('IMIS project number', 'IMIS project number')
             )
-//            ->add('cruise',
-//                CollectionType::class, [
-//
-//                ])
+            ->add('cruise',
+                CollectionType::class, [
+                    'entry_type' => CruiseType::class
+                ])
         ;
     }
 

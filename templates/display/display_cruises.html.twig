@@ -91,55 +91,8 @@
 {#    <script src="/js/dataTables.fixedHeader.min.js"></script>#}
 {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>#}
 {#    <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>#}
-    <script type="text/javascript">
-        $(document).ready( function () {
-            //allow sorting date
-            // $.fn.dataTable.moment("D/M/YYYY");
 
-            //Add another header below the first
-            $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
+    <script src="/js/myDataTable/tableSearchHeaders.js"></script>
 
-            //Transform the second header row to have the search input fields
-            $('#myDataTable thead tr:odd th').each( function () {
-                $(this).html('<input type="text" placeholder="Search" />');
-            });
-
-            //Create the table
-            var table =
-                $('#myDataTable').DataTable({
-                    // scrollY:        true,
-                    // scrollX:        true
-            });
-
-
-
-            //Hide the generic search field
-            $('#myDataTable_filter').hide();
-
-
-            // Apply the search on every column
-            table.columns().every( function () {
-                var that = this;
-
-                $( 'input', this.header() ).on( 'keyup change clear', function () {
-                    if ( that.search() !== this.value ) {
-                        that
-                            .search( this.value )
-                            .draw();
-                    }
-                } );
-            } );
-
-
-
-            //prevent that clicking on the search field sort the column
-            //https://stackoverflow.com/questions/31677257/datatables-only-allow-sorting-with-buttons
-
-            $('#myDataTable thead input').on('click', function(e){
-                e.stopPropagation();
-            });
-
-        } );
-    </script>
 
 {% endblock %}

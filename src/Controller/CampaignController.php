@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Campaign;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
+use App\Entity\Trip;
 use App\Form\CampaignType;
+use App\Form\CruiseType;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +18,7 @@ class CampaignController extends AbstractController
     /**
      * @Route("/cruises", name="cruises_index")
      */
-    public function allCruisesIndex()
+    public function cruisesIndex()
     {
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
@@ -32,7 +34,15 @@ class CampaignController extends AbstractController
      * @Route("/campaign/new", name="campaign_create")
      */
     public function createCampaign(Request $request, ObjectManager $manager){
+
+        $cruise1 = new Cruise();
+        $cruise1->setStartdate(new \DateTime('2020-04-11'))
+            ->setEnddate(new \DateTime('2020-04-11'));
+
+        dump($cruise1);
+
         $campaign = new Campaign();
+        $campaign->addCruise($cruise1);
         $form = $this->createForm(CampaignType::class, $campaign);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -65,7 +75,24 @@ class CampaignController extends AbstractController
                 'campaign' => $campaign,
                 'cruises' => $cruises
             ]);
+    }
 
+    /**
+     * @Route("/cruises/new", name="cruise_create")
+     */
+    public function createCruise(Request $request, ObjectManager $manager)
+    {
+        $cruise = new Cruise();
+        $form = $this->createForm(CruiseType::class, $cruise);
+        $form -> handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($cruise);
+            $manager->flush();
+            return $this->redirectToRoute('trips_index');
+        }
+        return $this->render('forms/form_cruise.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
@@ -80,7 +107,6 @@ class CampaignController extends AbstractController
             'campaigns' => $campaigns,
             'cruise' => $cruise
         ]);
-
     }
 
 
@@ -96,7 +122,20 @@ class CampaignController extends AbstractController
             'form' => $form->createView(),
             'newCampaign' => false
         ]);
-
     }
+
+    /**
+     * @Route("/trips", name="trips_index")
+     */
+    public function tripsIndex()
+    {
+        $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
+        $trips = $repoTrips->findAll();
+        return $this->render('display/display_trips.html.twig', [
+            'trips'=> $trips
+        ]);
+    }
+
+
 
 }

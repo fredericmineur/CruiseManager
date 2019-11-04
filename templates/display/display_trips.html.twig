@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trips{% endblock %}
+
+{% block body %}
+<h1>Trips</h1>
+
+    <table class="table-hover table-bordered display" id="myDataTable">
+        <thead>
+        {% set headerRow =
+            "<tr>
+                <th>Start Date</th>
+
+                <th>Destination</th>
+
+                <th>Cruise Plancode</th>
+                <th>Stations count</th>
+                <th>Status</th>
+                <th>Ship</th>
+
+            </tr>"
+        %}
+        {{ headerRow | raw }}
+
+        </thead>
+        <tbody>
+            {% for trip in trips %}
+                <tr>
+                    <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{{ trip.startdate|date('d/m/Y')}}</td>
+
+                    <td>{{ trip.destinationarea }}</td>
+
+                    <td>{% if trip.cruiseid is not null %}
+                            {{ trip.cruiseid.plancode }} {% else %}  NA {% endif %}</td>
+{#                    <td>{% for tripstation in trip.tripstations %}#}
+{#                        [{{ tripstation.deflatitude |number_format(2)}}]#}
+{#                        {% endfor %}</td>#}
+                    <td>{{ trip.tripstations |length }}</td>
+                    <td>{{ trip.status }}-{{ trip.tripid }} </td>
+                    <td>{{ trip.ship }}</td>
+{#                    <td>#}
+{#                        {% set startday = trip.startdate |date('d') %}#}
+{#                        {% set endday = trip.enddate|date('d') %}#}
+{#                        {% if startday == endday %}#}
+{#                        No{% else %}Yes{% endif %}#}
+
+
+{#                    </td>#}
+
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot> {{ headerRow | raw }}</tfoot>
+
+
+    </table>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/myDataTable/tableSearchHeaders.js"></script>
+
+{% endblock %}
+
