@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TripType extends AbstractType
+class TripTrimmedType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -97,7 +97,7 @@ class TripType extends AbstractType
                     'label' => 'Insync',
                     'required' => false
                 ]
-            )
+                )
             ->add('gpsstart',
                 DateTimeType::class,[
                     'label' => 'GPS start time',
@@ -122,18 +122,7 @@ class TripType extends AbstractType
                     ]
                 ])
 
-//            ->add('leaveportdate',
-//                DateTimeType::class
-//                )
-//            ->add('arriveportdate')
 
-            //https://symfonycasts.com/screencast/collections/entity-type-checkboxes
-            //https://symfonycasts.com/screencast/symfony-forms/entity-type
-            ->add('cruiseid', EntityType::class,[
-                'class' => Cruise::class,
-                'multiple' => true,
-                'expanded' => true
-            ])
         ;
     }
 

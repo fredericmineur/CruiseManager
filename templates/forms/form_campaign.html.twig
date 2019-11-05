@@ -4,9 +4,9 @@
 
 {#   {{dump(app.flashes)}}#}
     <div class="container">
-        {{ form_start(form) }}
+        {{ form_start(formCampaign) }}
 
-        {{ form_widget(form) }}
+        {{ form_widget(formCampaign) }}
 
         <button type="submit" class="btn btn-primary">
             {% if newCampaign == false %}
@@ -14,7 +14,7 @@
             Submit new campaign {% endif %}
         </button>
 
-        {{ form_end(form) }}
+        {{ form_end(formCampaign) }}
 
     </div>
 

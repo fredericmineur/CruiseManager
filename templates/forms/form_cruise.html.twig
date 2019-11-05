@@ -4,10 +4,23 @@
     <div class="container">
     {{ form_start(form) }}
 
+    {{ form_row(form.startdate) }}
+       {{ form_row(form.enddate) }}
     {{ form_widget(form) }}
     <button type="submit" class="btn btn-primary">Submit the new cruise</button>
 
     {{ form_end(form) }}
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+{#    <script>#}
+{#        $(document).ready(function() {#}
+{#            // you may need to change this code if you are not using Bootstrap Datepicker#}
+{#            $('.js-datepicker').datepicker({#}
+{#                format: 'yyyy-mm-dd'#}
+{#            });#}
+{#        });#}
+{#    </script>#}
 {% endblock %}

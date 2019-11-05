@@ -57,7 +57,7 @@ class CampaignController extends AbstractController
         }
 
         return $this->render('forms/form_campaign.html.twig',[
-            'form' => $form->createView(),
+            'formCampaign' => $form->createView(),
             'newCampaign' => true
         ]);
     }
@@ -88,7 +88,9 @@ class CampaignController extends AbstractController
         if($form->isSubmitted() && $form->isValid()) {
             $manager->persist($cruise);
             $manager->flush();
-            return $this->redirectToRoute('trips_index');
+            return $this->redirectToRoute('cruise_details', [
+                'cruiseId' => $cruise->getCruiseid()
+            ]);
         }
         return $this->render('forms/form_cruise.html.twig', [
             'form' => $form->createView()

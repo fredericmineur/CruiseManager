@@ -3,13 +3,18 @@
 {% block body %}
 <div class="container">
     <h3>Details of the cruise</h3>
-    <p>Destination: {{ cruise.destination }}</p>
+    <p>Start date: {{ cruise.startdate | date ('d/m/Y') }}</p>
+    <p>End date: {{ cruise.enddate | date ('d/m/Y') }}</p>
+    <p>Destination: {% if cruise.destination|length  %}{{ cruise.destination }} {% else %}N.A.{% endif %}</p>
 
-    <h3>Campaigns:</h3>
+    <p>Campaign(s):</p>
+    <p>
+    {% if not cruise.campaign |length %}N.A.{% else %}
     {% for campaign in cruise.campaign%}
         {{ campaign.campaign }} <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
     {% endfor %}
-
+    {% endif %}
+    </p>
 </div>
 
 {% endblock %}

@@ -4,9 +4,11 @@ namespace App\Form;
 
 use App\Entity\Cruise;
 use App\Entity\Investigators;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,37 +20,96 @@ class CruiseType extends AbstractType
     {
         $builder
             ->add('startdate',
-                DateTimeType::class,
-                $this->getConfiguration('Start Date', 'd/m/Y')
+                DateType::class,
+//                $this->getConfiguration('Start Date', 'd/m/Y')
+                [
+                    'label' => 'Start date',
+//                    'required' => false,
+//                    'html5' => false,
+                    'widget' => 'single_text',
+//                    'format' => 'dd/mm/yyyy',
+//                    'attr' => [
+//                        'class' => 'datepicker',
+//                        'data-provide' => 'datepicker'
+//                    ],
+//                    'label_attr' => [
+//                        'data-inspire-required' => '1'
+                    ]
+//
             )
             ->add('enddate',
-                DateTimeType::class,
-                $this->getConfiguration('End Date', 'd/m/Y')
-            )
+                DateType::class, [
+                    'label' => 'End Date',
+                    'attr' => [
+                        'placeholder' => 'd/m/Y'
+                    ]
+                ])
+
+//                [
+//                    'widget' => 'single_text',
+//                    'format' => 'yyyy-MM-dd'
+//                ]
+
             ->add('destination',
-                TextType::class,
-                $this->getConfiguration('Destination', 'Destination'))
+                TextType::class, [
+                    'label' => 'Destination',
+                    'attr' => [
+                        'placeholder' => 'Destination'
+                    ],
+                    'required' => false
+                ])
+
             ->add('memo',
-                TextareaType::class,
-                $this->getConfiguration('Notes', 'Memo'))
+                TextareaType::class, [
+                    'label' => 'Notes',
+                    'attr' => [
+                        'placeholder' => 'Memo'
+                    ],
+                    'required' => false
+                ])
+
             ->add('plancode',
-                TextType::class,
-                $this->getConfiguration('Plan code', 'xx-xxx'))
+                TextType::class,[
+                    'label' => 'Plan Code',
+                    'attr' => [
+                        'placeholder' => 'xx-xxx'
+                    ],
+                    'required' => false
+                ])
+
             ->add('ship',
-                TextType::class,
-                $this->getConfiguration('Ship', 'Name of the ship'))
+                TextType::class,[
+                    'label' => 'Ship',
+                    'attr' => [
+                        'placeholder' => 'Ship'
+                        ],
+                    'required' => false
+                ]
+
+                )
             ->add('purpose',
-                TextType::class,
-                $this->getConfiguration('Purpose', 'Purpose'))
+                TextType::class, [
+                    'label' => 'Purpose',
+                    'attr' =>[
+                        'placeholder' => 'Purpose'
+                    ],
+                    'required' => false
+                ])
+//                $this->getConfiguration('Purpose', 'Purpose'))
 //            ->add('campaign')
-            ->add('principalinvestigator',
+            ->add('principalinvestigator',  //https://stackoverflow.com/questions/37617786/combine-columns-in-choice-list-symfony-form
                 EntityType::class, [
                     'label' => 'Principal Investigator',
                     'class' => Investigators::class,
-                    'multiple' => true,
+//                    'multiple' => true,
 //                    'expanded' => true,
-                    'choice_label' => 'surname'
-
+                    'choice_label' => function($investigator){
+                        return utf8_encode($investigator->getSurname().', '.$investigator->getFirstname());
+                    },
+                    'query_builder' =>function(EntityRepository $er) {
+                        return $er->createQueryBuilder('i')
+                            ->orderBy('i.surname', 'ASC');
+                    }
                 ])
         ;
     }
