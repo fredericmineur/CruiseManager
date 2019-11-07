@@ -116,7 +116,7 @@ class TripTrimmedType extends AbstractType
 
             ->add('traveldistance',
                 NumberType::class, [
-                    'label' => 'Tavel distance',
+                    'label' => 'Travel distance',
                     'attr' => [
                         'placeholder' => ''
                     ]

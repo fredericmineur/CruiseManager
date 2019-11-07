@@ -1,17 +1,27 @@
 {% extends 'base.html.twig' %}
-
+{% form_theme formCruise _self %}
 {% block body %}
     <div class="container">
-    {{ form_start(form) }}
+    {{ form_start(formCruise) }}
 
-    {{ form_row(form.startdate) }}
-       {{ form_row(form.enddate) }}
-    {{ form_widget(form) }}
+    {{ form_row(formCruise.startdate) }}
+        {{ form_row(formCruise.enddate) }}
+    {{ form_widget(formCruise) }}
     <button type="submit" class="btn btn-primary">Submit the new cruise</button>
 
-    {{ form_end(form) }}
+    {{ form_end(formCruise) }}
     </div>
 
+{% endblock %}
+
+
+{% block form_row %}
+    {% if id=="cruise_destination" %}
+{#    <p>Destination (not to enter here)</p>#}
+        {% else %}
+            {{ form_label(form) }}
+        {{ form_widget(form) }}
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

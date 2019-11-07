@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Cruise;
 use App\Entity\Investigators;
+use App\Form\DataTransformer\Time17HTransformer;
+use App\Form\DataTransformer\Time8HTransformer;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +23,7 @@ class CruiseType extends AbstractType
         $builder
             ->add('startdate',
                 DateType::class,
-//                $this->getConfiguration('Start Date', 'd/m/Y')
+
                 [
                     'label' => 'Start date',
 //                    'required' => false,
@@ -95,7 +97,7 @@ class CruiseType extends AbstractType
                     ],
                     'required' => false
                 ])
-//                $this->getConfiguration('Purpose', 'Purpose'))
+
 //            ->add('campaign')
             ->add('principalinvestigator',  //https://stackoverflow.com/questions/37617786/combine-columns-in-choice-list-symfony-form
                 EntityType::class, [
@@ -112,6 +114,10 @@ class CruiseType extends AbstractType
                     }
                 ])
         ;
+//        $builder -> get('startdate')
+//            ->addModelTransformer(new Time8HTransformer());
+//        $builder ->get('enddate')
+//            ->addModelTransformer(new Time17HTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -121,13 +127,13 @@ class CruiseType extends AbstractType
         ]);
     }
 
-    public function getConfiguration($label, $placeholder)
-    {
-        return [
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder
-            ]
-        ];
-    }
+//    public function getConfiguration($label, $placeholder)
+//    {
+//        return [
+//            'label' => $label,
+//            'attr' => [
+//                'placeholder' => $placeholder
+//            ]
+//        ];
+//    }
 }

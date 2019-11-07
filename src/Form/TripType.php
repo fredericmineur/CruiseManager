@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Cruise;
 use App\Entity\Trip;
+use App\Form\DataTransformer\Time17HTransformer;
+use App\Form\DataTransformer\Time8HTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -133,8 +135,12 @@ class TripType extends AbstractType
                 'class' => Cruise::class,
                 'multiple' => true,
                 'expanded' => true
-            ])
-        ;
+            ]);
+
+        $builder -> get('startdate')
+        ->addModelTransformer(new Time8HTransformer());
+        $builder ->get('enddate')
+            ->addModelTransformer(new Time17HTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)
