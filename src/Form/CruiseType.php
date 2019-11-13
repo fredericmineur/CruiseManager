@@ -53,40 +53,41 @@ class CruiseType extends AbstractType
                     }
                 ]
             )
-            ->add(
-                'startdate',
-                DateType::class,
-                [
-                    'label' => 'Start date',
-                //                    'required' => false,
-                //                    'html5' => false,
-                    'widget' => 'single_text',
-                //                    'format' => 'dd/mm/yyyy',
-                //                    'attr' => [
-                //                        'class' => 'datepicker',
-                //                        'data-provide' => 'datepicker'
-                //                    ],
-                //                    'label_attr' => [
-                //                        'data-inspire-required' => '1'
-                    ]
-                //
-            )
-            ->add(
-                'enddate',
-                DateType::class,
-                [
-                    'label' => 'End Date',
-                    'attr' => [
-                        'placeholder' => 'd/m/Y'
-                    ]
-                ]
-            )
+//            ->add(
+//                'startdate',
+//                DateType::class,
+//                [
+//                    'label' => 'Start date',
+//                //                    'required' => false,
+//                //                    'html5' => false,
+//                    'widget' => 'single_text',
+//                //                    'format' => 'dd/mm/yyyy',
+//                //                    'attr' => [
+//                //                        'class' => 'datepicker',
+//                //                        'data-provide' => 'datepicker'
+//                //                    ],
+//                //                    'label_attr' => [
+//                //                        'data-inspire-required' => '1'
+//                    ]
+//                //
+//            )
+//            ->add(
+//                'enddate',
+//                DateType::class,
+//                [
+//                    'label' => 'End Date',
+//                    'attr' => [
+//                        'placeholder' => 'd/m/Y'
+//                    ]
+//                ]
+//            )
 
             ->add(
                 'trips',
                 CollectionType::class,
                 [
-                    'entry_type' => TripType::class
+                    'entry_type' => TripType::class,
+                    'allow_add' => true
                 ]
 
             )
@@ -101,17 +102,17 @@ class CruiseType extends AbstractType
 //                    }
 //                ])
 
-            ->add(
-                'destination',
-                TextType::class,
-                [
-                    'label' => 'Destination',
-                    'attr' => [
-                        'placeholder' => 'Destination'
-                    ],
-                    'required' => false
-                ]
-            )
+//            ->add(
+//                'destination',
+//                TextType::class,
+//                [
+//                    'label' => 'Destination',
+//                    'attr' => [
+//                        'placeholder' => 'Destination'
+//                    ],
+//                    'required' => false
+//                ]
+//            )
 
 //            ->add(
 //                'memo',
