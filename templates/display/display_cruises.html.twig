@@ -14,22 +14,24 @@
 
         <h1>Cruises</h1>
 
+        {% if cruisesForCampaign %}
+            <p>IMIS {{ campaign.imisprojectnr }}</p>
+            <p>"{{ campaign.campaign }} "</p>
+        {% endif %}
+
+
 {#    <div class="table-responsive">#}
     <table class="table-hover table-bordered display" id="myDataTable" width="100%">
         <thead>
         {% set headerRow = "
             <tr>
 
-
-                <th>Start date</th>
-                <th>End date</th>
+                <th>Cruise Plan Code</th>
+                <th>Start date<br>End date</th>
                 <th>Campaigns</th>
                 <th>Principal Investigator</th>
-                <th>Destination</th>
-                <th>Memo</th>
-                <th>Plan Code</th>
-                <th>ID</th>
-                <th>Ship</th>
+
+
 
                 <th>Number of<br>Trips</th>
 
@@ -40,13 +42,27 @@
 
         </thead>
         <tbody>
-
-            {% for cruise in cruises  %}
+            {% set cruisesForDisplay = [] %}
+            {% if cruisesForCampaign %} {% set cruisesForDisplay = campaign.cruise %}
+            {% else %} {% set cruisesForDisplay = cruises %}{% endif %}
+            {% for cruise in cruisesForDisplay  %}
                 <tr>
 
+                    <td>{{ cruise.plancode}}  <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></a></td>
+                    <td><span style="display:none">{{ cruise.startdate|date('Y/m/d')}}</span>
+                        {% if cruise.trips %}{% set nbTrips = cruise.trips|length %}{% endif %}
+                        {{ cruise.startdate|date('d/m/Y')}}
 
-                    <td><span style="display:none">{{ cruise.startdate|date('Y/m/d')}}</span>{{ cruise.startdate|date('d/m/Y')}}</td>
-                    <td><span style="display:none">{{ cruise.enddate|date('Y/m/d')}}</span>{{ cruise.enddate|date('d/m/Y')}}</td>
+                        {% if cruise.trips|length>0 %}
+                        ({{ cruise.trips[0].startdate|date('d/m/Y') }})   <br> {% endif %}
+
+
+                        {{ cruise.enddate|date('d/m/Y')}}
+                        {% if cruise.trips|length>0 %}
+                        ({{ cruise.trips[nbTrips-1].startdate|date('d/m/Y') }})  {% endif %}
+
+                    </td>
+{#                    <td><span style="display:none">{{ cruise.enddate|date('Y/m/d')}}</span>{{ cruise.enddate|date('d/m/Y')}}</td>#}
                     <td>{% for singleCampaign in cruise.campaign %}
                             {{ singleCampaign.campaign  }}
                             <a href="{{ path('campaign_details', {'campaignId':singleCampaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
@@ -59,11 +75,11 @@
                             {{ cruise.principalinvestigator.surname |convert_encoding('UTF-8','CP1252') }}
                         {% endif %}
                     </td>
-                    <td>{{ cruise.destination}}</td>
-                    <td>{{ cruise.memo |convert_encoding('UTF-8','CP1252')}}</td>
-                    <td>{{ cruise.plancode}}</td>
-                    <td>{{ cruise.cruiseid}}</td>
-                    <td>{{ cruise.ship}}</td>
+
+
+
+
+
 
 {#                    <td>{% for trip in cruise.trips %}{{ trip.destinationarea }}<br>{% endfor %}</td>#}
                     <td>{{ cruise.trips | length }}</td>

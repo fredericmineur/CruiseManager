@@ -16,11 +16,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class CampaignController extends AbstractController
 {
 
+    /**
+     * @Route("/campaigns", name="campaigns_index")
+     */
+    public function campaignsIndex()
+    {
+        $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
+        $campaigns = $repoCampaigns->findAll();
+
+        return $this->render('display/display_campaigns_index.html.twig', [
+            'campaigns' => $campaigns
+        ]);
+    }
+
 
     /**
      * @Route("/campaign/new", name="campaign_create")
      */
-    public function createCampaign(Request $request, ObjectManager $manager){
+    public function createCampaign(Request $request, ObjectManager $manager)
+    {
 
         $cruise1 = new Cruise();
         $cruise1->setStartdate(new \DateTime('2020-04-11'))
@@ -32,18 +46,19 @@ class CampaignController extends AbstractController
         $campaign->addCruise($cruise1);
         $form = $this->createForm(CampaignType::class, $campaign);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($campaign);
             $manager->flush();
             $this->addFlash(
-                'success', "the campaign <strong>{$campaign->getCampaign()}</strong> has been successfully submitted"
+                'success',
+                "the campaign <strong>{$campaign->getCampaign()}</strong> has been successfully submitted"
             );
             return $this->redirectToRoute('campaign_details', [
                 'campaignId' => $campaign->getCampaignid()
             ]);
         }
 
-        return $this->render('forms/form_campaign.html.twig',[
+        return $this->render('forms/form_campaign.html.twig', [
             'formCampaign' => $form->createView(),
             'newCampaign' => true
         ]);
@@ -52,11 +67,12 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/edit/{campaignId}", name="campaign_edit")
      */
-    public function editCampaign($campaignId){
+    public function editCampaign($campaignId)
+    {
         $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
         $campaign = $repoCampaigns->findOneBy(['campaignid'=> $campaignId]);
         $form = $this->createForm(CampaignType::class, $campaign);
-        return $this->render('forms/form_campaign.html.twig',[
+        return $this->render('forms/form_campaign.html.twig', [
             'form' => $form->createView(),
             'newCampaign' => false
         ]);
@@ -71,7 +87,7 @@ class CampaignController extends AbstractController
         $campaign = $repoCampaigns->findOneBy(['campaignid'=> $campaignId]);
         $cruises = $campaign->getCruise();
 
-        return $this->render('display/display_campaign.html.twig',[
+        return $this->render('display/display_campaign.html.twig', [
                 'campaign' => $campaign,
                 'cruises' => $cruises
             ]);
@@ -81,16 +97,31 @@ class CampaignController extends AbstractController
 
     /**
      * @Route("/cruises", name="cruises_index")
+     * @Route("/campaign/{campaignId}/cruises", name="cruises_for_campaign")
      */
-    public function cruisesIndex()
+    public function cruisesIndex($campaignId = null)
     {
+        $cruisesForCampaign=false;
+        if ($campaignId) {
+            $cruisesForCampaign=true;
+        }
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
         $cruises = $repoCruise->findAll();
         $investigators = $repoInvestigator->findAll();
+        $repoCampaign = $this->getDoctrine()->getRepository(Campaign::class);
+        $campaigns1 = $repoCampaign->findAll();
+
+        $campaign = $repoCampaign->findOneBy(['campaignid' => $campaignId ]);
+//        dump($campaign);
+//        dump($campaignId);
+//        dump($campaigns1);
+
         return $this->render('display/display_cruises.html.twig', [
             'cruises' => $cruises,
-            'investigators' => $investigators
+            'investigators' => $investigators,
+            'campaign' => $campaign,
+            'cruisesForCampaign' =>$cruisesForCampaign
         ]);
     }
 
@@ -100,15 +131,28 @@ class CampaignController extends AbstractController
     public function createCruise(Request $request, ObjectManager $manager)
     {
         $cruise = new Cruise();
+        $trip1 = new Trip();
+        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
+        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
+        $trip2 = new Trip();
+        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
+        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
+
+
+//        $trip1->setDestinationarea('BCP');
+//        $trip2->setDestinationarea('BCP2');
+        $cruise->addTrip($trip1)->addTrip($trip2);
         $form = $this->createForm(CruiseType::class, $cruise);
         $form -> handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 //            $startDate = $form->get('startdate')->getData();
 //            $enddate = $form->get('enddate')->getData();
 //            dump($startDate, $enddate);
             // NB Here startdate and enddate will be transformed (adding 8h and 17h respectively)
             // See buildForm() in CruiseType.php
+
+
 
             $manager->persist($cruise);
             $manager->flush();
@@ -124,7 +168,8 @@ class CampaignController extends AbstractController
     /**
      * @Route ("/cruises/{cruiseId}", name="cruise_details")
      */
-    public function cruiseDetails($cruiseId){
+    public function cruiseDetails($cruiseId)
+    {
         $repoCruises = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruises->findOneBy(['cruiseid'=>$cruiseId]);
         $campaigns = $cruise->getCampaign();
@@ -147,7 +192,4 @@ class CampaignController extends AbstractController
             'trips'=> $trips
         ]);
     }
-
-
-
 }

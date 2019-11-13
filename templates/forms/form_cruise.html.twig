@@ -16,7 +16,7 @@
 
 
 {% block form_row %}
-    {% if id=="cruise_destination" %}
+    {% if (id=="cruise_destination") or (id=="cruise_startdate") or (id=="cruise_enddate") %}
 {#    <p>Destination (not to enter here)</p>#}
         {% else %}
             {{ form_label(form) }}

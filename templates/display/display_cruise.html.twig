@@ -4,19 +4,59 @@
 
 <div class="container">
     <h3>Details of the cruise</h3>
-    <p>Start date: {{ cruise.startdate | date ('d/m/Y') }}</p>
-    <p>End date: {{ cruise.enddate | date ('d/m/Y') }}</p>
-    <p>Principal investigator: {{ cruise.principalinvestigator.firstname }} {{ cruise.principalinvestigator.surname }}</p>
-    <p>Destination: {% if cruise.destination|length  %}{{ cruise.destination }} {% else %}N.A.{% endif %}</p>
-
-    <p>Campaign(s):</p>
-    <p>
-    {% if not cruise.campaign |length %}N.A.{% else %}
-    {% for campaign in cruise.campaign%}
-        {{ campaign.campaign }} <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
-    {% endfor %}
-    {% endif %}
+    <p>Plan Code: <strong>{{ cruise.plancode }}</strong><span style="font-size: x-small"> [Midas ID {{ cruise.cruiseid }}]</span>
+        Duration: <strong>{{ cruise.startdate | date ('d/m/Y') }} - {{ cruise.enddate | date ('d/m/Y') }}</strong>
     </p>
+    <p>Principal investigator: <strong>
+            {{ cruise.principalinvestigator.firstname |convert_encoding('UTF-8','CP1252') }}
+            {{ cruise.principalinvestigator.surname|convert_encoding('UTF-8','CP1252') }}
+        </strong>
+        Ship: <strong>{{ cruise.ship }}</strong>
+        Destination: <strong>{% if cruise.destination|length  %}{{ cruise.destination }} {% else %}N.A.{% endif %}</strong>
+    </p>
+    <p>Campaign(s):
+        {% if not cruise.campaign |length %}N.A.{% else %}
+        {% for campaign in cruise.campaign%}
+            [<strong>{{ campaign.campaign }}</strong> <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a>]
+        {% endfor %}
+        {% endif %}
+    </p>
+    <h3>Trips: </h3>
+
+    <table class="table-hover table-bordered display" id="myDataTable" width="100%">
+
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>Number of days</th>
+                <th>Trip Investigators</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trip in cruise.trips %}
+                <tr>
+                    <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{{ trip.startdate|date('d/m/Y')}}</td>
+                    <td>
+                        {% set numberDays = date(trip.startdate).diff(date(trip.enddate)) %}
+                        {{ numberDays.days + 1 }}
+
+                    </td>
+                    <td>
+                        {% for investigator in trip.tripinvestigators %}
+                            {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
 </div>
+
+{% endblock %}
+
+{% block javascripts %}
+{#    <script src="/js/myDataTable/tableSearchHeaders.js"></script>#}
 
 {% endblock %}
