@@ -25,17 +25,19 @@ class TripType extends AbstractType
             ->add(
                 'startdate',
                 DateTimeType::class,
-                [
-                    'label' => 'Start Date',
-                    'attr' => [
-                        'placeholder' => 'd/m/Y'
-                    ]
-                ]
+                ['widget'=>'single_text']
+//                [
+//                    'label' => 'Start Date',
+//                    'attr' => [
+//                        'placeholder' => 'd/m/Y'
+//                    ]
+//                ]
             )
 
             ->add(
                 'enddate',
-                DateTimeType::class
+                DateTimeType::class,
+                ['widget'=>'single_text']
 //                [
 //                    'label' =>'End Date',
 //                    'attr' => [
