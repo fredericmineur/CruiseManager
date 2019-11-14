@@ -131,17 +131,17 @@ class CampaignController extends AbstractController
     public function createCruise(Request $request, ObjectManager $manager)
     {
         $cruise = new Cruise();
-        $trip1 = new Trip();
-        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
-        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
-        $trip2 = new Trip();
-        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
-        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
-
-
-//        $trip1->setDestinationarea('BCP');
-//        $trip2->setDestinationarea('BCP2');
-        $cruise->addTrip($trip1)->addTrip($trip2);
+//        $trip1 = new Trip();
+//        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
+//        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
+//        $trip2 = new Trip();
+//        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
+//        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
+//
+//
+////        $trip1->setDestinationarea('BCP');
+////        $trip2->setDestinationarea('BCP2');
+//        $cruise->addTrip($trip1)->addTrip($trip2);
         $form = $this->createForm(CruiseType::class, $cruise);
         $form -> handleRequest($request);
 
@@ -151,7 +151,10 @@ class CampaignController extends AbstractController
 //            dump($startDate, $enddate);
             // NB Here startdate and enddate will be transformed (adding 8h and 17h respectively)
             // See buildForm() in CruiseType.php
-
+            foreach ($cruise->getTrips() as $trip) {
+                $trip->setCruiseid($cruise);
+                $manager->persist($trip);
+            }
 
 
             $manager->persist($cruise);

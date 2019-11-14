@@ -44,6 +44,10 @@ class CruiseType extends AbstractType
                     'class' => Investigators::class,
                     //                    'multiple' => true,
                     //                    'expanded' => true,
+                    'required' => 'false',
+                    'attr'=> [
+                        'placeholder' => 'xxxxxx'
+                    ],
                     'choice_label' => function ($investigator) {
                         return utf8_encode($investigator->getSurname().', '.$investigator->getFirstname());
                     },
