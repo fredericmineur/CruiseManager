@@ -219,9 +219,9 @@ class CampaignController extends AbstractController
                 'success',
                 "The cruise <strong>{$cruise->getPlancode()}</strong> has been edited !"
             );
-//            return $this->redirectToRoute('cruise_details', [
-//                'cruiseId' => $cruise->getCruiseid()
-//            ]);
+            return $this->redirectToRoute('cruise_details', [
+                'cruiseId' => $cruise->getCruiseid()
+            ]);
         }
         return $this->render('forms/form_cruise_edit.html.twig',[
             'formCruise' => $form->createView(),
