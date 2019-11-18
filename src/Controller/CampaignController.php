@@ -8,6 +8,7 @@ use App\Entity\Investigators;
 use App\Entity\Trip;
 use App\Form\CampaignType;
 use App\Form\CruiseType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -159,12 +160,72 @@ class CampaignController extends AbstractController
 
             $manager->persist($cruise);
             $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "The new cruise <strong>{$cruise->getPlancode()}</strong> has been submitted !"
+            );
+
+
             return $this->redirectToRoute('cruise_details', [
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/cruises/{cruiseId}/edit", name="cruise_edit")
+     */
+    public function editCruise(Request $request, ObjectManager $manager, $cruiseId){
+        $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
+        $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
+
+        $originalTrips = new ArrayCollection();
+
+        foreach ($cruise->getTrips() as $trip){
+            $originalTrips->add($trip);
+        }
+
+
+        $form = $this ->createForm(CruiseType::class, $cruise);
+        $form->handleRequest($request);
+
+
+
+        if($form->isSubmitted() && $form->isValid()){
+            dump($originalTrips);
+            foreach ($originalTrips as $trip) {
+                dump($cruise->getTrips()->contains($trip));
+                if(false===$cruise->getTrips()->contains($trip)){
+//                    $trip->getCruiseid()->removeElement($trip);
+                    dump("does not exit");
+                    $manager->remove($trip);
+                } else {dump("exists");}
+                $trip->setCruiseid($cruise);
+                $manager->persist($trip);
+                dump($trip);
+            }
+
+
+
+
+            $manager->persist($cruise);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "The cruise <strong>{$cruise->getPlancode()}</strong> has been edited !"
+            );
+//            return $this->redirectToRoute('cruise_details', [
+//                'cruiseId' => $cruise->getCruiseid()
+//            ]);
+        }
+        return $this->render('forms/form_cruise_edit.html.twig',[
+            'formCruise' => $form->createView(),
+            'cruise'=> $cruise
         ]);
     }
 

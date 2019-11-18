@@ -2,25 +2,15 @@
 {% form_theme formCruise _self %}
 {% block body %}
     <div class="container">
-    {{ form_start(formCruise) }}
+        {{ form_start(formCruise) }}
 
-    {{ form_widget(formCruise) }}
-    <button type="submit" class="btn btn-primary">Submit the new cruise</button>
+        {{ form_widget(formCruise) }}
+        <button type="submit" class="btn btn-primary">Submit modifications</button>
 
-    {{ form_end(formCruise) }}
+        {{ form_end(formCruise) }}
     </div>
 
 {% endblock %}
-
-
-{#{% block form_row %}#}
-{#    {% if (id=="cruise_destination") or (id=="cruise_startdate") or (id=="cruise_enddate") %}#}
-{#    <p>Destination (not to enter here)</p>#}
-{#        {% else %}#}
-{#            {{ form_label(form) }}#}
-{#        {{ form_widget(form) }}#}
-{#    {% endif %}#}
-{#{% endblock %}#}
 
 {% block _cruise_trips_widget %}
     <p>Manage the trips</p>
@@ -61,14 +51,14 @@
 {% endblock %}
 
 {% block javascripts %}
-{#    <script>#}
-{#        $(document).ready(function() {#}
-{#            // you may need to change this code if you are not using Bootstrap Datepicker#}
-{#            $('.js-datepicker').datepicker({#}
-{#                format: 'yyyy-mm-dd'#}
-{#            });#}
-{#        });#}
-{#    </script>#}
+    {#    <script>#}
+    {#        $(document).ready(function() {#}
+    {#            // you may need to change this code if you are not using Bootstrap Datepicker#}
+    {#            $('.js-datepicker').datepicker({#}
+    {#                format: 'yyyy-mm-dd'#}
+    {#            });#}
+    {#        });#}
+    {#    </script>#}
 
     <script>
         $('#add-trip').click(function(){
@@ -87,6 +77,11 @@
             handleDeleteButtons();
         })
 
+        function updateCounter(){
+            const count = $('#cruise_trips div.form-group').length;
+            $('#widgets-counter').val(count);
+        }
+
         function handleDeleteButtons(){
             $('button[data-action="delete"]').click(function(){
                 const target=this.dataset.target;
@@ -95,7 +90,7 @@
                 $(target).remove();
             })
         }
-
+        updateCounter();
         handleDeleteButtons();
     </script>
 

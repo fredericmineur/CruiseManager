@@ -128,12 +128,15 @@ class Trip
      */
     private $arriveportdate;
 
+
+
+
     /**
      * @var \Cruise
      *
      * @ORM\ManyToOne(targetEntity="Cruise", inversedBy="trips")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="CruiseID", referencedColumnName="CruiseID")
+     *   @ORM\JoinColumn(name="CruiseID", referencedColumnName="CruiseID", nullable=false)
      * })
      */
     private $cruiseid;

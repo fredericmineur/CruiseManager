@@ -34,6 +34,27 @@ class CruiseType extends AbstractType
                     'required' => false
                 ]
             )
+
+         /*  ->add('campaign',
+                EntityType::class,
+                [
+                    'label' => 'Campaign',
+                    'class' => Campaign::class,
+                    'required' => false,
+                    'attr'=> [
+                        'placeholder' => 'xxxxxx'
+                    ],
+                    'choice_label' => function($campaign) {
+                        return utf8_encode( $campaign->getImisprojectnr().' '.$campaign->getCampaign());
+                    },
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('i')
+//                            ->orderBy('i.campaign', 'ASC')
+                            ->orderBy('i.imisprojectnr', 'ASC');
+                    }
+                ]
+            )*/
+
             ->add(
                 // CHECK https://ourcodeworld.com/articles/read/652/how-to-create-a-dependent-select-dependent-dropdown-in-symfony-3
                 'principalinvestigator',
@@ -44,7 +65,7 @@ class CruiseType extends AbstractType
                     'class' => Investigators::class,
                     //                    'multiple' => true,
                     //                    'expanded' => true,
-                    'required' => 'false',
+                    'required' => false,
                     'attr'=> [
                         'placeholder' => 'xxxxxx'
                     ],
@@ -56,7 +77,7 @@ class CruiseType extends AbstractType
                             ->orderBy('i.surname', 'ASC');
                     }
                 ]
-            )
+            );
 //            ->add(
 //                'startdate',
 //                DateType::class,
@@ -86,25 +107,17 @@ class CruiseType extends AbstractType
 //                ]
 //            )
 
-            ->add(
+           $builder ->add(
                 'trips',
                 CollectionType::class,
                 [
                     'entry_type' => TripType::class,
-                    'allow_add' => true
+                    'allow_add' => true,
+//                    'allow_delete' => true
                 ]
 
-            )
+            );
 
-//            ->add('campaign',
-//                EntityType::class,
-//                [
-//                    'label' => 'Campaign',
-//                    'class' => Campaign::class,
-//                    'choice_attr' => function($campaign) {
-//                        return utf8_encode($campaign->getImisprojectnr());
-//                    }
-//                ])
 
 //            ->add(
 //                'destination',

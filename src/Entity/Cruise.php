@@ -83,7 +83,6 @@ class Cruise
 
     /**
      * @var Collection
-     *
      * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid")
      */
     private $trips;

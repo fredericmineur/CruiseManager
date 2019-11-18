@@ -57,6 +57,20 @@ class TripType extends AbstractType
                     ]
                 ]
             )
+            ->add('startpoint')
+            ->add('endpoint')
+            ->add('destinationarea')
+            ->add('memo')
+            ->add('status')
+            ->add('logtext')
+            ->add('ship')
+            ->add('insync')
+            ->add('gpsstart')
+            ->add('gpsstop')
+            ->add('traveldistance')
+            ->add('leaveportdate')
+            ->add('arriveportdate')
+//            ->add('cruiseid')
 
 //            ->add('startpoint',
 //                TextType::class, [
