@@ -14,6 +14,16 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Cruise
 {
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->campaign = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->trips = new ArrayCollection();
+    }
+
     /**
      * @var int
      *
@@ -83,7 +93,7 @@ class Cruise
 
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid")
+     * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid" , cascade={"persist"})
      */
     private $trips;
 
@@ -97,16 +107,6 @@ class Cruise
      */
     private $principalinvestigator;
 
-
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->campaign = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->trips = new ArrayCollection();
-    }
 
     public function getCruiseid(): ?int
     {

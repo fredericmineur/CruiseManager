@@ -193,8 +193,6 @@ class CampaignController extends AbstractController
         $form = $this ->createForm(CruiseType::class, $cruise);
         $form->handleRequest($request);
 
-
-
         if($form->isSubmitted() && $form->isValid()){
             dump($originalTrips);
             foreach ($originalTrips as $trip) {
@@ -203,14 +201,13 @@ class CampaignController extends AbstractController
 //                    $trip->getCruiseid()->removeElement($trip);
                     dump("does not exit");
                     $manager->remove($trip);
-                } else {dump("exists");}
-                $trip->setCruiseid($cruise);
-                $manager->persist($trip);
+                } else {
+                    dump("exists");
+                }
+                //$trip->setCruiseid($cruise);
+                //$manager->persist($trip);
                 dump($trip);
             }
-
-
-
 
             $manager->persist($cruise);
             $manager->flush();
