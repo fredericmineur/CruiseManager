@@ -154,6 +154,9 @@ class CampaignController extends AbstractController
             // See buildForm() in CruiseType.php
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
+//                $tripStartTime8H = $trip->getStartdate()->add(new \DateInterval('PT8H'));
+//                $trip->setStartdate($tripStartTime8H);
+//                    $time->add(new \DateInterval('PT8H'));
                 $manager->persist($trip);
             }
 
@@ -183,30 +186,32 @@ class CampaignController extends AbstractController
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
 
-        $originalTrips = new ArrayCollection();
-
+      $originalTrips = new ArrayCollection();
+//
         foreach ($cruise->getTrips() as $trip){
-            $originalTrips->add($trip);
+//            $tripCopy = clone($trip);
+            $originalTrips->add( $trip);
         }
-
+        dump($originalTrips);
+        dump("before submit");
 
         $form = $this ->createForm(CruiseType::class, $cruise);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            dump("after submit");
             dump($originalTrips);
             foreach ($originalTrips as $trip) {
-                dump($cruise->getTrips()->contains($trip));
-                if(false===$cruise->getTrips()->contains($trip)){
+//                dump($cruise->getTrips()->contains($trip));
+
+                if (false === $cruise->getTrips()->contains($trip)) {
 //                    $trip->getCruiseid()->removeElement($trip);
-                    dump("does not exit");
+//                    dump("does not exit");
                     $manager->remove($trip);
-                } else {
-                    dump("exists");
+//                    $trip->setCruiseid(null);
+//                    $trip->setCruiseid($trip);
+
                 }
-                //$trip->setCruiseid($cruise);
-                //$manager->persist($trip);
-                dump($trip);
             }
 
             $manager->persist($cruise);
@@ -224,6 +229,7 @@ class CampaignController extends AbstractController
             'formCruise' => $form->createView(),
             'cruise'=> $cruise
         ]);
+
     }
 
     /**

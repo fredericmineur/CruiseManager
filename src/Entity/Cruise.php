@@ -91,9 +91,12 @@ class Cruise
      */
     private $campaign;
 
+
+
+    //     ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid" , cascade={"persist"})
     /**
      * @var Collection
-     * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid" , cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid", cascade={"all"}, orphanRemoval=true)
      */
     private $trips;
 
@@ -244,11 +247,13 @@ class Cruise
      */
     public function getTrips(): Collection
     {
+//        dump("getTrips");
         return $this->trips;
     }
 
     public function addTrip(Trip $trip): self
     {
+//        dump("addTrip");
         if (!$this->trips->contains($trip)) {
             $this->trips[] = $trip;
             $trip->setCruiseid($this);
@@ -259,6 +264,7 @@ class Cruise
 
     public function removeTrip(Trip $trip): self
     {
+//        dump("removeTrip triggered");
         if ($this->trips->contains($trip)) {
             $this->trips->removeElement($trip);
             // set the owning side to null (unless already changed)

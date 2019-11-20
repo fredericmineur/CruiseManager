@@ -4,8 +4,9 @@
 
 <div class="container">
     <h3>Details of the cruise</h3>
-    {{ dump(cruise.trips) }}
-    {% for trip in cruise.trips %}<p>trip</p>{{ dump(trip) }}<p>investigators</p>{{ dump(trip.tripinvestigators) }}{% endfor %}
+{#    {{ dump(cruise.trips) }}#}
+{#    {% for trip in cruise.trips %}#}
+{#        <p>trip</p> {{ dump(trip) }}<p>investigators</p>{{ dump(trip.tripinvestigators) }}{% endfor %}#}
 
     <p>Plan Code: <strong>{{ cruise.plancode }}</strong><span style="font-size: x-small"> [Midas ID {{ cruise.cruiseid }}]</span>
         Duration: <strong>{{ cruise.startdate | date ('d/m/Y') }} - {{ cruise.enddate | date ('d/m/Y') }}</strong>
@@ -42,11 +43,12 @@
         <tbody>
             {% for trip in cruise.trips %}
                 <tr>
-                    <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{{ trip.startdate|date('d/m/Y')}}</td>
-                    <td>
+                    <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{% if trip.startdate is not null %}
+                        {{ trip.startdate|date('d/m/Y')}}{% else %}N.A.{% endif %}</td>
+                    <td>{% if trip.startdate is not null %}
                         {% set numberDays = date(trip.startdate).diff(date(trip.enddate)) %}
                         {{ numberDays.days + 1 }}
-
+                        {% endif %}
                     </td>
                     <td>
                         {% for investigator in trip.tripinvestigators %}

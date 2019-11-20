@@ -372,11 +372,13 @@ class Trip
 
     public function getCruiseid(): ?Cruise
     {
+
         return $this->cruiseid;
     }
 
     public function setCruiseid(?Cruise $cruiseid): self
     {
+//        DUMP("setCruiseid");
         $this->cruiseid = $cruiseid;
 
         return $this;

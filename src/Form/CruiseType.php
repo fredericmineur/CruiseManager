@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Campaign;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
+use App\Entity\Trip;
 use App\Form\DataTransformer\Time17HTransformer;
 use App\Form\DataTransformer\Time8HTransformer;
 use Doctrine\ORM\EntityRepository;
@@ -113,9 +114,17 @@ class CruiseType extends AbstractType
                 [
                     'entry_type' => TripType::class,
                     'allow_add' => true,
+
+//                    'delete_empty' => function(Trip $trip){
+//                        return null === $trip || empty($trip->getStartdate());
+//                    },
                     'allow_delete' => true,
-                    'by_reference'=>false
-                ]
+
+                    'by_reference' => false,
+//                    'required' => false,
+
+                                   ]
+
 
             );
 
