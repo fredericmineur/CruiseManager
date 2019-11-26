@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+{#{% form_theme formCruise _self %}#}
+
+{#    _self,#}
+
+{%
+    form_theme formCruise with [
+
+    'jquery.collection.html.twig',
+    'form_theme_trip_plugin.html.twig'
+    ]
+
+%}
+
+{% block body %}
+    <div class="container">
+        {{ form_start(formCruise) }}
+
+        {{ form_widget(formCruise) }}
+        <button type="submit" class="btn btn-primary">Submit the new cruise</button>
+
+        {{ form_end(formCruise) }}
+    </div>
+
+{% endblock %}
+
+
+{#{% block form_row %}#}
+{#    {% if (id=="cruise_destination") or (id=="cruise_startdate") or (id=="cruise_enddate") %}#}
+{#    <p>Destination (not to enter here)</p>#}
+{#        {% else %}#}
+{#            {{ form_label(form) }}#}
+{#        {{ form_widget(form) }}#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
+{#{% block _cruise_trips_widget %}#}
+{#    <p>Manage the trips</p>#}
+{#    {{ form_widget(form) }}#}
+{#    <input type="hidden" id="widgets-counter" value="0">#}
+{#    <div class="form-group">#}
+{#        <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>#}
+{#    </div>#}
+
+{#{% endblock %}#}
+
+{#{% block _cruise_trips_entry_widget %}#}
+{#    <div class="form-group" id="block_{{ id }}">#}
+{#        <div class="row">#}
+{#            <div class="col-10">#}
+{#                <div class="row">#}
+{#                    <div class="col">#}
+{#                        {{ form_widget(form.startdate) }}#}
+{#                    </div>#}
+{#                    <div class="col">#}
+{#                        {{ form_widget(form.enddate) }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="col-2">#}
+{#                <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete" data-target="#block_{{ id }}">#}
+{#                    X#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#{% endblock %}#}
+
+{# Here we force the form to not display label 0, 1,... 0only widget in row...#}
+{#{% block _cruise_trips_entry_row %}#}
+{#    {{ form_widget(form) }}#}
+{#{% endblock %}#}
+
+{% block javascripts %}
+    <script src="/js/jquery.collection.js"></script>
+    <script type="text/javascript">
+
+        $('.actions-collection').collection({
+            position_field_selector: '.my-position',
+            allow_duplicate: true
+        });
+
+    </script>
+
+
+{#    <script>#}
+{#        $('#add-trip').click(function(){#}
+{#            //Getting the index for the div#}
+{#            // const index = $('#cruise_trips div.form-group').length;#}
+{#            const index = +$('#widgets-counter').val(); //unary '+' to convert string to number#}
+{#            console.log(index);#}
+{#            //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length#}
+{#            const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);#}
+{#            //Injection of the new code#}
+{#            $('#cruise_trips').append(tmpl);#}
+
+{#            //Add 1 to the index (for counter)#}
+{#            $('#widgets-counter').val(index+1);#}
+
+{#            handleDeleteButtons();#}
+{#        })#}
+
+{#        function handleDeleteButtons(){#}
+{#            $('button[data-action="delete"]').click(function(){#}
+{#                const target=this.dataset.target;#}
+{#                //'this' is the button and 'dataset' are the attributes, target "#block_cruise_trips_0#}
+{#                // remove the whole div#}
+{#                $(target).remove();#}
+{#            })#}
+{#        }#}
+
+{#        handleDeleteButtons();#}
+{#    </script>#}
+
+
+{% endblock %}

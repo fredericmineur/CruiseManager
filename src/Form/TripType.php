@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -57,19 +58,49 @@ class TripType extends AbstractType
                     ]
                 ]
             )
-            ->add('startpoint')
-            ->add('endpoint')
-            ->add('destinationarea')
-            ->add('memo')
-            ->add('status')
-            ->add('logtext')
-            ->add('ship')
-            ->add('insync')
-            ->add('gpsstart')
-            ->add('gpsstop')
-            ->add('traveldistance')
-            ->add('leaveportdate')
-            ->add('arriveportdate')
+
+            ->add('destinationarea',
+                TextType::class,
+                [
+                    'required' => false,
+                    'label' => 'Destination Area'
+                ])
+
+            ->add('tripinvestigators',
+                CollectionType::class,
+                [
+                    'entry_type'=> TripinvestigatorsType::class,
+                    'allow_add' => true,
+                    'allow_delete'=> true,
+                    'by_reference' => false,
+                    'label'=> 'Investigators for the trip'
+                ]
+            )
+
+//            ->add('startpoint')
+//            ->add('endpoint')
+//
+//            ->add('memo')
+//            ->add('status')
+//            ->add('logtext')
+//            ->add('ship')
+//            ->add('insync')
+//            ->add('gpsstart')
+//            ->add('gpsstop')
+//            ->add('traveldistance')
+//            ->add('leaveportdate')
+//            ->add('arriveportdate')
+
+        ;
+
+
+
+//        $builder->add('tripid', TextType::class, [
+//            'attr' => [
+//                'readonly' => true,
+//                'autocomplete' => 'off',
+//            ],
+//        ]);
 //            ->add('cruiseid')
 
 //            ->add('startpoint',
@@ -170,7 +201,7 @@ class TripType extends AbstractType
 ////                'multiple' => true,
 ////                'expanded' => true
 ////            ])
-         ;
+//         ;
 
 //        $builder -> get('startdate')
 //        ->addModelTransformer(new Time8HTransformer());
@@ -184,4 +215,9 @@ class TripType extends AbstractType
             'data_class' => Trip::class,
         ]);
     }
+
+//    public function getBlockPrefix()
+//    {
+//        return 'trip';
+//    }
 }

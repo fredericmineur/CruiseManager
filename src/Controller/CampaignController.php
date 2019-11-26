@@ -6,8 +6,10 @@ use App\Entity\Campaign;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
 use App\Entity\Trip;
+use App\Entity\Tripinvestigators;
 use App\Form\CampaignType;
 use App\Form\CruiseType;
+use App\Form\TripType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -132,17 +134,17 @@ class CampaignController extends AbstractController
     public function createCruise(Request $request, ObjectManager $manager)
     {
         $cruise = new Cruise();
-//        $trip1 = new Trip();
-//        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
-//        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
-//        $trip2 = new Trip();
-//        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
-//        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
-//
-//
-////        $trip1->setDestinationarea('BCP');
-////        $trip2->setDestinationarea('BCP2');
-//        $cruise->addTrip($trip1)->addTrip($trip2);
+        $trip1 = new Trip();
+        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
+        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
+        $trip2 = new Trip();
+        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
+        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
+        $trip1->setDestinationarea('BCP');
+        $trip2->setDestinationarea('BCP2');
+        $cruise->addTrip($trip1)->addTrip($trip2);
+
+
         $form = $this->createForm(CruiseType::class, $cruise);
         $form -> handleRequest($request);
 
@@ -179,27 +181,34 @@ class CampaignController extends AbstractController
         ]);
     }
 
+
+    public function addTripInvestigatorsToTrip(Trip $trip){
+
+
+    }
+
     /**
      * @Route("/cruises/{cruiseId}/edit", name="cruise_edit")
      */
-    public function editCruise(Request $request, ObjectManager $manager, $cruiseId){
+    public function editCruise(Request $request, ObjectManager $manager, $cruiseId)
+    {
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
 
-      $originalTrips = new ArrayCollection();
+        $originalTrips = new ArrayCollection();
 //
-        foreach ($cruise->getTrips() as $trip){
+        foreach ($cruise->getTrips() as $trip) {
 //            $tripCopy = clone($trip);
-            $originalTrips->add( $trip);
+            $originalTrips->add($trip);
         }
         dump($originalTrips);
-        dump("before submit");
+
 
         $form = $this ->createForm(CruiseType::class, $cruise);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            dump("after submit");
+        if ($form->isSubmitted() && $form->isValid()) {
+
             dump($originalTrips);
             foreach ($originalTrips as $trip) {
 //                dump($cruise->getTrips()->contains($trip));
@@ -210,7 +219,6 @@ class CampaignController extends AbstractController
                     $manager->remove($trip);
 //                    $trip->setCruiseid(null);
 //                    $trip->setCruiseid($trip);
-
                 }
             }
 
@@ -230,6 +238,10 @@ class CampaignController extends AbstractController
             'cruise'=> $cruise
         ]);
 
+//        return $this->render('forms/form_cruise_plugin_collection.html.twig', [
+//            'formCruise' => $form->createView(),
+//            'cruise'=> $cruise
+//        ]);
     }
 
     /**
@@ -246,6 +258,63 @@ class CampaignController extends AbstractController
             'cruise' => $cruise
         ]);
     }
+
+    /**
+     * @Route("/trips/{tripId}", name="trip_edit")
+     */
+    public function editTrip ($tripId, Request $request, ObjectManager $manager)
+    {
+        $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
+        $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
+
+       $originalTripinvestigators = new ArrayCollection();
+
+        foreach($trip->getTripinvestigators() as $tripinvestigator){
+            $originalTripinvestigators->add($tripinvestigator);
+        }
+
+
+
+        $form= $this->createForm(TripType::class, $trip);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            foreach ($originalTripinvestigators as $tripinvestigator) {
+                if(false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
+                    $manager->remove($tripinvestigator);
+                }
+            }
+
+            $cruise = $trip->getCruiseid();
+
+            $manager->persist($trip);
+            $manager -> flush();
+
+
+
+            return $this->redirectToRoute('cruise_details', [
+                'cruiseId' => $cruise->getCruiseId()
+            ]);
+
+        }
+
+
+
+
+        return $this->render('forms/form_trip.html.twig', [
+            'trip' => $trip,
+            'formTrip' => $form->createView()
+        ]);
+    }
+
+
+
+
+
+
+
+
 
 
     /**

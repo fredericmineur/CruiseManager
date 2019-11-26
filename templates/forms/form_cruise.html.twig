@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% form_theme formCruise _self %}
+
 {% block body %}
     <div class="container">
     {{ form_start(formCruise) }}
@@ -38,12 +39,19 @@
             <div class="col-10">
                 <div class="row">
                     <div class="col">
-                        {{ form_widget(form.startdate) }}
+                        {{ form_row(form.startdate) }}
                     </div>
                     <div class="col">
-                        {{ form_widget(form.enddate) }}
+                        {{ form_row(form.enddate) }}
+                    </div>
+                    <div class="col">
+                        {{ form_row (form.destinationarea) }}
                     </div>
                 </div>
+                <div class="row">
+
+                </div>
+
             </div>
             <div class="col-2">
                 <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete" data-target="#block_{{ id }}">
@@ -51,6 +59,7 @@
                 </button>
             </div>
         </div>
+        <hr>
     </div>
 
 {% endblock %}

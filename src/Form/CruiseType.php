@@ -36,25 +36,49 @@ class CruiseType extends AbstractType
                 ]
             )
 
-         /*  ->add('campaign',
-                EntityType::class,
-                [
-                    'label' => 'Campaign',
-                    'class' => Campaign::class,
-                    'required' => false,
-                    'attr'=> [
-                        'placeholder' => 'xxxxxx'
-                    ],
-                    'choice_label' => function($campaign) {
-                        return utf8_encode( $campaign->getImisprojectnr().' '.$campaign->getCampaign());
-                    },
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-//                            ->orderBy('i.campaign', 'ASC')
-                            ->orderBy('i.imisprojectnr', 'ASC');
-                    }
-                ]
-            )*/
+//           ->add('campaign',
+//                CollectionType::class,
+//                [
+//                    'entry_type'=> CampaignType::class,
+//                    'allow_add'=> true,
+//                    'allow_delete'=> true,
+//                    'by_reference'=>true,
+////                    'label' => 'Campaign',
+////                    'class' => Campaign::class,
+//                    'required' => false,
+////                    'attr'=> [
+////                        'placeholder' => 'xxxxxx'
+////                    ],
+////                    'choice_label' => function($campaign) {
+////                        return utf8_encode( $campaign->getImisprojectnr().' '.$campaign->getCampaign());
+////                    },
+////                    'query_builder' => function(EntityRepository $er) {
+////                        return $er->createQueryBuilder('i')
+//////                            ->orderBy('i.campaign', 'ASC')
+////                            ->orderBy('i.imisprojectnr', 'ASC');
+////                    }
+//                ]
+//            )
+
+//            ->add('campaign',
+//                EntityType::class,
+//                [
+//                    'label' => 'Other Campaign',
+//                    'class' => Campaign::class,
+//                    'required' => false,
+//                    'attr'=> [
+//                        'placeholder' => 'xxxxxx'
+//                    ],
+//                    'choice_label' => function($campaign) {
+//                        return utf8_encode( $campaign->getImisprojectnr().' '.$campaign->getCampaign());
+//                    },
+//                    'query_builder' => function(EntityRepository $er) {
+//                        return $er->createQueryBuilder('i')
+////                            ->orderBy('i.campaign', 'ASC')
+//                            ->orderBy('i.imisprojectnr', 'ASC');
+//                    }
+//                ]
+//            )
 
             ->add(
                 // CHECK https://ourcodeworld.com/articles/read/652/how-to-create-a-dependent-select-dependent-dropdown-in-symfony-3
@@ -122,6 +146,9 @@ class CruiseType extends AbstractType
 
                     'by_reference' => false,
 //                    'required' => false,
+//                    'attr' => [
+//                        'class' => 'trips-collection',
+//                    ],
 
                                    ]
 
@@ -193,6 +220,11 @@ class CruiseType extends AbstractType
             'data_class' => Cruise::class,
         ]);
     }
+
+//    public function getBlockPrefix()
+//    {
+//        return 'cruise';
+//    }
 
 //    public function getConfiguration($label, $placeholder)
 //    {

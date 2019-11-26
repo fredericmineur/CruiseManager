@@ -423,7 +423,7 @@
                 "php": "^7.1",
                 "symfony/config": "^3.4|^4.1",
                 "symfony/console": "^3.4|^4.1",
-                "symfony/dependency-injection": "^4.1.12",
+                "symfony/dependency-injection": "^3.4|^4.1",
                 "symfony/doctrine-bridge": "^3.4|^4.1",
                 "symfony/framework-bundle": "^3.4|^4.1"
             },

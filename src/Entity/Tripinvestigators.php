@@ -52,9 +52,9 @@ class Tripinvestigators
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="ServerDate", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="ServerDate", type="datetime", nullable=true)
      */
-    private $serverdate = 'CURRENT_TIMESTAMP';
+    private $serverdate ;
 
     /**
      * @var int|null

@@ -54,6 +54,7 @@
                         {% for investigator in trip.tripinvestigators %}
                             {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}<br>
                         {% endfor %}
+                        <p><a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i class="fa fa-edit fa-2x" ></i></a></p>
                     </td>
 
                 </tr>
