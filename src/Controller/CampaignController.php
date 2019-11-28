@@ -12,9 +12,16 @@ use App\Form\CruiseType;
 use App\Form\TripType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class CampaignController extends AbstractController
 {
@@ -182,9 +189,8 @@ class CampaignController extends AbstractController
     }
 
 
-    public function addTripInvestigatorsToTrip(Trip $trip){
-
-
+    public function addTripInvestigatorsToTrip(Trip $trip)
+    {
     }
 
     /**
@@ -208,7 +214,6 @@ class CampaignController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             dump($originalTrips);
             foreach ($originalTrips as $trip) {
 //                dump($cruise->getTrips()->contains($trip));
@@ -233,7 +238,7 @@ class CampaignController extends AbstractController
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
-        return $this->render('forms/form_cruise_edit.html.twig',[
+        return $this->render('forms/form_cruise_edit.html.twig', [
             'formCruise' => $form->createView(),
             'cruise'=> $cruise
         ]);
@@ -262,59 +267,45 @@ class CampaignController extends AbstractController
     /**
      * @Route("/trips/{tripId}", name="trip_edit")
      */
-    public function editTrip ($tripId, Request $request, ObjectManager $manager)
+    public function editTrip($tripId, Request $request, ObjectManager $manager)
     {
         $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
         $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
+//        dump($this->generateJsonInvestigators());
 
-       $originalTripinvestigators = new ArrayCollection();
 
-        foreach($trip->getTripinvestigators() as $tripinvestigator){
+        $originalTripinvestigators = new ArrayCollection();
+
+        foreach ($trip->getTripinvestigators() as $tripinvestigator) {
             $originalTripinvestigators->add($tripinvestigator);
         }
-
 
 
         $form= $this->createForm(TripType::class, $trip);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-
+        if ($form->isSubmitted() && $form->isValid()) {
             foreach ($originalTripinvestigators as $tripinvestigator) {
-                if(false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
+                if (false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
                     $manager->remove($tripinvestigator);
                 }
             }
-
             $cruise = $trip->getCruiseid();
-
             $manager->persist($trip);
             $manager -> flush();
-
-
-
             return $this->redirectToRoute('cruise_details', [
                 'cruiseId' => $cruise->getCruiseId()
             ]);
-
         }
-
-
 
 
         return $this->render('forms/form_trip.html.twig', [
             'trip' => $trip,
-            'formTrip' => $form->createView()
+            'formTrip' => $form->createView(),
+//            'listfirstnames' => $this->generateJsonInvestigators()[0]
+
         ]);
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -328,4 +319,71 @@ class CampaignController extends AbstractController
             'trips'=> $trips
         ]);
     }
+
+
+    /**
+     * @Route("/jsontrial", name="jsontrial")
+     */
+    public function generateJsonInvestigators()
+    {
+
+        $allPersonalInvestigators = $this->getDoctrine()
+          ->getRepository(Tripinvestigators::class)->findAll();
+        $arrayJSON = [];
+        foreach ($allPersonalInvestigators as $investigator) {
+            $investigatorName = [];
+
+            $investigatorName['firstname'] = utf8_encode($investigator->getFirstname());
+            $investigatorName['surname'] = utf8_encode($investigator->getSurname());
+            $investigatorNameJSON = json_encode($investigatorName);
+
+            array_push($arrayJSON, $investigatorNameJSON);
+        }
+
+        return new JsonResponse($arrayJSON);
+
+        //see also
+        // https://stackoverflow.com/questions/28141192/return-a-json-array-from-a-controller-in-symfony/34577422
+
+
+
+
+ //        $allPersonalInvestigators = $this->getDoctrine()
+ //            ->getRepository(Tripinvestigators::class)->findAll();
+ //        $investigatorsJSON = json_encode(utf8_encode($allPersonalInvestigators));
+ //        return new Response($investigatorsJSON);
+
+
+        /*
+        $encoders = [new XmlEncoder(), new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new \Symfony\Component\Serializer\Serializer($normalizers, $encoders);
+
+        $cruise = $this->getDoctrine()->getRepository(Cruise::class)
+        ->findOneBy(['cruiseid'=> 20]);
+//        dump(get_class($cruise));
+//        dd($cruise INSTANCEOF Cruise);
+        $cruiseJson = $serializer->serialize($cruise, 'json', [
+            'circular_reference_handler' => function ($object) {
+            if ($object INSTANCEOF Cruise) {
+                return $object->getCruiseid();
+            } elseif ($object INSTANCEOF Investigators) {
+                return $object->getInvestigatorid();
+            } elseif ($object INSTANCEOF Campaign) {
+                return $object->getCampaignid();
+            } elseif ($object INSTANCEOF Trip) {
+                return $object->getTripid();
+            } else {
+                return $object->getId();
+            }
+
+            }
+        ]);
+        return new Response($cruiseJson, 200, ['Content-Type' => 'application/json']);
+//        return new Response('rien');
+        */
+    }
+
+
 }
