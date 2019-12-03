@@ -1,16 +1,18 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+
     <div class="container">
+
         <table class="table-hover table-bordered display" id="myDataTable" width="100%">
             <thead>
                 <tr>
-                    <th>Campaign name</th>
+                    <th>Campaign name </th>
                     <th>
 
                         Imis Project number </th>
 {#                    <th>Notes</th>#}
-                    <th>Cruises</th>
+                    <th>Cruises (by Plan Code)</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,4 +52,6 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/myDataTable/tableSearchHeaders.js') }}"></script>
+
+
 {% endblock %}

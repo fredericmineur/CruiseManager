@@ -11,7 +11,6 @@ use App\Form\DataTransformer\Time8HTransformer;
 use App\Repository\CampaignRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -22,12 +21,13 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CruiseType extends AbstractType
+class CruiseEditType extends AbstractType
 {
+
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-//        dd($options);
         $builder
             ->add(
                 'plancode',
@@ -41,76 +41,22 @@ class CruiseType extends AbstractType
                 ]
             )
 
-            ->add('campaign', CollectionType::class,
-                [
-                    'allow_add'=>true,
-                    'entry_type' => EntityType::class,
-                    'entry_options' => [
-                        'label' => 'Campaign (IMIS + name)',
-                    'class' => Campaign::class,
-                    'required' => false,
-
-                    'choice_label' => function($campaign) {
-                        return utf8_encode($campaign->getImisprojectnr().' '. $campaign->getCampaign());
-                    },
-                    'query_builder' => function(EntityRepository $er) {
-                        return $er->createQueryBuilder('i')
-//                            ->orderBy('i.campaign', 'ASC')
-                            ->orderBy('i.campaign', 'ASC')
-                            ;
-                    }
-                    ]
-
-                ])
-
-
-
-            //https://stackoverflow.com/questions/45169833/symfony-fill-choicetype-with-an-array
+            //https://symfony.com/doc/current/reference/forms/types/collection.html
 
 //           ->add('campaign',
 //                CollectionType::class,
 //                [
-//
 //                    'entry_type'=> ChoiceType::class,
-////                    'allow_add'=> true,
-////
-////                    'allow_delete'=> true,
-//                    'by_reference'=>false,
-////
-////                    'required' => false,
 //                    'entry_options' => [
-////                        'choices' => $options['arrayCampaigns']
-//                        'choices'  => [
-//                            'Nashville' => 'nashville',
-//                            'Paris'     => 'paris',
-//                            'Berlin'    => 'berlin',
-//                            'London'    => 'london',
-//                        ],
+//                        'choices'=> [
+//
+//                        ]
 //                    ]
 //
 //                ]
 //            )
-//            dd($options['arrayCampaigns'])
 
-//            ->add('campaign',
-//                EntityType::class,
-//                [
-//                    'label' => 'Campaign',
-//                    'class' => Campaign::class,
-//                    'required' => false,
-//                    'attr'=> [
-//                        'placeholder' => 'xxxxxx'
-//                    ],
-//                    'choice_label' => function($campaign) {
-//                        return utf8_encode( $campaign->getImisprojectnr().' '.$campaign->getCampaign());
-//                    },
-//                    'query_builder' => function(EntityRepository $er) {
-//                        return $er->createQueryBuilder('i')
-////                            ->orderBy('i.campaign', 'ASC')
-//                            ->orderBy('i.imisprojectnr', 'ASC');
-//                    }
-//                ]
-//            )
+
 
             ->add(
                 // CHECK https://ourcodeworld.com/articles/read/652/how-to-create-a-dependent-select-dependent-dropdown-in-symfony-3
@@ -136,6 +82,7 @@ class CruiseType extends AbstractType
                 ]
             );
 
+
            $builder ->add(
                 'trips',
                 CollectionType::class,
@@ -156,7 +103,6 @@ class CruiseType extends AbstractType
 
                                    ]
 
-
             );
 
 
@@ -164,39 +110,17 @@ class CruiseType extends AbstractType
 
 
         ;
-//        $builder -> get('startdate')
-//            ->addModelTransformer(new Time8HTransformer());
-//        $builder ->get('enddate')
-//            ->addModelTransformer(new Time17HTransformer());
+
     }
-
-//    public function generateArrayCampaigns(){
-//        $cr = new CampaignRepository(ManagerRegistry::class);
-//        $array = $cr->arrayCampaigns();
-//
-//        $arrayCampaignIds = [];
-//        $arrayImis =[];
-//        $arrayCampaignNames = [];
-//        foreach ($array as $key => $value) {
-//            array_push($arrayCampaignNames, $value["campaign"]);
-//            array_push($arrayCampaignIds, $value["campaignid"]);
-//            array_push($arrayImis, $value["imisprojectnr"]);
-//        }
-//        return ["CampaignImis"=> $arrayImis,
-//            "CampaignIds"=>$arrayCampaignIds, "CampaignNames"=> $arrayCampaignNames];;
-//    }
-
-
-
-
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Cruise::class,
-            'arrayCampaigns' => array()
         ]);
     }
+
+
 
 //    public function getBlockPrefix()
 //    {

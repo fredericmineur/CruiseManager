@@ -8,8 +8,10 @@ use App\Entity\Investigators;
 use App\Entity\Trip;
 use App\Entity\Tripinvestigators;
 use App\Form\CampaignType;
+use App\Form\CruiseEditType;
 use App\Form\CruiseType;
 use App\Form\TripType;
+use App\Repository\CampaignRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\DocBlock\Serializer;
@@ -46,15 +48,11 @@ class CampaignController extends AbstractController
     public function createCampaign(Request $request, ObjectManager $manager)
     {
 
-        $cruise1 = new Cruise();
-        $cruise1->setStartdate(new \DateTime('2020-04-11'))
-            ->setEnddate(new \DateTime('2020-04-11'));
-
-        dump($cruise1);
 
         $campaign = new Campaign();
-        $campaign->addCruise($cruise1);
         $form = $this->createForm(CampaignType::class, $campaign);
+
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager->persist($campaign);
@@ -138,7 +136,7 @@ class CampaignController extends AbstractController
     /**
      * @Route("/cruises/new", name="cruise_create")
      */
-    public function createCruise(Request $request, ObjectManager $manager)
+    public function createCruise(Request $request, ObjectManager $manager, CampaignRepository $cr)
     {
         $cruise = new Cruise();
         $trip1 = new Trip();
@@ -151,21 +149,33 @@ class CampaignController extends AbstractController
         $trip2->setDestinationarea('BCP2');
         $cruise->addTrip($trip1)->addTrip($trip2);
 
+//        $campaign1 = new Campaign();
+//        $campaign1->setCampaign('campaign1');
+        $campaign1 = $cr->findOneBy(['campaignid' => 87]);
+        $campaign2 = $cr->findOneBy(['campaignid'=> 41]);
+//        $campaign2->setCampaign('campaign2');
+        $cruise->addCampaign($campaign1)->addCampaign($campaign2);
 
-        $form = $this->createForm(CruiseType::class, $cruise);
+
+
+//https://stackoverflow.com/questions/9167213/how-to-get-instance-of-entity-repository-in-the-form-type-class-in-symfony-2/9167298
+        //https://stackoverflow.com/questions/45169833/symfony-fill-choicetype-with-an-array
+
+        $arrayCampaigns =$cr->generateArrayCampaigns();
+//        dd($arrayCampaigns);
+        $formOptions = array('arrayCampaigns' => $arrayCampaigns['CampaignNames']);
+//        dd($arrayCampaigns['CampaignNames']);
+
+
+        $form = $this->createForm(CruiseType::class, $cruise, $formOptions);
         $form -> handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-//            $startDate = $form->get('startdate')->getData();
-//            $enddate = $form->get('enddate')->getData();
-//            dump($startDate, $enddate);
-            // NB Here startdate and enddate will be transformed (adding 8h and 17h respectively)
-            // See buildForm() in CruiseType.php
+
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
-//                $tripStartTime8H = $trip->getStartdate()->add(new \DateInterval('PT8H'));
-//                $trip->setStartdate($tripStartTime8H);
-//                    $time->add(new \DateInterval('PT8H'));
+
                 $manager->persist($trip);
             }
 
@@ -183,7 +193,7 @@ class CampaignController extends AbstractController
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
-        return $this->render('forms/form_cruise.html.twig', [
+        return $this->render('forms/form_cruise_new.html.twig', [
             'formCruise' => $form->createView()
         ]);
     }
@@ -210,7 +220,7 @@ class CampaignController extends AbstractController
         dump($originalTrips);
 
 
-        $form = $this ->createForm(CruiseType::class, $cruise);
+        $form = $this ->createForm(CruiseEditType::class, $cruise);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -323,24 +333,48 @@ class CampaignController extends AbstractController
 
     /**
      * @Route("/jsontrial", name="jsontrial")
+     * @param CampaignRepository $cr
      */
-    public function generateJsonInvestigators()
+    public function generateJsonInvestigators(CampaignRepository $cr)
     {
+        $array = $cr->arrayCampaigns();
 
-        $allPersonalInvestigators = $this->getDoctrine()
-          ->getRepository(Tripinvestigators::class)->findAll();
-        $arrayJSON = [];
-        foreach ($allPersonalInvestigators as $investigator) {
-            $investigatorName = [];
-
-            $investigatorName['firstname'] = utf8_encode($investigator->getFirstname());
-            $investigatorName['surname'] = utf8_encode($investigator->getSurname());
-            $investigatorNameJSON = json_encode($investigatorName);
-
-            array_push($arrayJSON, $investigatorNameJSON);
+        $arrayCampaignId = [];
+        $arrayImis =[];
+        $arrayCampaignName = [];
+        foreach ($array as $key => $value) {
+            array_push($arrayCampaignName, $value["campaign"]);
+            array_push($arrayCampaignId, $value["campaignid"]);
+            array_push($arrayImis, $value["imisprojectnr"]);
         }
 
-        return new JsonResponse($arrayJSON);
+        $arrayCampaigns = ["CampaignImis"=> $arrayImis,
+            "CampaignIds"=>$arrayCampaignId, "CampaignNames"=> $arrayCampaignName];
+        dd($arrayCampaigns);
+
+
+//        $arrayJSON = json_encode($array);
+//        dump($arrayCampaignId);
+//        dump($arrayImis);
+//        dump($arrayCampaignName);
+//        die;
+//        return new JsonResponse($arrayJSON);
+
+
+//        $allPersonalInvestigators = $this->getDoctrine()
+//          ->getRepository(Tripinvestigators::class)->findAll();
+//        $arrayJSON = [];
+//        foreach ($allPersonalInvestigators as $investigator) {
+//            $investigatorName = [];
+//
+//            $investigatorName['firstname'] = utf8_encode($investigator->getFirstname());
+//            $investigatorName['surname'] = utf8_encode($investigator->getSurname());
+//            $investigatorNameJSON = json_encode($investigatorName);
+//
+//            array_push($arrayJSON, $investigatorNameJSON);
+//        }
+//
+//        return new JsonResponse($arrayJSON);
 
         //see also
         // https://stackoverflow.com/questions/28141192/return-a-json-array-from-a-controller-in-symfony/34577422

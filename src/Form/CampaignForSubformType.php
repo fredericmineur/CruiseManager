@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class CampaignType extends AbstractType
+class CampaignForSubformType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -21,18 +21,17 @@ class CampaignType extends AbstractType
                 TextType::class,
                 $this->getConfiguration('Name of the campaign', 'Campaign')
                 )
-            ->add('memo',
-                TextareaType::class,
-                $this->getConfiguration('Notes', 'Memo')
-            )
+
+
+
+
+
+
+
             ->add('imisprojectnr',
                 TextType::class,
                 $this->getConfiguration('IMIS project number', 'IMIS project number')
             )
-//            ->add('cruise',
-//                CollectionType::class, [
-//                    'entry_type' => CruiseType::class
-//                ])
         ;
     }
 

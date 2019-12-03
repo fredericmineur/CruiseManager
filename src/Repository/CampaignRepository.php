@@ -19,6 +19,28 @@ class CampaignRepository extends ServiceEntityRepository
         parent::__construct($registry, Campaign::class);
     }
 
+    public function generateArrayCampaigns () {
+
+        $campaigns = $this->createQueryBuilder('c')
+            ->select('DISTINCT c.campaignid, c.campaign, c.imisprojectnr')
+            ->getQuery()
+            ->execute();
+
+        $arrayCampaignIds = [];
+        $arrayImis =[];
+        $arrayCampaignNames = [];
+        foreach ($campaigns as $key => $value) {
+            array_push($arrayCampaignNames, $value["campaign"]);
+            array_push($arrayCampaignIds, $value["campaignid"]);
+            array_push($arrayImis, $value["imisprojectnr"]);
+        }
+
+
+
+        return ["CampaignImis"=> $arrayImis,
+            "CampaignIds"=>$arrayCampaignIds, "CampaignNames"=> $arrayCampaignNames];
+    }
+
     // /**
     //  * @return Campaign[] Returns an array of Campaign objects
     //  */
