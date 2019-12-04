@@ -44,6 +44,8 @@ class CruiseType extends AbstractType
             ->add('campaign', CollectionType::class,
                 [
                     'allow_add'=>true,
+                    'allow_delete'=>true,
+                    'by_reference'=>false,
                     'entry_type' => EntityType::class,
                     'entry_options' => [
                         'label' => 'Campaign (IMIS + name)',
@@ -51,7 +53,7 @@ class CruiseType extends AbstractType
                     'required' => false,
 
                     'choice_label' => function($campaign) {
-                        return utf8_encode($campaign->getImisprojectnr().' '. $campaign->getCampaign());
+                        return utf8_encode($campaign->getImisprojectnr().' '.$campaign->getCampaign());
                     },
                     'query_builder' => function(EntityRepository $er) {
                         return $er->createQueryBuilder('i')

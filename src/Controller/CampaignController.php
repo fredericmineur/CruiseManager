@@ -136,38 +136,30 @@ class CampaignController extends AbstractController
     /**
      * @Route("/cruises/new", name="cruise_create")
      */
-    public function createCruise(Request $request, ObjectManager $manager, CampaignRepository $cr)
+    public function createCruise(Request $request, ObjectManager $manager)
     {
         $cruise = new Cruise();
-        $trip1 = new Trip();
-        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
-        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
-        $trip2 = new Trip();
-        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
-        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
-        $trip1->setDestinationarea('BCP');
-        $trip2->setDestinationarea('BCP2');
-        $cruise->addTrip($trip1)->addTrip($trip2);
-
-//        $campaign1 = new Campaign();
-//        $campaign1->setCampaign('campaign1');
-        $campaign1 = $cr->findOneBy(['campaignid' => 87]);
-        $campaign2 = $cr->findOneBy(['campaignid'=> 41]);
-//        $campaign2->setCampaign('campaign2');
-        $cruise->addCampaign($campaign1)->addCampaign($campaign2);
-
-
-
-//https://stackoverflow.com/questions/9167213/how-to-get-instance-of-entity-repository-in-the-form-type-class-in-symfony-2/9167298
-        //https://stackoverflow.com/questions/45169833/symfony-fill-choicetype-with-an-array
-
-        $arrayCampaigns =$cr->generateArrayCampaigns();
-//        dd($arrayCampaigns);
-        $formOptions = array('arrayCampaigns' => $arrayCampaigns['CampaignNames']);
-//        dd($arrayCampaigns['CampaignNames']);
+//        $trip1 = new Trip();
+//        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
+//        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
+//        $trip2 = new Trip();
+//        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
+//        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
+//        $trip1->setDestinationarea('BCP');
+//        $trip2->setDestinationarea('BCP2');
+//        $cruise->addTrip($trip1)->addTrip($trip2);
+//
+////        $campaign1 = new Campaign();
+////        $campaign1->setCampaign('campaign1');
+//        $campaign1 = $cr->findOneBy(['campaignid' => 87]);
+//        $campaign2 = $cr->findOneBy(['campaignid'=> 41]);
+////        $campaign2->setCampaign('campaign2');
+//        $cruise->addCampaign($campaign1)->addCampaign($campaign2);
 
 
-        $form = $this->createForm(CruiseType::class, $cruise, $formOptions);
+
+
+        $form = $this->createForm(CruiseType::class, $cruise);
         $form -> handleRequest($request);
 
 

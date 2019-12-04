@@ -1,4 +1,18 @@
 {% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+        div[id^=block_cruise_trips_] {
+            margin-bottom: 3px!important;
+        }
+        div[id^=cruise_trips_]>.row>.col-3 {
+            margin-right: 3px!important;
+               padding-right: 3px!important;
+            padding-left: 3px!important;
+        }
+    </style>
+{% endblock %}
+
 {% form_theme formCruise _self %}
 
 {% block body %}
@@ -16,6 +30,7 @@
 {% block _cruise_campaign_widget %}
 {#    <p>Assign cruise to campaign</p>#}
     {{ form_widget(form) }}
+    <input type="hidden" id="widgets-counter-campaigns" value="0">
     <div class="form-group">
         <button type="button" id="add-campaign" class="btn btn-primary">Add campaign</button>
     </div>
@@ -29,7 +44,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="col-2">
-                <button type="button" id="remove-campaign" class="btn btn-danger">X</button>
+                <button type="button" id="remove-campaign" class="btn btn-danger" data-action="delete" data-target="#block_{{ id }}">X</button>
             </div>
         </div>
     </div>
@@ -44,7 +59,7 @@
 {% block _cruise_trips_widget %}
     <p>Manage the trips</p>
     {{ form_widget(form) }}
-    <input type="hidden" id="widgets-counter" value="0">
+    <input type="hidden" id="widgets-counter-trips" value="0">
     <div class="form-group">
         <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
     </div>
@@ -54,22 +69,15 @@
 {% block _cruise_trips_entry_widget %}
     <div class="form-group" id="block_{{ id }}">
         <div class="row">
-            <div class="col-10">
-                <div class="row">
-                    <div class="col">
-                        {{ form_row(form.startdate) }}
-                    </div>
-                    <div class="col">
-                        {{ form_row(form.enddate) }}
-                    </div>
-                    <div class="col">
-                        {{ form_row (form.destinationarea) }}
-                    </div>
-                </div>
-                <div class="row">
 
-                </div>
-
+            <div class="col-3">
+                {{ form_widget(form.startdate) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.enddate) }}
+            </div>
+            <div class="col-4">
+                {{ form_widget (form.destinationarea) }}
             </div>
             <div class="col-2">
                 <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete" data-target="#block_{{ id }}">
@@ -77,7 +85,18 @@
                 </button>
             </div>
         </div>
-        <hr>
+        <div class="row">
+{#            {% for formtripinvestigator in form.tripinvestigators %}#}
+{#                {{ form_widget(formtripinvestigator.firstname) }}#}
+{#            {% endfor %}#}
+            {{ form_widget(form.tripinvestigators) }}
+
+            {% for forminvestigator in form.tripinvestigators %}
+                form_widget(forminvestigator)
+            {% endblock %}
+
+        </div>
+
     </div>
 
 {% endblock %}
@@ -88,53 +107,6 @@
 {% endblock %}
 
 {% block javascripts %}
-{#    <script>#}
-{#        $(document).ready(function() {#}
-{#            // you may need to change this code if you are not using Bootstrap Datepicker#}
-{#            $('.js-datepicker').datepicker({#}
-{#                format: 'yyyy-mm-dd'#}
-{#            });#}
-{#        });#}
-{#    </script>#}
-
-    <script>
-        $('#add-trip').click(function(){
-            //Getting the index for the div
-            // const index = $('#cruise_trips div.form-group').length;
-            const index = +$('#widgets-counter').val(); //unary '+' to convert string to number
-            console.log(index);
-            //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
-            const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
-            //Injection of the new code
-            $('#cruise_trips').append(tmpl);
-
-            //Add 1 to the index (for counter)
-            $('#widgets-counter').val(index+1);
-
-            handleDeleteButtons();
-        })
-
-        function handleDeleteButtons(){
-            $('button[data-action="delete"]').click(function(){
-                const target=this.dataset.target;
-                //'this' is the button and 'dataset' are the attributes, target "#block_cruise_trips_0
-                // remove the whole div
-                $(target).remove();
-            })
-        }
-
-        handleDeleteButtons();
-    </script>
-
-    <script>
-        $('#add-campaign').click(function(){
-            const index = $('#cruise_campaign div.form-group').length;
-            const tmpl = $('#cruise_campaign').data('prototype').replace(/__name__/g, index);
-            $('#cruise_campaign').append(tmpl);
-            console.log(index);
-
-        })
-    </script>
-
-
+    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>
+    <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
 {% endblock %}
