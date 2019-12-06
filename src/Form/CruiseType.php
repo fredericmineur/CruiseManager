@@ -141,8 +141,11 @@ class CruiseType extends AbstractType
            $builder ->add(
                 'trips',
                 CollectionType::class,
+
                 [
+                    'label'=>false,
                     'entry_type' => TripType::class,
+                    'entry_options' => ['label'=> false],
                     'allow_add' => true,
 
 //                    'delete_empty' => function(Trip $trip){
@@ -151,6 +154,7 @@ class CruiseType extends AbstractType
                     'allow_delete' => true,
 
                     'by_reference' => false,
+
 //                    'required' => false,
 //                    'attr' => [
 //                        'class' => 'trips-collection',

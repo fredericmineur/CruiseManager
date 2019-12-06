@@ -12,11 +12,11 @@
 
 
 
-     <!-- CSS file -->
-     <link rel="stylesheet" href="/EasyAutocomplete-1.3.5/easy-autocomplete.min.css">
+{#     <!-- CSS file -->#}
+{#     <link rel="stylesheet" href="/EasyAutocomplete-1.3.5/easy-autocomplete.min.css">#}
 
-     <!-- Additional CSS Themes file - not required-->
-     <link rel="stylesheet" href="/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css">
+{#     <!-- Additional CSS Themes file - not required-->#}
+{#     <link rel="stylesheet" href="/EasyAutocomplete-1.3.5/easy-autocomplete.themes.min.css">#}
 
 
 
@@ -94,62 +94,65 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $('#add-tripinvestigator').click(function(){
-            const index = +$('#widgets-counter').val();
-            console.log(index);
-            const tmpl = $('#trip_tripinvestigators').data('prototype').replace(/__name__/g, index);
-            // console.log(tmpl);
-            $('#trip_tripinvestigators').append(tmpl);
 
-            // $("[id^=block_trip_tripinvestigators]").removeClass('col-6');
-            //
-            // $("[id^=block_trip_tripinvestigators]").addClass('col-6');
-            $("[id$=surname]").prop('autocomplete', 'off');
+    <script src="/js/addTripinvestigatorsToTrip.js"></script>
 
-            $('#widgets-counter').val(index+1);
+{#    <script>#}
+{#        $('#add-tripinvestigator').click(function(){#}
+{#            const index = +$('#widgets-counter').val();#}
+{#            console.log(index);#}
+{#            const tmpl = $('#trip_tripinvestigators').data('prototype').replace(/__name__/g, index);#}
+{#            // console.log(tmpl);#}
+{#            $('#trip_tripinvestigators').append(tmpl);#}
 
-            handleDeleteButtons();
+{#            // $("[id^=block_trip_tripinvestigators]").removeClass('col-6');#}
+{#            //#}
+{#            // $("[id^=block_trip_tripinvestigators]").addClass('col-6');#}
+{#            $("[id$=surname]").prop('autocomplete', 'off');#}
 
-            easyAutocompleteTrial()
+{#            $('#widgets-counter').val(index+1);#}
 
-        })
+{#            handleDeleteButtons();#}
 
-        function updateCounter(){
-            const count = $('#trip_tripinvestigators div.form-group').length;
-            console.log('count' + count);
-            $('#widgets-counter').val(count);
-        }
+{#            easyAutocompleteTrial()#}
 
-        function handleDeleteButtons(){
-            $('button[data-action="delete"]').click(function(){
-                const target=this.dataset.target;
-                // console.log(target);
-                $(target).remove();
-            })
-        }
-        //
-        updateCounter();
-        easyAutocompleteTrial();
-        handleDeleteButtons();
+{#        })#}
 
-    </script>
+{#        function updateCounter(){#}
+{#            const count = $('#trip_tripinvestigators div.form-group').length;#}
+{#            console.log('count' + count);#}
+{#            $('#widgets-counter').val(count);#}
+{#        }#}
 
-    <!-- JS file -->
-    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"></script>
+{#        function handleDeleteButtons(){#}
+{#            $('button[data-action="delete"]').click(function(){#}
+{#                const target=this.dataset.target;#}
+{#                // console.log(target);#}
+{#                $(target).remove();#}
+{#            })#}
+{#        }#}
+{#        //#}
+{#        updateCounter();#}
+{#        easyAutocompleteTrial();#}
+{#        handleDeleteButtons();#}
 
-    <script>
-        function easyAutocompleteTrial(){
-            var options = {
-                data: ["blue", "green", "pink", "red", "yellow"]
-            };
+{#    </script>#}
 
-            $("[id$=surname]").easyAutocomplete(options);
-            $("#basics").easyAutocomplete(options);
-        }
+{#    <!-- JS file -->#}
+{#    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"></script>#}
+
+{#    <script>#}
+{#        function easyAutocompleteTrial(){#}
+{#            var options = {#}
+{#                data: ["blue", "green", "pink", "red", "yellow"]#}
+{#            };#}
+
+{#            $("[id$=surname]").easyAutocomplete(options);#}
+{#            $("#basics").easyAutocomplete(options);#}
+{#        }#}
 
 
-    </script>
+{#    </script>#}
 
 
 

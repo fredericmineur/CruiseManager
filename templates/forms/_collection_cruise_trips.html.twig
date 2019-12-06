@@ -1,0 +1,119 @@
+
+
+{% block _cruise_trips_widget %}
+    <p>Manage the trips</p>
+
+
+
+
+        {{ form_widget(form) }}
+        <input type="hidden" id="widgets-counter-trips" value="0">
+        <div class="form-group">
+            <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
+
+
+
+    </div>
+
+{% endblock %}
+
+{% block _cruise_trips_entry_widget %}
+    <div class="form-group" id="block_{{ id }}">
+        <div class="row ">
+
+            <div class="col-3">
+                {{ form_widget(form.startdate) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.enddate) }}
+            </div>
+            <div class="col-4">
+                {{ form_widget (form.destinationarea) }}
+            </div>
+            <div class="col-2">
+                <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete"
+                        data-target="#block_{{ id }}">
+                    X
+                </button>
+            </div>
+        </div>
+
+            {# THIS WILL ONLY BEEN SHOWN IN THE EDIT FORM #}
+
+{#            <div class="row">#}
+{#                <div class="col-5">First name</div>#}
+{#                <div class="col-5">Surname</div>#}
+
+{#            </div>#}
+
+{#            {% for forminvestigator in form.tripinvestigators %}#}
+{#                <div class="row">#}
+{#                    <div class="col-5">{{ form_widget(forminvestigator.firstname)}}</div>#}
+{#                    <div class="col-5">{{ form_widget(forminvestigator.surname)}}</div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+
+        {{ form_widget(form.tripinvestigators) }}
+
+
+
+    </div>
+
+{% endblock %}
+
+{# Here we force the form to not display label 0, 1,... 0only widget in row...#}
+{#{% block _cruise_trips_entry_row %}#}
+{#    {{ form_widget(form) }}#}
+{#{% endblock %}#}
+
+{% block _cruise_trips_entry_tripinvestigators_widget %}
+
+{#    {% dump(form.children) %}#}
+
+    {% if form.children %}
+
+    <div class="row">
+        <div class="col-4">First name</div>
+        <div class="col-4">Surname</div>
+    </div>
+
+    {% endif %}
+
+
+    {{ form_widget(form) }}
+{#    {% if mode=='edit' %}#}
+{#        <h1>{{ mode }}</h1>#}
+        <a href="" class="btn btn-primary">Manage investigators</a>
+{#    {% endif %}#}
+
+
+      
+
+
+
+
+{% endblock %}
+
+{% block _cruise_trips_entry_tripinvestigators_entry_widget %}
+<div class="form-group" id="block_{{ id }}">
+    <div class="row">
+        <div class="col-4">
+            {{ form_widget(form.firstname) }}
+        </div>
+        <div class="col-4">
+            {{ form_widget(form.surname) }}
+        </div>
+{#        <div class="col">#}
+{#            <button type="button" class="btn btn-danger" id="remove-tripinvestigator"#}
+{#                    data-action="delete" data-target="#block_{{ id }}" >#}
+{#                <i class="fa fa-trash"></i>#}
+{#            </button>#}
+{#        </div>#}
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+

@@ -2,7 +2,7 @@ $('#add-trip').click(function(){
     //Getting the index for the div
     // const index = $('#cruise_trips div.form-group').length;
     const index = +$('#widgets-counter-trips').val(); //unary '+' to convert string to number
-    console.log(index);
+    // console.log(index);
     //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
     const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
     //Injection of the new code
@@ -12,6 +12,8 @@ $('#add-trip').click(function(){
     $('#widgets-counter-trips').val(index+1);
 
     handleDeleteButtonsTrips();
+
+
 })
 
 function handleDeleteButtonsTrips(){
@@ -19,6 +21,7 @@ function handleDeleteButtonsTrips(){
         const target=this.dataset.target;
         //'this' is the button and 'dataset' are the attributes, target "#block_cruise_trips_0
         // remove the whole div
+        // console.log(target);
         $(target).remove();
     })
 }

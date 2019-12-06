@@ -68,7 +68,7 @@ class CampaignController extends AbstractController
 
         return $this->render('forms/form_campaign.html.twig', [
             'formCampaign' => $form->createView(),
-            'newCampaign' => true
+            'mode' => 'create'
         ]);
     }
 
@@ -82,7 +82,7 @@ class CampaignController extends AbstractController
         $form = $this->createForm(CampaignType::class, $campaign);
         return $this->render('forms/form_campaign.html.twig', [
             'form' => $form->createView(),
-            'newCampaign' => false
+            'mode' => 'edit'
         ]);
     }
 
@@ -140,21 +140,23 @@ class CampaignController extends AbstractController
     {
         $cruise = new Cruise();
 //        $trip1 = new Trip();
-//        $trip1->setStartdate(new \DateTime('2020-08-08 08:00:00'));
-//        $trip1->setEnddate(new \DateTime('2020-08-08 17:00:00'));
+//        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+//            ->setDestinationarea('BCP');
 //        $trip2 = new Trip();
-//        $trip2->setStartdate(new \DateTime('2020-08-09 08:00:00'));
-//        $trip2->setEnddate(new \DateTime('2020-08-09 17:00:00'));
-//        $trip1->setDestinationarea('BCP');
-//        $trip2->setDestinationarea('BCP2');
+//        $trip2->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+//            ->setDestinationarea('BCP2');
 //        $cruise->addTrip($trip1)->addTrip($trip2);
-//
-////        $campaign1 = new Campaign();
-////        $campaign1->setCampaign('campaign1');
-//        $campaign1 = $cr->findOneBy(['campaignid' => 87]);
-//        $campaign2 = $cr->findOneBy(['campaignid'=> 41]);
-////        $campaign2->setCampaign('campaign2');
-//        $cruise->addCampaign($campaign1)->addCampaign($campaign2);
+//        $tripinvestigator1 = new Tripinvestigators();
+//        $tripinvestigator2 = new Tripinvestigators();
+//        $tripinvestigator3 = new Tripinvestigators();
+//        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
+//        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
+//        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
+//        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
+//            ->addTripinvestigator($tripinvestigator3);
+
+
+
 
 
 
@@ -186,7 +188,8 @@ class CampaignController extends AbstractController
             ]);
         }
         return $this->render('forms/form_cruise_new.html.twig', [
-            'formCruise' => $form->createView()
+            'formCruise' => $form->createView(),
+//            'mode' => 'create'
         ]);
     }
 
@@ -209,14 +212,14 @@ class CampaignController extends AbstractController
 //            $tripCopy = clone($trip);
             $originalTrips->add($trip);
         }
-        dump($originalTrips);
+//        dump($originalTrips);
 
 
-        $form = $this ->createForm(CruiseEditType::class, $cruise);
+        $form = $this ->createForm(CruiseType::class, $cruise);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($originalTrips);
+//            dump($originalTrips);
             foreach ($originalTrips as $trip) {
 //                dump($cruise->getTrips()->contains($trip));
 
@@ -242,7 +245,8 @@ class CampaignController extends AbstractController
         }
         return $this->render('forms/form_cruise_edit.html.twig', [
             'formCruise' => $form->createView(),
-            'cruise'=> $cruise
+            'cruise'=> $cruise,
+//            'mode' => 'edit'
         ]);
 
 //        return $this->render('forms/form_cruise_plugin_collection.html.twig', [
@@ -264,6 +268,11 @@ class CampaignController extends AbstractController
             'campaigns' => $campaigns,
             'cruise' => $cruise
         ]);
+    }
+
+
+    public function cruiseTripEdit (){
+
     }
 
     /**
@@ -295,7 +304,7 @@ class CampaignController extends AbstractController
             $cruise = $trip->getCruiseid();
             $manager->persist($trip);
             $manager -> flush();
-            return $this->redirectToRoute('cruise_details', [
+            return $this->redirectToRoute('cruise_edit', [
                 'cruiseId' => $cruise->getCruiseId()
             ]);
         }

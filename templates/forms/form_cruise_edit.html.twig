@@ -6,16 +6,46 @@
         /*    border: solid;*/
         /*}*/
 
-        div[id^=block_cruise_edit_trips_] {
+        div[id^=block_cruise_trips_] {
             border: solid;
+            border-width: thin;
+            color:red;
         }
+
+        div[id*=tripinvestigators] {
+            color:blue;
+            border-width: thin;
+        }
+
+        fieldset.form-group {
+            border: solid;
+            border-width: thin;
+            border-color: green;
+
+        }
+
+
+
     </style>
 
 {% endblock %}
 
-{% form_theme formCruise _self %}
+{#    'forms/_collection_cruise_trips.html.twig'#}
+
+{% form_theme formCruise with [
+    'forms/_collection_cruise_campaigns.html.twig',
+    _self
+] %}
+{#    {% form_theme form _self %}#}
+
+
+{#{% form_theme formCruise _self %}#}
 {% block body %}
     <div class="container" style="margin-bottom: 50px;">
+
+
+
+
         {{ form_start(formCruise) }}
         <div class="row">
 
@@ -36,21 +66,171 @@
 
 {% endblock %}
 
-{% block _cruise_edit_trips_widget %}
-{#    <div class="card">#}
+{% block _cruise_trips_widget %}
     <p>Manage the trips</p>
-    {% dump(form) %}
+{#    <div class="row ">#}
+
+
+
+{#        <div class="col-3">#}
+{#            <p>Start</p>#}
+{#        </div>#}
+{#        <div class="col-3">#}
+{#            <p>End</p>#}
+{#        </div>#}
+{#        <div class="col-4">#}
+{#            <p>Destination</p>#}
+{#        </div>#}
+
+{#    </div>#}
+
+
+
     {{ form_widget(form) }}
-    <input type="hidden" id="widgets-counter" value="0">
+
+
+    <input type="hidden" id="widgets-counter-trips" value="0">
     <div class="form-group">
         <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
+
+
+
     </div>
-{#    </div>#}
 
 {% endblock %}
 
-{% block _cruise_edit_trips_entry_widget %}
+{% block _cruise_trips_entry_widget %}
     <div class="form-group" id="block_{{ id }}">
+        <div class="row ">
+
+
+
+            <div class="col-3">
+                {{ form_row(form.startdate) }}
+            </div>
+            <div class="col-3">
+                {{ form_row(form.enddate) }}
+            </div>
+            <div class="col-4">
+                {{ form_row (form.destinationarea) }}
+            </div>
+            <div class="col-2">
+                <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete"
+                        data-target="#block_{{ id }}">
+                    <i class="fa fa-trash fa-2x"></i>
+                </button>
+            </div>
+            {% if form.vars.value is not null %}
+                {{ dump (form.vars.value) }}
+            {% endif %}
+        </div>
+
+
+
+        {# THIS WILL ONLY BEEN SHOWN IN THE EDIT FORM #}
+
+        {#            <div class="row">#}
+        {#                <div class="col-5">First name</div>#}
+        {#                <div class="col-5">Surname</div>#}
+
+        {#            </div>#}
+
+        {#            {% for forminvestigator in form.tripinvestigators %}#}
+        {#                <div class="row">#}
+        {#                    <div class="col-5">{{ form_widget(forminvestigator.firstname)}}</div>#}
+        {#                    <div class="col-5">{{ form_widget(forminvestigator.surname)}}</div>#}
+        {#                </div>#}
+        {#            {% endfor %}#}
+
+        {{ form_widget(form.tripinvestigators) }}
+        {% if form.vars.value is not null %}
+        <a href="{{ path ( 'trip_edit', {'tripId': form.vars.value.tripid } ) }}" class="btn btn-primary">Add/remove investigators</a>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{# Here we force the form to not display label 0, 1,... 0only widget in row...#}
+{#{% block _cruise_trips_entry_row %}#}
+{#    {{ form_widget(form) }}#}
+{#{% endblock %}#}
+
+{% block _cruise_trips_entry_tripinvestigators_widget %}
+
+    {#    {% dump(form.children) %}#}
+
+    {% if form.children %}
+
+        <div class="row">
+            <div class="col-4">First name</div>
+            <div class="col-4">Surname</div>
+        </div>
+
+    {% endif %}
+
+
+    {{ form_widget(form) }}
+    {#    {% if mode=='edit' %}#}
+    {#        <h1>{{ mode }}</h1>#}
+
+
+{#    <p>{{  }}</p>#}
+    {#    {% endif %}#}
+
+
+
+
+{% endblock %}
+
+{% block _cruise_trips_entry_tripinvestigators_entry_widget %}
+    <div class="form-group" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-4">
+                {{ form_widget(form.firstname) }}
+            </div>
+            <div class="col-4">
+                {{ form_widget(form.surname) }}
+            </div>
+            {#        <div class="col">#}
+            {#            <button type="button" class="btn btn-danger" id="remove-tripinvestigator"#}
+            {#                    data-action="delete" data-target="#block_{{ id }}" >#}
+            {#                <i class="fa fa-trash"></i>#}
+            {#            </button>#}
+            {#        </div>#}
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>
+    <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
+{#    <script src="{{ asset('js/addTripinvestigatorsToTrip.js') }}"></script>#}
+{% endblock %}
+
+
+
+
+{#{% block _cruise_trips_widget %}#}
+{#    <div class="card">#}
+{#    <p>Manage the trips</p>#}
+{#    {% dump(form) %}#}
+{#    {{ form_widget(form) }}#}
+{#    <input type="hidden" id="widgets-counter" value="0">#}
+{#    <div class="form-group">#}
+{#        <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>#}
+{#    </div>#}
+{#    </div>#}
+
+{#{% endblock %}#}
+
+{#{% block _cruise_trips_entry_widget %}#}
+{#    <div class="form-group" id="block_{{ id }}">#}
 {#        <div class="row">#}
 {#            <div class="col-10">#}
 {#                <div class="row">#}
@@ -75,88 +255,89 @@
 {#                </button>#}
 {#            </div>#}
 {#        </div>#}
-        <div class="row">
+{#        <div class="row">#}
 
-                    <div class="col-3">
-                        {{ form_row(form.startdate) }}
-                    </div>
-                    <div class="col-3">
-                        {{ form_row(form.enddate) }}
-                    </div>
-                    <div class="col-4">
-                        {{ form_row (form.destinationarea) }}
-                    </div>
-                    <div class="col-2">
-                        <div style="margin-top: 30px">
-                            <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete" data-target="#block_{{ id }}">
-                                X
-                            </button>
-                        </div>
+{#                    <div class="col-3">#}
+{#                        {{ form_row(form.startdate) }}#}
+{#                    </div>#}
+{#                    <div class="col-3">#}
+{#                        {{ form_row(form.enddate) }}#}
+{#                    </div>#}
+{#                    <div class="col-4">#}
+{#                        {{ form_row (form.destinationarea) }}#}
+{#                    </div>#}
+{#                    <div class="col-2">#}
+{#                        <div style="margin-top: 30px">#}
+{#                            <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete" data-target="#block_{{ id }}">#}
+{#                                X#}
+{#                            </button>#}
+{#                        </div>#}
 
-                    </div>
-        </div>
+{#                    </div>#}
+{#        </div>#}
 
 
 
 {# THIS WILL ONLY BEEN SHOWN IN THE EDIT FORM #}
 
-            {% for forminvestigator in form.tripinvestigators %}
-        <div class="row">
-                <div class="col">{{ form_widget(forminvestigator.firstname)}}</div>
-                <div class="col">{{ form_widget(forminvestigator.surname)}}</div>
-        </div>
-            {% endfor %}
+{#            {% for forminvestigator in form.tripinvestigators %}#}
+{#                {{ dump (forminvestigator) }}#}
+{#        <div class="row">#}
+{#                <div class="col">{{ form_widget(forminvestigator.firstname)}}</div>#}
+{#                <div class="col">{{ form_widget(forminvestigator.surname)}}</div>#}
+{#        </div>#}
+{#            {% endfor %}#}
 
 
 
 
-    </div>
+{#    </div>#}
 
-{% endblock %}
+{#{% endblock %}#}
 
 {# Here we force the form to not display label 0, 1,... 0only widget in row...#}
-{% block _cruise_edit_trips_entry_row %}
-    {{ form_widget(form) }}
-{% endblock %}
+{#{% block _cruise_trips_entry_row %}#}
+{#    {{ form_widget(form) }}#}
+{#{% endblock %}#}
 
 
 
-{% block javascripts %}
-    <script>
-        $('#add-trip').click(function(){
-            //Getting the index for the div
-            // const index = $('#cruise_trips div.form-group').length;
-            const index = +$('#widgets-counter').val(); //unary '+' to convert string to number
-            console.log(index);
-            //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
-            const tmpl = $('#cruise_edit_trips').data('prototype').replace(/__name__/g, index);
-            //Injection of the new code
-            $('#cruise_edit_trips').append(tmpl);
+{#{% block javascripts %}#}
+{#    <script>#}
+{#        $('#add-trip').click(function(){#}
+{#            //Getting the index for the div#}
+{#            // const index = $('#cruise_trips div.form-group').length;#}
+{#            const index = +$('#widgets-counter').val(); //unary '+' to convert string to number#}
+{#            console.log(index);#}
+{#            //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length#}
+{#            const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);#}
+{#            //Injection of the new code#}
+{#            $('#cruise_trips').append(tmpl);#}
 
-            //Add 1 to the index (for counter)
-            $('#widgets-counter').val(index+1);
+{#            //Add 1 to the index (for counter)#}
+{#            $('#widgets-counter').val(index+1);#}
 
-            handleDeleteButtons();
-        })
+{#            handleDeleteButtons();#}
+{#        })#}
 
-        // $('#clone-trip').click(function(){
-        //     const tmpl = $('#cruise_trips').data('prototype').
-        // })
+{#        // $('#clone-trip').click(function(){#}
+{#        //     const tmpl = $('#cruise_trips').data('prototype').#}
+{#        // })#}
 
-        function updateCounter(){
-            const count = $('#cruise_edit_trips div.form-group').length;
-            $('#widgets-counter').val(count);
-        }
+{#        function updateCounter(){#}
+{#            const count = $('#cruise_trips div.form-group').length;#}
+{#            $('#widgets-counter').val(count);#}
+{#        }#}
 
-        function handleDeleteButtons(){
-            $('button[data-action="delete"]').click(function(){
-                const target=this.dataset.target;
-                //'this' is the button and 'dataset' are the attributes, target "#block_cruise_trips_0
-                // remove the whole div
-                $(target).remove();
-            })
-        }
-        updateCounter();
-        handleDeleteButtons();
-    </script>
-{% endblock %}
+{#        function handleDeleteButtons(){#}
+{#            $('button[data-action="delete"]').click(function(){#}
+{#                const target=this.dataset.target;#}
+{#                //'this' is the button and 'dataset' are the attributes, target "#block_cruise_trips_0#}
+{#                // remove the whole div#}
+{#                $(target).remove();#}
+{#            })#}
+{#        }#}
+{#        updateCounter();#}
+{#        handleDeleteButtons();#}
+{#    </script>#}
+{#{% endblock %}#}

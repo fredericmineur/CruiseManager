@@ -73,7 +73,11 @@ class TripType extends AbstractType
                     'allow_add' => true,
                     'allow_delete'=> true,
                     'by_reference' => false,
-                    'label'=> 'Investigators for the trip'
+                    'label'=> 'Investigators for the trip',
+                    'entry_options' => [
+                        //Avoid labels 0, 1, 2, 3, 4 to show for each entry
+                        'label' =>false,
+                    ]
                 ]
             )
 
