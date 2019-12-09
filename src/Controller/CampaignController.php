@@ -263,10 +263,13 @@ class CampaignController extends AbstractController
         $repoCruises = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruises->findOneBy(['cruiseid'=>$cruiseId]);
         $campaigns = $cruise->getCampaign();
+        $trips = $this->getDoctrine()->getRepository(Trip::class)
+            ->findBy(['cruiseid'=> $cruiseId], ['startdate'=>'ASC']);
 
         return $this->render('display/display_cruise.html.twig', [
             'campaigns' => $campaigns,
-            'cruise' => $cruise
+            'cruise' => $cruise,
+            'trips' => $trips
         ]);
     }
 

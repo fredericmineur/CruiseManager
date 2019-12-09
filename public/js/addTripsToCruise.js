@@ -49,7 +49,7 @@ function handleCloneButtonsTrips(){
         /*
         NB Somehow could not modify properties of the object clonedTrip (declared as "let clonedTrip").
         Therefore, just extracting the innerHTML code, modify it (also removing the <a> tag linking to trip_edit (as the trip as not been submitted yet),
-        and appending it to the form 
+        and appending it to the form
          */
 
         let clonedTripInnerHtml = clonedTrip['0'].innerHTML.replace(/_trips_\d+/g, '_trips_' + index);
