@@ -2,7 +2,7 @@
 
 {% block body %}
 
-    <div class="container" style="border: solid">
+    <div class="container" >
 
         <div class="card">
             <div class="card-header">
@@ -12,8 +12,8 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-8">
-                        <p>Duration (CHANGE !!!!!!: <strong>{{ cruise.startdate | date ('d/m/Y') }}
-                                - {{ cruise.enddate | date ('d/m/Y') }}</strong></p>
+                        <p>Duration: <strong>{{ cruiseStartDate | date ('d/m/Y') }}
+                                - {{ cruiseEndDate | date ('d/m/Y') }}</strong></p>
                         <p>Principal investigator: <strong>
                                 {% if cruise.principalinvestigator is not null %}
                                     {{ cruise.principalinvestigator.firstname |convert_encoding('UTF-8','CP1252') }}
@@ -31,23 +31,23 @@
                                     class="fa fa-edit fa-5x"></i></a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-3">
-                        <p>Campaign(s):</p>
-                    </div>
-                    <div class="col">
 
-                        {% if not cruise.campaign |length %} <p>N.A.</p>{% else %}
+
+                        <p>Campaign(s):
+
+
+
+                        {% if not cruise.campaign |length %} N.A.{% else %}
                             {% for campaign in cruise.campaign %}
-                                <p><strong>{{ campaign.campaign }}</strong>
+                                <strong>"{{ campaign.campaign }}"</strong>
                                     <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}">
-                                        <i class="fa fa-info-circle"></i></a></p>
+                                        <i class="fa fa-info-circle"></i></a>{% if loop.last %}{% else %}, {% endif %}
                             {% endfor %}
                         {% endif %}
+                        </p>
 
 
-                    </div>
-                </div>
+
 
 
             </div>
@@ -56,38 +56,41 @@
     </div>
 
     <div class="container-fluid">
-        <div class="card-deck">
+        <div class="row ">
             {% for trip in trips %}
-                <div class="card">
+                <div class="col">
+                    <div class="card" style="width: 300px">
 
-                            <div class="card-header">
-                                <p>Trip: <span
-                                            style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>{% if trip.startdate is not null %}
-                                    {{ trip.startdate|date('d/m/Y') }}{% else %}N.A.{% endif %} </p>
-                            </div>
-                            <div class="card-body">
-                                <p>Number of days:
-                                    {% if trip.startdate is not null %}
-                                        {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}
-                                        {{ diffDays.days + 1 }}
-                                        {% if diffDays.days > 0  %} (multi-day) {% else %} (single day) {% endif %}
-                                    {% endif %}
-                                </p>
-                            </div>
+                        <div class="card-header">
+                            <p>Trip: <span
+                                        style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>{% if trip.startdate is not null %}
+                                {{ trip.startdate|date('d/m/Y') }}{% else %}N.A.{% endif %} </p>
+                        </div>
+                        <div class="card-body">
+                            <p>Number of days:
+                                {% if trip.startdate is not null %}
+                                    {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}
+                                    {{ diffDays.days + 1 }}
+                                    {% if diffDays.days > 0 %} (multi-day) {% else %} (single day) {% endif %}
+                                {% endif %}
+                            </p>
+                            <p>Destination: {{ trip.destinationarea }}</p>
+                        </div>
 
-
-
-
-
-                    <p>Investigators: </p>
-                              <p>  <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i class="fa fa-edit fa-2x" ></i></a></p>
+                        <div class="card-footer">
+                            <p>Investigators: <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i
+                                            class="fa fa-edit fa-2x"></i></a></p>
                             {% for investigator in trip.tripinvestigators %}
-                                {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}<br>
+                                {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}
+                                {% if loop.last %}.{% else %}, {% endif %}
                             {% endfor %}
+                        </div>
 
 
 
 
+
+                    </div>
                 </div>
 
 

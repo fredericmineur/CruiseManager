@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Trip
@@ -26,14 +26,18 @@ class Trip
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="Startdate", type="datetime", nullable=true)
+     * @ORM\Column(name="Startdate", type="datetime", nullable=false)
+     * @Assert\NotBlank(message="no null date")
+     * @Assert\DateTime
+     * @var string A "d-m-Y" formatted value
      */
     private $startdate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="Enddate", type="datetime", nullable=true)
+     * @ORM\Column(name="Enddate", type="datetime", nullable=false)
+     * @Assert\NotNull
      */
     private $enddate;
 
@@ -55,6 +59,7 @@ class Trip
      * @var string|null
      *
      * @ORM\Column(name="DestinationArea", type="string", length=50, nullable=true)
+     * @Assert\Length(min=10, max=255, minMessage="too short", maxMessage="too long")
      */
     private $destinationarea;
 
@@ -82,9 +87,9 @@ class Trip
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Ship", type="string", length=25, nullable=true, options={"default"="Zeeleeuw","fixed"=true})
+     * @ORM\Column(name="Ship", type="string", length=25, nullable=true, options={"default"="Simon Stevin","fixed"=true})
      */
-    private $ship = 'Zeeleeuw';
+    private $ship = 'Simon Stevin';
 
     /**
      * @var bool|null

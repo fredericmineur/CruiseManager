@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Cruise
@@ -73,9 +74,9 @@ class Cruise
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Ship", type="string", length=25, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="Ship", type="string", length=25, nullable=true, options={"default"="Simon Stevin","fixed"=true})
      */
-    private $ship;
+    private $ship = 'Simon Stevin';
 
     /**
      * @var string|null
@@ -97,6 +98,7 @@ class Cruise
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     private $trips;
 

@@ -266,10 +266,23 @@ class CampaignController extends AbstractController
         $trips = $this->getDoctrine()->getRepository(Trip::class)
             ->findBy(['cruiseid'=> $cruiseId], ['startdate'=>'ASC']);
 
+        //Getting start and end date of the cruise (through the trips collection)
+        $startDates = [];
+        $endDates = [];
+        foreach ($trips as $trip){
+            array_push($startDates, $trip->getStartdate());
+            array_push($endDates, $trip->getEnddate());
+        }
+        $cruiseStartDate = min($startDates);
+        $cruiseEndDate = max($endDates);
+        dump($cruiseStartDate, $cruiseEndDate);
+
         return $this->render('display/display_cruise.html.twig', [
             'campaigns' => $campaigns,
             'cruise' => $cruise,
-            'trips' => $trips
+            'trips' => $trips,
+            'cruiseStartDate' => $cruiseStartDate,
+            'cruiseEndDate' => $cruiseEndDate
         ]);
     }
 

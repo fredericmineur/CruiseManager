@@ -200,6 +200,7 @@ class CruiseType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Cruise::class,
+
             'arrayCampaigns' => array()
         ]);
     }
