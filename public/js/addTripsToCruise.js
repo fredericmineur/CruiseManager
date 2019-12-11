@@ -13,6 +13,7 @@ $('#add-trip').click(function(){
 
     handleDeleteButtonsTrips();
     handleCloneButtonsTrips();
+    updateCounterTrips();
 
 
 })
@@ -71,6 +72,7 @@ function handleCloneButtonsTrips(){
         // console.log(clonedTripInnerHtml);
 
         handleDeleteButtonsTrips();
+        updateCounterTrips();
     })
 }
 

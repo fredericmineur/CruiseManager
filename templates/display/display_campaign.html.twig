@@ -39,7 +39,7 @@
                 <td>
                     {% for singleCampaign in cruise.campaign %}
                         {% if singleCampaign.campaign != nameOfPresentCampaign %}
-                            {{ singleCampaign.campaign  }}
+                            {{ singleCampaign.campaign |convert_encoding('UTF-8','CP1252') }}
 
                             <a href="{{ path('campaign_details', {'campaignId':singleCampaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
                         {% endif %}

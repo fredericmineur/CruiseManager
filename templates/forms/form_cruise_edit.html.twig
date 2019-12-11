@@ -54,31 +54,71 @@
 
 {#{% form_theme formCruise _self %}#}
 {% block body %}
-    <div class="container" style="margin-top: 50px;">
+    <h2>Edit cruise</h2>
+    <div class="container" >
+
 
         {{ form_start(formCruise) }}
         <div class="row">
-
-            <div class="col-4">{{ form_row(formCruise.plancode) }}</div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        {{ form_label(formCruise.plancode) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(formCruise.plancode) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        {{ form_label(formCruise.principalinvestigator) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(formCruise.principalinvestigator) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary">Submit all modifications</button>
+            </div>
         </div>
-        <hr>
-        <div class="row">
 
+        <div class="card">
+            <div class="card-header">
+                {{ form_label(formCruise.campaign) }}
+            </div>
+            <div class="card-body">
+                {{ form_widget(formCruise.campaign) }}
+            </div>
         </div>
+    </div>
+
+    <div class="container-fluid">
+        {{ form_widget(formCruise.trips) }}
+    </div>
 
 
-        {{ form_widget(formCruise) }}
-        <button type="submit" class="btn btn-primary">Submit modifications</button>
+
+
+
+
+
+
+
+
+
 
         {{ form_end(formCruise) }}
-    </div>
+
 
 {% endblock %}
 
 {% block _cruise_trips_widget %}
     <div class="card ">
         <div class="card-header">
-            <p>Manage the trips</p>
+            <h4>Manage  trips</h4>
         </div>
 
         <div class="card-body">
@@ -142,7 +182,7 @@
         {% if form.vars.value is not null %}
         <a href="{{ path ( 'trip_edit', {'tripId': form.vars.value.tripid } ) }}" class="btn btn-primary">Add/remove investigators</a>
         {% endif %}
-        <hr>
+        <hr style=" border-top: 3px dashed" >
     </div>
 
 {% endblock %}
@@ -152,19 +192,22 @@
 {% block _cruise_trips_entry_tripinvestigators_widget %}
 
             {% if form.children %}
-                <div class="card">
+                <div class="card" style="background-color: #95c9ec">
                     <div class="card-header">
                         <div class="row">
+
                             <div class="col-4">First name</div>
                             <div class="col-4">Surname</div>
                         </div>
                     </div>
                 </div>
 
+
             {% endif %}
+    {{ form_widget(form) }}
 
 
-            {{ form_widget(form) }}
+
 
     {#    {% dump(form.children) %}#}
 

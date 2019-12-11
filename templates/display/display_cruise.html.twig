@@ -58,13 +58,13 @@
     <div class="container-fluid">
         <div class="row ">
             {% for trip in trips %}
-                <div class="col">
-                    <div class="card" style="width: 300px">
+{#                <div class="col">#}
+                    <div class="card" style="width: 300px !important;" >
 
                         <div class="card-header">
                             <p>Trip: <span
-                                        style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>{% if trip.startdate is not null %}
-                                {{ trip.startdate|date('d/m/Y') }}{% else %}N.A.{% endif %} </p>
+                                        style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>
+                                {{ trip.startdate|date('d/m/Y') }}-{{ trip.enddate|date('d/m/Y') }} </p>
                         </div>
                         <div class="card-body">
                             <p>Number of days:
@@ -75,23 +75,26 @@
                                 {% endif %}
                             </p>
                             <p>Destination: {{ trip.destinationarea }}</p>
-                        </div>
 
-                        <div class="card-footer">
-                            <p>Investigators: <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i
-                                            class="fa fa-edit fa-2x"></i></a></p>
+
+{#                        <div class="card-footer">#}
+                            <p>Investigators:
                             {% for investigator in trip.tripinvestigators %}
                                 {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}
-                                {% if loop.last %}.{% else %}, {% endif %}
+                                {% if loop.last %}{% else %}, {% endif %}
                             {% endfor %}
+                                <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i
+                                            class="btn btn-default fa fa-edit fa-2x"></i></a>
+                            </p>
                         </div>
+{#                        </div>#}
 
 
 
 
 
                     </div>
-                </div>
+{#                </div>#}
 
 
 

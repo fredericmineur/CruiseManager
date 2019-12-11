@@ -59,7 +59,6 @@ class Trip
      * @var string|null
      *
      * @ORM\Column(name="DestinationArea", type="string", length=50, nullable=true)
-     * @Assert\Length(min=10, max=255, minMessage="too short", maxMessage="too long")
      */
     private $destinationarea;
 

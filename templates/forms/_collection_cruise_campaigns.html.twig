@@ -5,13 +5,14 @@
 
 {% block _cruise_campaign_widget %}
     {#    <p>Assign cruise to campaign</p>#}
-    <div class="card">
+
     {{ form_widget(form) }}
     <input type="hidden" id="widgets-counter-campaigns" value="0">
     <div class="form-group">
         <button type="button" id="add-campaign" class="btn btn-primary">Add campaign</button>
     </div>
-    </div>
+
+
 {% endblock %}
 
 {% block _cruise_campaign_entry_widget %}
