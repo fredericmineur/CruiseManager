@@ -24,6 +24,8 @@
         <div class="card">
             <div class="card-header">
                 <h3>Trip  {{ trip.startdate | date('m/d/Y')}} - {{ trip.enddate | date('m/d/Y')}}</h3>
+            </div>
+            <div class="card-body">
                 <p>Destination: {{ trip.destinationarea }}</p>
                 <p>Cruise {{ trip.cruiseid.getPlanCode }}</p>
                 <p>Campaign(s):
@@ -31,12 +33,15 @@
                         "{{ campaign.campaign }}"
                         {% if loop.last %}{% else %}, {% endif %}
                     {% endfor %}
-                    </p>
+                </p>
             </div>
+
+
         </div>
 
 
         {{form_start(formTrip)}}
+
 
 
         <div class="row">
@@ -46,16 +51,35 @@
             <div class="col">
                 {{ form_row(formTrip.enddate) }}
             </div>
+            <div class="col">
+                {{ form_row(formTrip.destinationarea) }}
+            </div>
         </div>
 
 
 
-{#        <div class="row">#}
-        {{ form_widget(formTrip) }}
-{#        </div>#}
+    <div class="card" style="background-color: #95c9ec">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-4">
+                    First name
+                </div>
+                <div class="col-4">
+                    Surname
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            {{ form_widget(formTrip.tripinvestigators) }}
+        </div>
+
+
+    </div>
+
+
         <button type="submit" class="btn btn-warning">Submit modifications</button>
-{#        <a href="{{ path('cruise_details', {'cruiseId' : trip.cruiseid.cruiseid })}}" class="btn btn-outline-primary">Back to cruise</a>#}
-{#        {% dump (trip.cruiseid.cruiseid) %}#}
+        <a href="{{ path('cruise_edit', {'cruiseId' : trip.cruiseid.cruiseid })}}" class="btn btn-outline-primary">Back to cruise form</a>
+
         {{form_end(formTrip)}}
 
 
@@ -69,6 +93,8 @@
 
 
 {% block _trip_tripinvestigators_entry_widget %}
+
+
 <div class="form-group" id="block_{{ id }}">
 
 

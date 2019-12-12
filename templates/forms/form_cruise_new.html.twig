@@ -2,35 +2,33 @@
 
 {% block stylesheets %}
     <style>
-        div[id^=block_cruise_trips_] {
-            margin-bottom: 3px!important;
-        }
-        div[id^=cruise_trips_]>.row>.col-3 {
-            margin-right: 3px!important;
-               padding-right: 3px!important;
-            padding-left: 3px!important;
-        }
-
-
-        /*div#cruise_edit_trips {*/
-        /*    border: solid;*/
+        /*div[id^=block_cruise_trips_] {*/
+        /*    margin-bottom: 3px!important;*/
+        /*}*/
+        /*div[id^=cruise_trips_]>.row>.col-3 {*/
+        /*    margin-right: 3px!important;*/
+        /*       padding-right: 3px!important;*/
+        /*    padding-left: 3px!important;*/
         /*}*/
 
-        div[id^=block_cruise_trips_] {
-            border: solid;
-            color:red;
-        }
 
-        div[id*=tripinvestigators] {
-            color:blue;
-        }
+        /*!*div#cruise_edit_trips {*!*/
+        /*!*    border: solid;*!*/
+        /*!*}*!*/
+
+        /*div[id^=block_cruise_trips_] {*/
+        /*    border: solid;*/
+        /*    color:red;*/
+        /*}*/
+
+        /*div[id*=tripinvestigators] {*/
+        /*    color:blue;*/
+        /*}*/
 
 
 
     </style>
 {% endblock %}
-
-{#{% form_theme formCruise 'forms/_collection_cruise_trips.html.twig' %}#}
 
 {% form_theme formCruise with
     [
@@ -42,49 +40,80 @@
 {#{% form_theme formCruise _self %}#}
 
 {% block body %}
+    <h2>Create Cruise</h2>
     <div class="container">
+        {{ form_start(formCruise) }}
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        {{ form_label(formCruise.plancode) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(formCruise.plancode) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        {{ form_label(formCruise.principalinvestigator) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(formCruise.principalinvestigator) }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary">Submit the new cruise</button>
+            </div>
+        </div>
 
-    {{ form_start(formCruise) }}
-
-    {{ form_widget(formCruise) }}
-    <button type="submit" class="btn btn-primary">Submit the new cruise</button>
-
-    {{ form_end(formCruise) }}
+        <div class="card">
+            <div class="card-header">
+                {{ form_label(formCruise.campaign) }}
+            </div>
+            <div class="card-body">
+                {{ form_widget(formCruise.campaign) }}
+            </div>
+        </div>
     </div>
-
+    <div class="container-fluid">
+        {{ form_widget(formCruise) }}
+    </div>
+    {{ form_end(formCruise) }}
 {% endblock %}
 
-
-
 {% block _cruise_trips_widget %}
-    <p>Manage the trips </p>
-    <p>(start, end and destination)</p>
+    <div class="card">
+        <div class="card-header">
+            <h4>Manage the trips </h4>
+        </div>
+        <div class="card-body">
+            {{ form_widget(form) }}
 
+            <input type="hidden" id="widgets-counter-trips" value="0">
+            <div class="form-group">
+                <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
+            </div>
 
-
-    {{ form_widget(form) }}
-    <input type="hidden" id="widgets-counter-trips" value="0">
-    <div class="form-group">
-        <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
-
-
-
+        </div>
     </div>
-
 {% endblock %}
 
 {% block _cruise_trips_entry_widget %}
     <div class="form-group" id="block_{{ id }}">
+        <input type="hidden" id="widgets-counter-tripinvestigators" value="0">
         <div class="row ">
 
             <div class="col-3">
-                {{ form_widget(form.startdate) }}
+                {{ form_row(form.startdate) }}
             </div>
             <div class="col-3">
-                {{ form_widget(form.enddate) }}
+                {{ form_row(form.enddate) }}
             </div>
             <div class="col-4">
-                {{ form_widget (form.destinationarea) }}
+                {{ form_row (form.destinationarea) }}
             </div>
             <div class="col-2">
                 <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete"
@@ -93,6 +122,9 @@
                 </button>
             </div>
         </div>
+
+        {{ form_widget(form.tripinvestigators) }}
+        <button type="button" class="add-tripinvestigator" class="btn btn-success" data-block="{{ id }}">Add investigator</button>
 
         {# THIS WILL ONLY BEEN SHOWN IN THE EDIT FORM #}
 
@@ -109,7 +141,7 @@
         {#                </div>#}
         {#            {% endfor %}#}
 
-        {{ form_widget(form.tripinvestigators) }}
+
 
 
 
@@ -127,24 +159,21 @@
     {#    {% dump(form.children) %}#}
 
     {% if form.children %}
+        <div class="card" style="background-color: #95c9ec">
+            <div class="card-header">
+                <div class="row">
 
-        <div class="row">
-            <div class="col-4">First name</div>
-            <div class="col-4">Surname</div>
+                    <div class="col-4">First name</div>
+                    <div class="col-4">Surname</div>
+                </div>
+            </div>
+            <div class="card-body">
+                {{ form_widget(form) }}
+            </div>
         </div>
 
+
     {% endif %}
-
-
-    {{ form_widget(form) }}
-    {#    {% if mode=='edit' %}#}
-    {#        <h1>{{ mode }}</h1>#}
-{#    <a href="" class="btn btn-primary">Manage investigators</a>#}
-    {#    {% endif %}#}
-
-
-
-
 
 
 
@@ -159,24 +188,21 @@
             <div class="col-4">
                 {{ form_widget(form.surname) }}
             </div>
-            {#        <div class="col">#}
-            {#            <button type="button" class="btn btn-danger" id="remove-tripinvestigator"#}
-            {#                    data-action="delete" data-target="#block_{{ id }}" >#}
-            {#                <i class="fa fa-trash"></i>#}
-            {#            </button>#}
-            {#        </div>#}
+            <div class="col-4">
+                <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete"
+                        data-target="#block_{{ id }}">
+                    X
+                </button>
+            </div>
         </div>
     </div>
-
-
-
 
 {% endblock %}
 
 
 
 {% block javascripts %}
-    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>
+    <script src="{{ asset('js/addTripsToCruisePlusTripInvestigators.js') }}"></script>
     <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
     <script src="{{ asset('js/addTripinvestigatorsToTrip.js') }}"></script>
 {% endblock %}

@@ -99,17 +99,6 @@
         {{ form_widget(formCruise.trips) }}
     </div>
 
-
-
-
-
-
-
-
-
-
-
-
         {{ form_end(formCruise) }}
 
 
@@ -118,16 +107,15 @@
 {% block _cruise_trips_widget %}
     <div class="card ">
         <div class="card-header">
-            <h4>Manage  trips</h4>
+            <h4>Manage trips</h4>
         </div>
 
         <div class="card-body">
             {{ form_widget(form) }}
-        </div>
 
 
-        <input type="hidden" id="widgets-counter-trips" value="0">
-        <div class="card-footer">
+            <input type="hidden" id="widgets-counter-trips" value="0">
+
             <div class="form-group">
                 <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
             </div>
@@ -200,11 +188,15 @@
                             <div class="col-4">Surname</div>
                         </div>
                     </div>
+                    <div class="card-body">
+                        {{ form_widget(form) }}
+                    </div>
                 </div>
 
 
             {% endif %}
-    {{ form_widget(form) }}
+
+
 
 
 
@@ -231,9 +223,6 @@
 
         </div>
     </div>
-
-
-
 
 
 {% endblock %}

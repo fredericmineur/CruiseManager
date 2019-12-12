@@ -8,13 +8,6 @@
 // })
 
 
-
-
-
-
-
-
-
 $('#add-tripinvestigator').click(function(){
     const index = +$('#widgets-counter').val();
     // console.log(index);
@@ -36,8 +29,9 @@ $('#add-tripinvestigator').click(function(){
 })
 
 function updateCounter(){
-    const count = $('#trip_tripinvestigators div.form-group').length;
-    console.log('count' + count);
+    // const count = $('#trip_tripinvestigators div.form-group').length;
+    const count = $('input[id$=firstname]').length;
+
     $('#widgets-counter').val(count);
 }
 
@@ -45,7 +39,7 @@ function handleDeleteButtons(){
     $('button[data-action="delete"]').click(function(){
         const target=this.dataset.target;
         console.log(target);
-        $(target).remove();
+        $(target).parent('fieldset').remove();
     })
 }
 //
