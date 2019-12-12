@@ -16,6 +16,7 @@ $('#add-trip').click(function(){
     handleDeleteButtonsTrips();
     handleCloneButtonsTrips();
     updateCounterTrips();
+    handleDeleteButtonsTripinvestigators();
 
 
 
@@ -53,12 +54,12 @@ function  handleAddButtonsTripInvestigators(contextElement){
 
 
         updateCounterTripinvestigators(blockId, blockTrip);
-        handleDeleteButtonsTripinvestigators(element, blockId, blockTrip);
+        handleDeleteButtonsTripinvestigators(element);
 
     })
 }
 
-function handleDeleteButtonsTripinvestigators(contextElement, blockId, blockTrip){
+function handleDeleteButtonsTripinvestigators(contextElement){
 
 
     $('button#remove-trip-investigator[data-action="delete"]', contextElement).click(function(){
@@ -66,7 +67,7 @@ function handleDeleteButtonsTripinvestigators(contextElement, blockId, blockTrip
         const target = this.dataset.target;
         // console.log('target '+ target);
         // console.log(this.dataset);
-        $(target).remove();
+        $(target).parent('fieldset').remove();
         // console.log('delete!!!!');
     })
 
