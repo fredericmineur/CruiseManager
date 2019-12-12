@@ -49,12 +49,29 @@ function  handleAddButtonsTripInvestigators(contextElement){
 
         $(idForPrototype).append(element);
         $('.widgets-counter-tripinvestigators-'+ blockTrip).val(index + 1);
-        console.log(tmpl);
+        // console.log(tmpl);
 
 
         updateCounterTripinvestigators(blockId, blockTrip);
+        handleDeleteButtonsTripinvestigators(element, blockId, blockTrip);
 
     })
+}
+
+function handleDeleteButtonsTripinvestigators(contextElement, blockId, blockTrip){
+
+
+    $('button#remove-trip-investigator[data-action="delete"]', contextElement).click(function(){
+        // console.log('delete !!!!');
+        const target = this.dataset.target;
+        // console.log('target '+ target);
+        // console.log(this.dataset);
+        $(target).remove();
+        // console.log('delete!!!!');
+    })
+
+
+
 }
 
 function updateCounterTripinvestigators(blockId, blockTrip) {
@@ -155,9 +172,5 @@ function updateCounterTrips(){
 
 
 handleDeleteButtonsTrips();
-
-
 handleAddButtonsTripInvestigators(window.document);
-
-
 updateCounterTrips();
