@@ -26,18 +26,14 @@ class Trip
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="Startdate", type="datetime", nullable=false)
-     * @Assert\NotBlank(message="no null date")
-     * @Assert\DateTime
-     * @var string A "d-m-Y" formatted value
+     * @ORM\Column(name="Startdate", type="datetime", nullable=true)
      */
     private $startdate;
 
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="Enddate", type="datetime", nullable=false)
-     * @Assert\NotNull
+     * @ORM\Column(name="Enddate", type="datetime", nullable=true)
      */
     private $enddate;
 

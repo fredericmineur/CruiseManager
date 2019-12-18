@@ -4,31 +4,45 @@ $('#add-trip').click(function(){
     const index = +$('#widgets-counter-trips').val(); //unary '+' to convert string to number
     console.log('add' + index);
     //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
-    const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
-
-    const element = $(tmpl);
+    const tmpl = $('#cruise_trial_trips').data('prototype').replace(/__name__/g, index);
     //Injection of the new code
-    $('#cruise_trips').append(element);
+    $('#cruise_trial_trips').append(tmpl);
 
     //Add 1 to the index (for counter)
     $('#widgets-counter-trips').val(index+1);
 
-    handleDeleteButtonsTrips(element);
-    handleCloneButtonsTrips(element);
+    handleDeleteButtonsTrips();
+    handleCloneButtonsTrips();
     updateCounterTrips();
 
 
 })
 
+// function handleCloneButtonsTrips(){
+//     $('button#clone-trip[data-action="clone"]').click(function(){
+//         const target = this.dataset.target;
+//         // const targetPrototype = $(target).data('prototype');
+//         // const tmpl =
+//         const cont = (target+'_tripinvestigators').replace(/block_/, '');
+//         console.log(cont)
+//         const tmpl = $(cont).data('prototype');
+//         console.log(tmpl);
+//         // console.log(target);
+//         // console.log(tmpl);
+//         // console.log(target);
+//         // $(target).clone().appendTo("#cruise_trips");
+//     //     const clonedTrip = $(target).clone();
+//     //     console.log(clonedTrip);
+//     })
+// }
 
 
-
-function handleCloneButtonsTrips(contextElement){
-    $('button#clone-trip[data-action="clone"]', contextElement).click(function(){
+function handleCloneButtonsTrips(){
+    $('button#clone-trip[data-action="clone"]').click(function(){
         // const index ='67';
         const index = +$('#widgets-counter-trips').val();
         const target = this.dataset.target;
-        console.log('clone' + index);
+        console.log('clone' + index)
 
         const clonedTrip = $(target).clone();
 
@@ -48,39 +62,17 @@ function handleCloneButtonsTrips(contextElement){
             + "<div id='block_cruise_trips_" + index + "' class=form-group'>"
             + clonedTripInnerHtml + "</div></fieldset>";
 
-        //Now the whole element, as a string, has been modified, convert it in an element/object
-        //Using fake tag <div/>.... see https://stackoverflow.com/questions/11047670/creating-a-jquery-object-from-a-big-html-string
-        // $(clonedTripInnerHtml).remove('button[data-action="clone"]');
-        console.log(typeof (clonedTripInnerHtml));
-
-        // let clonedElement = $('<div/>').html(clonedTripInnerHtml).contents();
-        // console.log(clonedElement);
-
-        let clonedElement = $($.parseHTML(clonedTripInnerHtml));
-        $(clonedElement).remove('a');
-
-
-        console.log(clonedElement);
-
 
 
         // // clonedTripInnerHtml = clonedTripInnerHtml.replace(/<a href="\/trips\/\d+" class="btn btn-primary">Add\/remove investigators<\/a>/, '');
-        // clonedTripInnerHtml = clonedTripInnerHtml.replace(/<a href="\/trips\/\d+.*\/a>/, '');
+        clonedTripInnerHtml = clonedTripInnerHtml.replace(/<a href="\/trips\/\d+.*\/a>/, '');
         // console.log(clonedTripInnerHtml);
-        //Delete Add investigator button, delete Clone button
-        clonedElement.remove('a');
-
-
-
         $(clonedTripInnerHtml).appendTo('div#cruise_trips');
         $('#widgets-counter-trips').val(index+1);
         // console.log(clonedTripInnerHtml);
 
-        handleCloneButtonsTrips(clonedElement);
         handleDeleteButtonsTrips();
         updateCounterTrips();
-
-
     })
 }
 
@@ -109,5 +101,6 @@ function updateCounterTrips(){
 }
 
 handleDeleteButtonsTrips();
-handleCloneButtonsTrips(window.document);
+
+handleCloneButtonsTrips();
 updateCounterTrips();

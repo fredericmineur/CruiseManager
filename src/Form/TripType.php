@@ -29,7 +29,7 @@ class TripType extends AbstractType
                 [
                     'widget'=>'single_text',
                    'label'=>'Start Date',
-                    'required' => false,
+                    'required' => true,
                     'html5'=> false,
                     'format'=> 'yyyy-MM-dd',
                     'attr'=>[
@@ -50,7 +50,7 @@ class TripType extends AbstractType
                 [
                     'widget'=>'single_text',
                     'label'=>'End Date',
-                    'required' => false,
+                    'required' => true,
                     'html5'=> false,
                     'format'=> 'yyyy-MM-dd',
                     'attr'=>[
@@ -66,7 +66,7 @@ class TripType extends AbstractType
                     'label' => 'Destination Area'
                 ])
 
-            ->add('tripinvestigators',
+           ->add('tripinvestigators',
                 CollectionType::class,
                 [
                     'entry_type'=> TripinvestigatorsType::class,
@@ -80,6 +80,8 @@ class TripType extends AbstractType
                     ]
                 ]
             )
+
+
 
 //            ->add('startpoint')
 //            ->add('endpoint')

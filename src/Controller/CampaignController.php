@@ -9,6 +9,7 @@ use App\Entity\Trip;
 use App\Entity\Tripinvestigators;
 use App\Form\CampaignType;
 use App\Form\CruiseEditType;
+use App\Form\CruiseTrialType;
 use App\Form\CruiseType;
 use App\Form\TripType;
 use App\Repository\CampaignRepository;
@@ -136,14 +137,14 @@ class CampaignController extends AbstractController
     /**
      * @Route("/cruises/new", name="cruise_create")
      */
-    public function createCruise(Request $request, ObjectManager $manager)
+    public function createCruiseOriginal(Request $request, ObjectManager $manager)
     {
         $cruise = new Cruise();
         $trip1 = new Trip();
         $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
             ->setDestinationarea('BCP');
         $trip2 = new Trip();
-        $trip2->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
             ->setDestinationarea('BCP2');
         $cruise->addTrip($trip1)->addTrip($trip2);
         $tripinvestigator1 = new Tripinvestigators();
@@ -164,6 +165,7 @@ class CampaignController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+//            dd($form);
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
 
@@ -190,10 +192,57 @@ class CampaignController extends AbstractController
         ]);
     }
 
+    /*
+    /**
+     * @Route("/cruises/new", name="cruise_create")
+     */
+//    public function createCruise(Request $request, ObjectManager $manager){
+//        $cruise = new Cruise();
+//
+//
+//
+//
+//        $form = $this->createForm(CruiseType::class, $cruise);
+//        $form->handleRequest($request);
+//        if($form->isSubmitted() && $form->isValid()){
+//            dump($form);
+////
+//            foreach ($cruise->getTrips() as $trip) {
+//                $trip->setCruiseid($cruise);
+//                $manager->persist($trip);
+//            }
+//
+//        $manager->persist($cruise);
+//        $manager->flush();
+//
+//        $this->addFlash(
+//            'success',
+//            "The new cruise <strong>{$cruise->getPlancode()}</strong> has been submitted !"
+//        );
+//
+//
+////        return $this->redirectToRoute('cruise_edit', [
+////            'cruiseId' => $cruise->getCruiseid()
+////        ]);
+//
+//          return $this->redirectToRoute('cruise_details', [
+//              'cruiseId' => $cruise->getCruiseid()
+//          ]);
+//        }
+//        return $this->render('forms/form_cruise_new.html.twig', [
+//            'formCruise' => $form->createView(),
+////            'mode' => 'create'
+//        ]);
+//
+//
+//    }
 
-    public function addTripInvestigatorsToTrip(Trip $trip)
-    {
-    }
+
+
+
+
+
+
 
     /**
      * @Route("/cruises/{cruiseId}/edit", name="cruise_edit")
@@ -270,8 +319,12 @@ class CampaignController extends AbstractController
             array_push($startDates, $trip->getStartdate());
             array_push($endDates, $trip->getEnddate());
         }
-        $cruiseStartDate = min($startDates);
-        $cruiseEndDate = max($endDates);
+
+        if ($startDates){
+
+        }
+        $cruiseStartDate = !empty($startDates) ?  min($startDates) : null; //if $starDates is not empty
+        $cruiseEndDate = !empty($endDates) ? max($endDates) : null;
         dump($cruiseStartDate, $cruiseEndDate);
 
         return $this->render('display/display_cruise.html.twig', [

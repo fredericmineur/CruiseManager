@@ -95,15 +95,15 @@ class Cruise
 
 
     //     ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid" , cascade={"persist"})
+    //
     /**
      * @var Collection
      * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid", cascade={"all"}, orphanRemoval=true)
-     * @Assert\Valid
      */
     private $trips;
 
     /**
-     * @var \Investigators
+     * @var Investigators
      *
      * @ORM\ManyToOne(targetEntity="Investigators", inversedBy="cruises")
      * @ORM\JoinColumns({

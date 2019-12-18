@@ -55,10 +55,8 @@
 {#{% form_theme formCruise _self %}#}
 {% block body %}
     <h2>Edit cruise</h2>
+    {{ form_start(formCruise) }}
     <div class="container" >
-
-
-        {{ form_start(formCruise) }}
         <div class="row">
             <div class="col-4">
                 <div class="card">
@@ -81,7 +79,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <button type="submit" class="btn btn-primary">Submit all modifications</button>
+
             </div>
         </div>
 
@@ -99,6 +97,7 @@
         {{ form_widget(formCruise.trips) }}
     </div>
 
+    <button type="submit" class="btn btn-primary">Submit all modifications</button>
         {{ form_end(formCruise) }}
 
 
@@ -167,6 +166,8 @@
         </div>
 
         {{ form_widget(form.tripinvestigators) }}
+        {% dump (form.vars.value) %}
+{#      {# form.vars.value is the form (subform here) for the trip #}
         {% if form.vars.value is not null %}
         <a href="{{ path ( 'trip_edit', {'tripId': form.vars.value.tripid } ) }}" class="btn btn-primary">Add/remove investigators</a>
         {% endif %}
@@ -199,9 +200,6 @@
 
 
 
-
-
-    {#    {% dump(form.children) %}#}
 
 
 

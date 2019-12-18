@@ -40,10 +40,6 @@
 {#{% form_theme formCruise _self %}#}
 
 {% block body %}
-    {% set current_path = app.request.get('_route') %}
-    {{ current_path }}
-
-
     <h2>Create Cruise</h2>
     {{ form_start(formCruise) }}
     <div class="container">
@@ -69,9 +65,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4">
-                <button type="submit" class="btn btn-primary">Submit the new cruise</button>
-            </div>
+
         </div>
 
         <div class="card">
@@ -83,22 +77,34 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid">
-        {{ form_widget(formCruise) }}
+    <div class="row">
+        <div class="col-10">
+            <div class="container-fluid">
+                {{ form_widget(formCruise.trips) }}
+            </div>
+        </div>
+        <div class="col-2">
+            <button type="submit" class="btn btn-success">Submit the new cruise</button>
+
+        </div>
+
+
+
     </div>
     {{ form_end(formCruise) }}
+
+
 {% endblock %}
 
 {% block _cruise_trips_widget %}
     <div class="card">
         <div class="card-header">
             <h4>Manage the trips </h4>
-            <input type="hidden" id="widgets-counter-trips" value="0">
         </div>
         <div class="card-body">
             {{ form_widget(form) }}
 
-
+            <input type="hidden" id="widgets-counter-trips" value="0">
             <div class="form-group">
                 <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
             </div>
@@ -109,7 +115,7 @@
 
 {% block _cruise_trips_entry_widget %}
     <div class="form-group" id="block_{{ id }}">
-
+{#        <input type="hidden" id="widgets-counter-tripinvestigators" value="0">#}
         <div class="row ">
 
             <div class="col-3">
@@ -122,15 +128,25 @@
                 {{ form_row (form.destinationarea) }}
             </div>
             <div class="col-2">
-                <button type="button" class="btn btn-danger remove-trip" data-action="delete" data-id="{{ id }}"
+                <button type="button" id="remove-trip" class="btn btn-danger" data-action="delete"
                         data-target="#block_{{ id }}">
                     X
                 </button>
             </div>
         </div>
 
-        {{ form_widget(form.tripinvestigators) }}
+{#        {{ form_widget(form.tripinvestigators) }}#}
 
+
+
+
+
+
+
+
+{#        <button type="button" class="add-tripinvestigator" class="btn btn-success" data-block="{{ id }}">Add investigator</button>#}
+
+{#        <a href="#" class="btn btn-primary">Submit cruise + Add <br>investigators for the trip</a>#}
 
         {# THIS WILL ONLY BEEN SHOWN IN THE EDIT FORM #}
 
@@ -152,7 +168,6 @@
 
 
     </div>
-{#    <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-success add-tripinvestigator" data-id="{{ id }}">Add investigator</button>#}
 
 {% endblock %}
 
@@ -161,74 +176,57 @@
 {#    {{ form_widget(form) }}#}
 {#{% endblock %}#}
 
-{% block _cruise_trips_entry_tripinvestigators_widget %}
+{#{% block _cruise_trips_entry_tripinvestigators_widget %}#}
 
-    {#    {% dump(form.children) %}#}
+{#    #}{#    {% dump(form.children) %}#}
 
 {#    {% if form.children %}#}
-        <div class="card" style="background-color: #95c9ec">
-            <div class="card-header">
-                <div class="row">
+{#        <div class="card" style="background-color: #95c9ec">#}
+{#            <div class="card-header">#}
+{#                <div class="row">#}
 
-                    <div class="col-4">First name</div>
-                    <div class="col-4">Surname</div>
-                </div>
-                <input type="hidden" id="widgets-counter-tripinvestigators-{{ id }}" value="0">
-            </div>
-            <div class="card-body">
-                {{ form_widget(form) }}
-            </div>
-        </div>
-    <div class="form-group">
-        <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-success add-tripinvestigator" data-id="{{ id }}">Add investigator</button>
-    </div>
-
+{#                    <div class="col-4">First name</div>#}
+{#                    <div class="col-4">Surname</div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="card-body">#}
+{#                {{ form_widget(form) }}#}
+{#            </div>#}
+{#        </div>#}
 
 
 {#    {% endif %}#}
 
 
 
-{% endblock %}
+{#{% endblock %}#}
 
-{% block _cruise_trips_entry_tripinvestigators_entry_widget %}
-    <div class="form-group" id="block_{{ id }}">
+{#{% block _cruise_trips_entry_tripinvestigators_entry_widget %}#}
+{#    <div class="form-group" id="block_{{ id }}">#}
 {#        {% dump(id) %}#}
-        <div class="row">
-            <div class="col-4">
-                {{ form_widget(form.firstname) }}
-            </div>
-            <div class="col-4">
-                {{ form_widget(form.surname) }}
-            </div>
-            <div class="col-4">
-                <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete" data-id="{{ id }}"
-                        data-target="#block_{{ id }}">
-                    X
-                </button>
-            </div>
-        </div>
-    </div>
+{#        <div class="row">#}
+{#            <div class="col-4">#}
+{#                {{ form_widget(form.firstname) }}#}
+{#            </div>#}
+{#            <div class="col-4">#}
+{#                {{ form_widget(form.surname) }}#}
+{#            </div>#}
+{#            <div class="col-4">#}
+{#                <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete"#}
+{#                        data-target="#block_{{ id }}">#}
+{#                    X#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
-{% endblock %}
+{#{% endblock %}#}
 
 
 
 {% block javascripts %}
-    <script src="{{ asset('js/addTripsToCruisePlusTripInvestigators.js') }}"></script>
+    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>
     <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
-{#    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>#}
-
-{#    <script>#}
-{#        $( document ).ready(function() {#}
-{#            handleDeleteButtonsTrips();#}
-{#            // handleAddButtonsTripInvestigators(window.document);#}
-{#            // handleDeleteButtonsTripinvestigators(window.document);#}
-{#            updateCounterTrips();#}
-{#            handleDeleteButtonsCampaigns();#}
-{#            updateCounterCampaigns();#}
-{#        });#}
-{#    </script>#}
 
 
 

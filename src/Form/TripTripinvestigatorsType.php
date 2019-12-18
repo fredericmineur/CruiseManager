@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TripTrimmedType extends AbstractType
+class TripTripinvestigatorsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
