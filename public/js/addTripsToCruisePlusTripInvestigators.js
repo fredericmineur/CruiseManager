@@ -144,16 +144,25 @@ function  AddTripInvestigatorsHandler(contextElement){
         const indexTInvestigators = +$('[id^=widgets-counter-tripinvestigators-]', e.target.parentElement.parentElement).val();
         // console.log('value ' + indexTInvestigators);
 
+
+        console.log('index investigators ' +indexTInvestigators);
+
+
         //get the selector with id corresponding to the trip, eg. '#cruise_trips_1'
         const selectorTripId = '#'+ e.target.parentElement.parentElement.attributes['id']['nodeValue'];
         //also getting the number corresponding to the trip, e.g. '1'
         const tripId = selectorTripId.replace('#block_cruise_trips_', '');
 
-        // console.log($('div#cruise_trips_' + tripId + '_tripinvestigators').data('prototype'));
+        console.log($('div#cruise_trips_' + tripId + '_tripinvestigators'));
 
-        //Replace the generic with adequates labels for the tripinvestigator in the prototype
-        const tmpl = $('div[id=cruise_trips_' + tripId + '_tripinvestigators]').data('prototype').replace(/__name__/g, indexTInvestigators);
-        const elementTripinvestigator = $(tmpl);
+        //Replace the generic  with adequates labels for the tripinvestigator in the prototype
+        //Also, the tripinvestigator prototype that is produced with new trips has already some (wrong) tripinvestigator index by default (instead of '__name__')
+        const tmpl = $('div[id=cruise_trips_' + tripId + '_tripinvestigators]').data('prototype').replace(/_tripinvestigators_(__name__|\d+)/g, '_tripinvestigators_'+ indexTInvestigators);
+        const tmpl2 = tmpl.replace(/_trinpinvestigators[(__name__|\d+)]/g, '_tripinvestigators['+ indexTInvestigators + ']');
+        console.log('template');
+        console.log(tmpl2);
+
+        const elementTripinvestigator = $(tmpl2);
         // console.log(elementTripinvestigator);
 
         //append the modified prototype to the section (ad hoc trip section)

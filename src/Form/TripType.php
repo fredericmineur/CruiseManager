@@ -71,6 +71,7 @@ class TripType extends AbstractType
                 [
                     'entry_type'=> TripinvestigatorsType::class,
                     'allow_add' => true,
+                    'prototype' => true,
                     'allow_delete'=> true,
                     'by_reference' => false,
                     'label'=> 'Investigators for the trip',
