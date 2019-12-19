@@ -18,6 +18,7 @@ $('#add-trip').click(function(){
 
     //bind the event handler to the 'remove-trip' button that has been created
     deleteTrip(elementTrip);
+    cloneTrip(elementTrip);
 
     //check the events linked ot the button
     // console.log($._data($('[data-action="delete"]')[0], 'events'));
@@ -27,16 +28,79 @@ $('#add-trip').click(function(){
 
 })
 
+function cloneTrip(contextElement){
+    $('button.clone-trip[data-action="clone"]', contextElement).click(function(){
+        // const target = e.dataset.target;
+        console.log('clone trip');
+        // console.log(this.dataset.target);
+        // console.log($(this.dataset.target).parent('fieldset').parent('div'));
+        //fetching the prototype for the trips
+        const index = +$('#widgets-counter-trips').val();
+        // const sectionTripToClone = $(this.dataset.target).parent('fieldset');
+        // console.log(sectionTripToClone);
+        const target = this.dataset.target;
+        const clonedTrip = $(target).parent('fieldset').clone();
+        // console.log(clonedTrip);
+
+
+        //  NB Somehow unable to modify properties of the object clonedTrip (declared as "let clonedTrip").
+        //  Therefore, just extracting the innerHTML code, modify it (also removing the <a> tag linking to trip_edit (as the trip as not been submitted yet),
+        //  and appending it to the form
+
+        //update the attributes id (e.g. cruise_trips_0_tripinvestigators_0_surname to cruise_trips_3_tripinvestigators_0_surname)
+        let clonedTripHTML = clonedTrip['0'].innerHTML.replace(/_trips_\d+/g, '_trips_' + index);
+
+
+        //update the attributes name (e.g. name="cruise[trips][0][tripinvestigators][0][surname]" to name="cruise[trips][3][tripinvestigators][0][surname]"
+        clonedTripHTML = clonedTripHTML.replace(/\[trips\]\[\d+\]/g, '[trips][' + index + ']');
+
+        clonedTripHTML = "<fieldset class='form-group'>" + clonedTripHTML + "</fieldset>";
+
+        //REMOVE THE CLONE BUTTON (for simplification no event handler for that functionality)...
+        // clonedTripHTML = clonedTripHTML.replace(/<button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="cruise_trips_\d+" data-target="#block_cruise_trips_\d+"><i class="fa fa-clone fa-2x"><\/i><\/button>/,'');
+
+        clonedTripHTML = clonedTripHTML.replace(/<button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="cruise_trips_\d+" data-target="#block_cruise_trips_\d+">[\s\n]*<i class="fa fa-clone fa-2x"><\/i>[\s\n]*<\/button>/,'');
+
+
+        console.log(clonedTripHTML);
+
+        const clonedTripElement = $(clonedTripHTML);
+
+        $('div#cruise_trips').append(clonedTripElement);
+
+        $('#widgets-counter-trips').val(index+1);
+
+
+        /// !!!!! context ELEMENT?????
+        AddTripInvestigatorsHandler(clonedTripElement)
+        deleteTripinvestigators(clonedTripElement);
+
+
+
+
+
+        // const sectionTrip = $(this.dataset.target).parent('fieldset').parent('div');
+        // const tmplTrip = $(sectionTrip).data('prototype').replace(/__name__/g, index);
+        // console.log(tmplTrip);
+        // var elementTrip = $(tmplTrip);
+
+    })
+}
 
 function deleteTrip(contextElement){
     // 'button#remove-trip[data-action="delete"]'  'button[data-id="'+idBlock+'"][data-action="delete"]'
     $('button.remove-trip[data-action="delete"]', contextElement).click(function(){
         // as we have created in Twig a 'data-target' attribute with the id selector of the block
+
+        // console.log('delete-trip');
+        // console.log(this.dataset.target);
         const target=this.dataset.target;
         $(target).parent('fieldset').remove();
 
+
     })
 }
+
 
 
 function updateCounterTrips(){
@@ -44,48 +108,28 @@ function updateCounterTrips(){
     const count = $('input[id$=startdate]').length;
     $('#widgets-counter-trips').val(count);
     // console.log('countTrip ' + count);
-    let tripInvestigatorsCount = {};
+    // let tripInvestigatorsCount = {};
+
     //LOOPING (counting the number of counter as the first part of the selector for trip and tripinvestigator is the same
     $('input[id^=widgets-counter-tripinvestigators-][type="hidden"]').each(function(){
         let idCounter = this['id'];
         idCounter = idCounter.replace('widgets-counter-tripinvestigators-', '');
         idCounter= idCounter.replace('_tripinvestigators','');
+
         //idCounter is a string such as cruise_trips_0, cruise_trips_1,...
         const countTripInvestigators = $('input[id^='+idCounter+'][placeholder="First Name"]').length;
 
+        //Rest the value of the tripinvestigators count for the trip
         $('input[id^=widgets-counter-tripinvestigators-'+ idCounter+ '_tripinvestigators]').val(countTripInvestigators);
-
-
-
-
-
-
-        // console.log(idCounter);
-
-
-
-        tripInvestigatorsCount[idCounter] =  $('input[id^='+idCounter+'][placeholder="First Name"]').length;
-        // const counTripinvestigators = $('input[id$=firstname]').length;
-        // this.countTripInvestigators = $('input[id$=firstname]').length;
-        // console.log(this);
     })
-
-    //Giving the value in the object tripInvestigatorsCount
-
-
-    // console.log(tripInvestigatorsCount);
 }
 
-function updateCounterTripInvestigators(contextElement){
 
-}
 
 function  AddTripInvestigatorsHandler(contextElement){
     //Put the event as argument, as it allow us to get info on the target button
     $( '.add-tripinvestigator',contextElement).click(function(e){
     // $( '[id^=add-tripinvestigator]',contextElement).click(function(e){
-
-
 
         console.log('add tripinvestigator');
         console.log(contextElement);
@@ -98,7 +142,7 @@ function  AddTripInvestigatorsHandler(contextElement){
 
         // take the value of the counter
         const indexTInvestigators = +$('[id^=widgets-counter-tripinvestigators-]', e.target.parentElement.parentElement).val();
-        console.log('value ' + indexTInvestigators);
+        // console.log('value ' + indexTInvestigators);
 
         //get the selector with id corresponding to the trip, eg. '#cruise_trips_1'
         const selectorTripId = '#'+ e.target.parentElement.parentElement.attributes['id']['nodeValue'];
@@ -107,19 +151,12 @@ function  AddTripInvestigatorsHandler(contextElement){
 
         // console.log($('div#cruise_trips_' + tripId + '_tripinvestigators').data('prototype'));
 
-
-
-
+        //Replace the generic with adequates labels for the tripinvestigator in the prototype
         const tmpl = $('div[id=cruise_trips_' + tripId + '_tripinvestigators]').data('prototype').replace(/__name__/g, indexTInvestigators);
         const elementTripinvestigator = $(tmpl);
-        console.log(elementTripinvestigator);
+        // console.log(elementTripinvestigator);
 
-        // console.log(e.target.parentElement.parentElement.attributes);
-
-
-
-
-        // get the index of the tripinvestigators in the prototype
+        //append the modified prototype to the section (ad hoc trip section)
         $('div[id=cruise_trips_' + tripId + '_tripinvestigators]').append(elementTripinvestigator);
        // console.log(selectorTripId);
        // console.log(tripId);
@@ -127,114 +164,13 @@ function  AddTripInvestigatorsHandler(contextElement){
         //update the counter of investigators for the trip
         $('input[id^=widgets-counter-tripinvestigators-cruise_trips_' + tripId+ '_tripinvestigators]').val(indexTInvestigators+1);
 
+        deleteTripinvestigators(elementTripinvestigator);
 
-
-
-
-
-        /*
-
-        // Getting the block number/id for the trip
-        var blockTrip = this.attributes['data-block']['nodeValue'];
-        blockTrip= blockTrip.replace('cruise_trips_', '');
-
-        // Name of the class to be given to the individual counter
-        const classWidgetCounter = 'widgets-counter-tripinvestigators-' + blockTrip;
-
-        // Get the name of the relevant DOM id for the block
-        const blockId = 'block_cruise_trips_' + blockTrip;
-        // console.log(classWidgetCounter);
-
-        //Get the widget counter (hidden input) that is inside the relevant block and assign it a class
-        if (!$('div#' + blockId + ' input[id=widgets-counter-tripinvestigators]').hasClass(classWidgetCounter)){
-            $('div#' + blockId + ' input[id=widgets-counter-tripinvestigators]').addClass(classWidgetCounter);
-        }
-
-        //Get the value of the counter
-        const index = +$('.widgets-counter-tripinvestigators-'+blockTrip).val();
-        // id for the division containing the prototype
-        const idForPrototype = '#cruise_trips_' + blockTrip + '_tripinvestigators';
-        const tmpl = $(idForPrototype).data('prototype').replace(/__name__/g, index);
-        var element = $(tmpl);
-
-        $(idForPrototype).append(element);
-        $('.widgets-counter-tripinvestigators-'+ blockTrip).val(index + 1);
-        // console.log(tmpl);
-
-
-        updateCounterTripinvestigators(blockId, blockTrip);
-        handleDeleteButtonsTripinvestigators(element);
-
-
-         */
 
     })
 }
 
-
-$(document).ready(function () {
-    //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller
-    updateCounterTrips();
-    deleteTrip(window.document);
-    AddTripInvestigatorsHandler(window.document);
-    // addIDtoDeleteTripButtonOnLoad(window.document);
-
-});
-
-
-
-
-
-
-
-
-
-
-/*
-function  handleAddButtonsTripInvestigators(contextElement){
-    $( '.add-tripinvestigator',contextElement).click(function(){
-        // Getting the block number/id for the trip
-        var blockTrip = this.attributes['data-block']['nodeValue'];
-        blockTrip= blockTrip.replace('cruise_trips_', '');
-
-        // Name of the class to be given to the individual counter
-        const classWidgetCounter = 'widgets-counter-tripinvestigators-' + blockTrip;
-
-        // Get the name of the relevant DOM id for the block
-        const blockId = 'block_cruise_trips_' + blockTrip;
-        // console.log(classWidgetCounter);
-
-        //Get the widget counter (hidden input) that is inside the relevant block and assign it a class
-        if (!$('div#' + blockId + ' input[id=widgets-counter-tripinvestigators]').hasClass(classWidgetCounter)){
-            $('div#' + blockId + ' input[id=widgets-counter-tripinvestigators]').addClass(classWidgetCounter);
-        }
-
-        //Get the value of the counter
-        const index = +$('.widgets-counter-tripinvestigators-'+blockTrip).val();
-        // id for the division containing the prototype
-        const idForPrototype = '#cruise_trips_' + blockTrip + '_tripinvestigators';
-        const tmpl = $(idForPrototype).data('prototype').replace(/__name__/g, index);
-        var element = $(tmpl);
-
-        $(idForPrototype).append(element);
-        $('.widgets-counter-tripinvestigators-'+ blockTrip).val(index + 1);
-        // console.log(tmpl);
-
-
-        updateCounterTripinvestigators(blockId, blockTrip);
-        handleDeleteButtonsTripinvestigators(element);
-
-    })
-}
-
-
- */
-
-
-/*
-function handleDeleteButtonsTripinvestigators(contextElement){
-
-
+function deleteTripinvestigators(contextElement){
     $('button#remove-trip-investigator[data-action="delete"]', contextElement).click(function(){
         // console.log('delete !!!!');
         const target = this.dataset.target;
@@ -243,25 +179,26 @@ function handleDeleteButtonsTripinvestigators(contextElement){
         $(target).parent('fieldset').remove();
         // console.log('delete!!!!');
     })
-
-
-
-}
- */
-
-/*
-function updateCounterTripinvestigators(blockId, blockTrip) {
-
-    //blockId = 'block_cruise_trips_' + blockTrip; e.g., block_cruise_trips_1
-    //blockTrip is the just the digit: e.g., 1
-    const count = $('fieldset div[id^='+ blockId + '_tripinvestigators_]').length;
-    // console.log(blockId + ' count= ' + count);
-
-    $('.widgets-counter-tripinvestigators-'+ blockTrip).val(count);
-
 }
 
- */
+
+
+
+
+$(document).ready(function () {
+    //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller
+    updateCounterTrips();
+    deleteTrip(window.document);
+    cloneTrip(window.document);
+    AddTripInvestigatorsHandler(window.document);
+    deleteTripinvestigators(window.document);
+
+
+});
+
+
+
+
 
 
 
@@ -326,39 +263,3 @@ function handleCloneButtonsTrips(){
 }
 */
 
-function moveTripDownButton(){
-
-}
-
-/*
-
-
-function handleDeleteButtonsTrips(){
-    $('button#remove-trip[data-action="delete"]').click(function(){
-        const target=this.dataset.target;
-        //'this' is the button and 'dataset' are the attributes, target "#block_cruise_trips_0
-        // remove the whole div
-        // console.log(target);
-
-        $(target).parent('fieldset').remove();
-        updateCounterTrips();
-    })
-}
-
-function updateCounterTrips(){
-    // const count = $('#cruise_trips div.form-group').length;
-    const count = $('input[id$=startdate]').length;
-    $('#widgets-counter-trips').val(count);
-    console.log('countTrip ' + count);
-
-
-}
-
-
-handleDeleteButtonsTrips(window.document);
-handleAddButtonsTripInvestigators(window.document);
-updateCounterTrips();
-console.log()
-// updateCounterTripinvestigators(window.document);
-
- */

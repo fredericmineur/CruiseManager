@@ -140,21 +140,21 @@ class CampaignController extends AbstractController
     public function createCruiseOriginal(Request $request, ObjectManager $manager)
     {
         $cruise = new Cruise();
-        $trip1 = new Trip();
-        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
-            ->setDestinationarea('BCP');
-        $trip2 = new Trip();
-        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
-            ->setDestinationarea('BCP2');
-        $cruise->addTrip($trip1)->addTrip($trip2);
-        $tripinvestigator1 = new Tripinvestigators();
-        $tripinvestigator2 = new Tripinvestigators();
-        $tripinvestigator3 = new Tripinvestigators();
-        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
-        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
-        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
-        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
-            ->addTripinvestigator($tripinvestigator3);
+//        $trip1 = new Trip();
+//        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+//            ->setDestinationarea('BCP');
+//        $trip2 = new Trip();
+//        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
+//            ->setDestinationarea('BCP2');
+//        $cruise->addTrip($trip1)->addTrip($trip2);
+//        $tripinvestigator1 = new Tripinvestigators();
+//        $tripinvestigator2 = new Tripinvestigators();
+//        $tripinvestigator3 = new Tripinvestigators();
+//        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
+//        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
+//        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
+//        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
+//            ->addTripinvestigator($tripinvestigator3);
 
 
 
