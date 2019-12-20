@@ -158,8 +158,10 @@ function  AddTripInvestigatorsHandler(contextElement){
         //Replace the generic  with adequates labels for the tripinvestigator in the prototype
         //Also, the tripinvestigator prototype that is produced with new trips has already some (wrong) tripinvestigator index by default (instead of '__name__')
         const tmpl = $('div[id=cruise_trips_' + tripId + '_tripinvestigators]').data('prototype').replace(/_tripinvestigators_(__name__|\d+)/g, '_tripinvestigators_'+ indexTInvestigators);
-        const tmpl2 = tmpl.replace(/_trinpinvestigators[(__name__|\d+)]/g, '_tripinvestigators['+ indexTInvestigators + ']');
-        console.log('template');
+        // const tmpl2 = tmpl.replace(/\\[tripinvestigators\\]\\[(__name__|\d+)\\]/g, '[tripinvestigators][@@@@@@@@@@@'+ indexTInvestigators + ']');
+         const tmpl2 = tmpl.replace(/\[tripinvestigators\]\[(__name__|\d+)\]/g, '[tripinvestigators]['+indexTInvestigators+']');
+
+        console.log('template prototype');
         console.log(tmpl2);
 
         const elementTripinvestigator = $(tmpl2);
