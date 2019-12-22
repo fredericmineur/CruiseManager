@@ -47,6 +47,7 @@
 
 {% form_theme formCruise with [
     'forms/_collection_cruise_campaigns.html.twig',
+    'forms/_collection_cruise_trips_tripinvestigators.html.twig',
     _self
 ] %}
 {#    {% form_theme form _self %}#}
@@ -103,53 +104,53 @@
 
 {% endblock %}
 
-{% block _cruise_trips_widget %}
-    <div class="card ">
-        <div class="card-header">
-            <h4>Manage trips</h4>
-        </div>
+{#{% block _cruise_trips_widget %}#}
+{#    <div class="card ">#}
+{#        <div class="card-header">#}
+{#            <h4>Manage trips</h4>#}
+{#        </div>#}
 
-        <div class="card-body">
-            {{ form_widget(form) }}
-
-
-            <input type="hidden" id="widgets-counter-trips" value="0">
-
-            <div class="form-group">
-                <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
-            </div>
-        </div>
-
-    </div>
+{#        <div class="card-body">#}
+{#            {{ form_widget(form) }}#}
 
 
-{% endblock %}
+{#            <input type="hidden" id="widgets-counter-trips" value="0">#}
 
-{% block _cruise_trips_entry_widget %}
-    <div class="form-group" id="block_{{ id }}">
+{#            <div class="form-group">#}
+{#                <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>#}
+{#            </div>#}
+{#        </div>#}
 
-        <div class="row ">
+{#    </div>#}
 
-            <div class="col-3">
-                {{ form_row(form.startdate) }}
-            </div>
-            <div class="col-3">
-                {{ form_row(form.enddate) }}
-            </div>
-            <div class="col-4">
-                {{ form_row (form.destinationarea) }}
-            </div>
-            <div class="col-2">
+
+{#{% endblock %}#}
+
+{#{% block _cruise_trips_entry_widget %}#}
+{#    <div class="form-group" id="block_{{ id }}">#}
+
+{#        <div class="row ">#}
+
+{#            <div class="col-3">#}
+{#                {{ form_row(form.startdate) }}#}
+{#            </div>#}
+{#            <div class="col-3">#}
+{#                {{ form_row(form.enddate) }}#}
+{#            </div>#}
+{#            <div class="col-4">#}
+{#                {{ form_row (form.destinationarea) }}#}
+{#            </div>#}
+{#            <div class="col-2">#}
 {#                <div class="row">#}
 
-                    <button type="button" id="remove-trip" class="btn btn-light " data-action="delete"
-                            data-target="#block_{{ id }}">
-                        <i class="fa fa-trash fa-2x"></i>
-                    </button>
-                    <button type="button" id="clone-trip" class="btn btn-light " data-action="clone"
-                            data-target="#block_{{ id }}">
-                        <i class="fa fa-clone fa-2x"></i>
-                    </button>
+{#                    <button type="button" id="remove-trip" class="btn btn-light " data-action="delete"#}
+{#                            data-target="#block_{{ id }}">#}
+{#                        <i class="fa fa-trash fa-2x"></i>#}
+{#                    </button>#}
+{#                    <button type="button" id="clone-trip" class="btn btn-light " data-action="clone"#}
+{#                            data-target="#block_{{ id }}">#}
+{#                        <i class="fa fa-clone fa-2x"></i>#}
+{#                    </button>#}
 {#                </div>#}
 {#                <div class="row">#}
 {#                    <button type="button" id="down-trip" class="btn btn-light " data-action="down"#}
@@ -158,46 +159,44 @@
 {#                    </button>#}
 {#                </div>#}
 
-            </div>
+{#            </div>#}
 
 {#            {% if form.vars.value is not null %}#}
 {#                {{ dump (form.vars.value) }}#}
 {#            {% endif %}#}
-        </div>
+{#        </div>#}
 
-        {{ form_widget(form.tripinvestigators) }}
-        {% dump (form.vars.value) %}
-{#      {# form.vars.value is the form (subform here) for the trip #}
-        {% if form.vars.value is not null %}
-        <a href="{{ path ( 'trip_edit', {'tripId': form.vars.value.tripid } ) }}" class="btn btn-primary">Add/remove investigators</a>
-        {% endif %}
-        <hr style=" border-top: 3px dashed" >
-    </div>
+{#        {{ form_widget(form.tripinvestigators) }}#}
+{#        {% dump (form.vars.value) %}#}
+{#      #}{# form.vars.value is the form (subform here) for the trip #}
+{#        {% if form.vars.value is not null %}#}
+{#        <a href="{{ path ( 'trip_edit', {'tripId': form.vars.value.tripid } ) }}" class="btn btn-primary">Add/remove investigators</a>#}
+{#        {% endif %}#}
+{#        <hr style=" border-top: 3px dashed" >#}
+{#    </div>#}
 
-{% endblock %}
-
-
-
-{% block _cruise_trips_entry_tripinvestigators_widget %}
-
-            {% if form.children %}
-                <div class="card" style="background-color: #95c9ec">
-                    <div class="card-header">
-                        <div class="row">
-
-                            <div class="col-4">First name</div>
-                            <div class="col-4">Surname</div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        {{ form_widget(form) }}
-                    </div>
-                </div>
+{#{% endblock %}#}
 
 
-            {% endif %}
+
+{#{% block _cruise_trips_entry_tripinvestigators_widget %}#}
+
+{#            {% if form.children %}#}
+{#                <div class="card" style="background-color: #95c9ec">#}
+{#                    <div class="card-header">#}
+{#                        <div class="row">#}
+
+{#                            <div class="col-4">First name</div>#}
+{#                            <div class="col-4">Surname</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="card-body">#}
+{#                        {{ form_widget(form) }}#}
+{#                    </div>#}
+{#                </div>#}
 
 
+{#            {% endif %}#}
 
 
 
@@ -206,31 +205,35 @@
 
 
 
-{% endblock %}
-
-{% block _cruise_trips_entry_tripinvestigators_entry_widget %}
-
-    <div class="form-group" id="block_{{ id }}">
-        <div class="row">
-            <div class="col-4">
-                {{ form_widget(form.firstname) }}
-            </div>
-            <div class="col-4">
-                {{ form_widget(form.surname) }}
-            </div>
-
-        </div>
-    </div>
 
 
-{% endblock %}
+{#{% endblock %}#}
+
+{#{% block _cruise_trips_entry_tripinvestigators_entry_widget %}#}
+
+{#    <div class="form-group" id="block_{{ id }}">#}
+{#        <div class="row">#}
+{#            <div class="col-4">#}
+{#                {{ form_widget(form.firstname) }}#}
+{#            </div>#}
+{#            <div class="col-4">#}
+{#                {{ form_widget(form.surname) }}#}
+{#            </div>#}
+
+{#        </div>#}
+{#    </div>#}
+
+
+{#{% endblock %}#}
 
 
 
 {% block javascripts %}
-    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>
+    <script src="{{ asset('js/addTripsToCruisePlusTripInvestigators.js') }}"></script>
+{#    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>#}
     <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
 {#    <script src="{{ asset('js/addTripinvestigatorsToTrip.js') }}"></script>#}
+
 {% endblock %}
 
 

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Principal investigator</h4>
+                    <i>Note for later: make a table</i>
+
+                </div>
+                <div class="card-body">
+                    <p>{{ principalInvestigator.surname }}, {{ principalInvestigator.firstname }}</p>
+                </div>
+                <div class="card-footer">
+                    {% for cruise in principalInvestigator.cruises %}
+                        <div>
+                            <p>Cruise {{ cruise.plancode }} for campaign(s): {% for campaign in cruise.campaign %}"{{ campaign.campaign }}", {% endfor %}</p>
+                            <p>Trips:
+                                {% for trip in cruise.trips %}
+                                    {{ trip.startdate |date('d/m/Y') }} to {{ trip.enddate |date('d/m/Y') }}<br>
+                                {% endfor %}
+                            </p>
+                        </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+        <a href="" class="btn btn-danger">Remove Principal investigator<br>from the system</a>
+
+        <a href="{{ path('principalinvestigators_index') }}" class="btn btn-primary">Return to list of<br>principal investigators</a>
+    </div>
+
+
+
+{% endblock %}

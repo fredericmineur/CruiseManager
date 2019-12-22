@@ -116,6 +116,10 @@ class CampaignController extends AbstractController
         }
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
+
+
+        //Check findBy with first array empty https://stackoverflow.com/questions/7124340/doctrine-coregettable-findall-how-to-specify-order
+
         $cruises = $repoCruise->findAll();
         $investigators = $repoInvestigator->findAll();
         $repoCampaign = $this->getDoctrine()->getRepository(Campaign::class);
@@ -394,6 +398,32 @@ class CampaignController extends AbstractController
         $trips = $repoTrips->findAll();
         return $this->render('display/display_trips.html.twig', [
             'trips'=> $trips
+        ]);
+    }
+
+
+
+
+    /**
+     * @Route("/autocompletetrial", name="autocompletetrial")
+     */
+    public function autocomplete(){
+        $repoTripinvestigators = $this->getDoctrine()->getRepository(Tripinvestigators::class);
+        $tripInvestigators = $repoTripinvestigators->findAll();
+        $arrayFirstname = [];
+        $arraySurname = [];
+        foreach ($tripInvestigators as $tripInvestigator){
+            array_push($arrayFirstname, $tripInvestigator->getFirstname());
+        }
+//        dump ($arrayFirstname);
+        $JsonFirstName = json_encode($arrayFirstname);
+        dump($JsonFirstName);
+
+
+
+        return $this->render('trials/autocomplete.html.twig', [
+            'firsnameJSON' => $JsonFirstName
+
         ]);
     }
 

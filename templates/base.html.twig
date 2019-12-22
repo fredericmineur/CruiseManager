@@ -27,18 +27,22 @@
 
             <div class="collapse navbar-collapse" id="navbarColor01">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ path('campaigns_index') }}">Campaigns</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('cruises_index') }}">Cruises</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{path('cruise_create')}}">Add a new cruise</a>
-{#                        <a class="nav-link" href="{{path('cruise_trial_create')}}">Add a new cruise</a>#}
+                        {#                        <a class="nav-link" href="{{path('cruise_trial_create')}}">Add a new cruise</a>#}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('campaigns_index') }}">Campaigns</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{path('campaign_create')}}">Add a new campaign</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{path('principalinvestigators_index')}}">PI's</a>
                     </li>
                 </ul>
 

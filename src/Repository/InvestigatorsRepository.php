@@ -19,6 +19,7 @@ class InvestigatorsRepository extends ServiceEntityRepository
         parent::__construct($registry, Investigators::class);
     }
 
+
     // /**
     //  * @return Investigators[] Returns an array of Investigators objects
     //  */

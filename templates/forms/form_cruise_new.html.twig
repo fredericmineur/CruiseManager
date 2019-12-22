@@ -33,6 +33,7 @@
 {% form_theme formCruise with
     [
     'forms/_collection_cruise_campaigns.html.twig',
+    'forms/_collection_cruise_trips_tripinvestigators.html.twig',
     _self
     ]
 %}
@@ -89,138 +90,7 @@
     {{ form_end(formCruise) }}
 {% endblock %}
 
-{% block _cruise_trips_widget %}
-    <div class="card">
-        <div class="card-header">
-            <h4>Manage the trips </h4>
-            <input type="hidden" id="widgets-counter-trips" value="0">
-        </div>
-        <div class="card-body">
-            {{ form_widget(form) }}
 
-
-            <div class="form-group">
-                <button type="button" id="add-trip" class="btn btn-primary">Add a trip</button>
-            </div>
-
-        </div>
-    </div>
-{% endblock %}
-
-{% block _cruise_trips_entry_widget %}
-    <div class="form-group" id="block_{{ id }}">
-
-        <div class="row ">
-
-            <div class="col-3">
-                {{ form_row(form.startdate) }}
-            </div>
-            <div class="col-3">
-                {{ form_row(form.enddate) }}
-            </div>
-            <div class="col-4">
-                {{ form_row (form.destinationarea) }}
-            </div>
-            <div class="col-2">
-{#                <button type="button" class="btn btn-danger remove-trip" data-action="delete" data-id="{{ id }}"#}
-{#                        data-target="#block_{{ id }}">#}
-{#                    X#}
-{#                </button>#}
-
-                <button type="button" class="btn btn-danger remove-trip" data-action="delete" data-id="{{ id }}"
-                        data-target="#block_{{ id }}">
-                    <i class="fa fa-trash fa-2x"></i>
-                </button>
-                <button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="{{ id }}"
-                        data-target="#block_{{ id }}">
-                    <i class="fa fa-clone fa-2x"></i>
-                </button>
-            </div>
-        </div>
-
-        {{ form_widget(form.tripinvestigators) }}
-
-
-        {# THIS WILL ONLY BEEN SHOWN IN THE EDIT FORM #}
-
-        {#            <div class="row">#}
-        {#                <div class="col-5">First name</div>#}
-        {#                <div class="col-5">Surname</div>#}
-
-        {#            </div>#}
-
-        {#            {% for forminvestigator in form.tripinvestigators %}#}
-        {#                <div class="row">#}
-        {#                    <div class="col-5">{{ form_widget(forminvestigator.firstname)}}</div>#}
-        {#                    <div class="col-5">{{ form_widget(forminvestigator.surname)}}</div>#}
-        {#                </div>#}
-        {#            {% endfor %}#}
-
-
-
-
-
-    </div>
-{#    <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-success add-tripinvestigator" data-id="{{ id }}">Add investigator</button>#}
-
-{% endblock %}
-
-{# Here we force the form to not display label 0, 1,... 0only widget in row...#}
-{#{% block _cruise_trips_entry_row %}#}
-{#    {{ form_widget(form) }}#}
-{#{% endblock %}#}
-
-{% block _cruise_trips_entry_tripinvestigators_widget %}
-
-        {% dump(form.children) %}
-
-{#    {% if form.children %}#}
-        <div class="card" style="background-color: #95c9ec">
-            <div class="card-header">
-                <div class="row">
-
-                    <div class="col-4">First name</div>
-                    <div class="col-4">Surname</div>
-                </div>
-                <input type="hidden" id="widgets-counter-tripinvestigators-{{ id }}" value="0">
-            </div>
-            <div class="card-body">
-                {{ form_widget(form) }}
-            </div>
-        </div>
-    <div class="form-group">
-        <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-success add-tripinvestigator" data-id="{{ id }}">Add investigator</button>
-    </div>
-    <hr style=" border-top: 3px dashed" >
-
-
-
-{#    {% endif %}#}
-
-
-
-{% endblock %}
-
-{% block _cruise_trips_entry_tripinvestigators_entry_widget %}
-    <div class="form-group" id="block_{{ id }}">
-{#        {% dump(id) %}#}
-        <div class="row">
-            <div class="col-4">
-                {{ form_widget(form.firstname) }}
-            </div>
-            <div class="col-4">
-                {{ form_widget(form.surname) }}
-            </div>
-            <div class="col-4">
-                <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete" data-id="{{ id }}"
-                        data-target="#block_{{ id }}">
-                    X
-                </button>
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
 
 
 
@@ -228,18 +98,5 @@
     <script src="{{ asset('js/addTripsToCruisePlusTripInvestigators.js') }}"></script>
     <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
 {#    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>#}
-
-{#    <script>#}
-{#        $( document ).ready(function() {#}
-{#            handleDeleteButtonsTrips();#}
-{#            // handleAddButtonsTripInvestigators(window.document);#}
-{#            // handleDeleteButtonsTripinvestigators(window.document);#}
-{#            updateCounterTrips();#}
-{#            handleDeleteButtonsCampaigns();#}
-{#            updateCounterCampaigns();#}
-{#        });#}
-{#    </script>#}
-
-
 
 {% endblock %}
