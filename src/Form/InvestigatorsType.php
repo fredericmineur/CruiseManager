@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Investigators;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,13 +16,7 @@ class InvestigatorsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('shortname',
-                TextType::class, [
-                    'label' => 'Short name',
-                    'attr' => [
-                        'placeholder' => 'Short Name'
-                    ]
-                ])
+
             ->add('surname',
                 TextType::class, [
                     'label' => 'Surname',
@@ -34,12 +31,49 @@ class InvestigatorsType extends AbstractType
                         'placeholder' => 'First name'
                     ]
                 ])
-//            ->add('initials')
-//            ->add('memo')
-//            ->add('imisnr')
-//            ->add('birthdate')
+            ->add('imisnr',
+                IntegerType::class,[
+                    'label' => 'IMIS number',
+                    'attr' => [
+                        'placeholder' => 'IMIS'
+                    ]]
+            )
+            ->add('passengertype',
+                TextType::class,[
+                    'label' => 'Passenger type',
+                    'attr' => [
+                        'placeholder' => 'e.g. Scientist'
+                    ]
+                ])
+
+
+//            ->add('shortname',
+//                TextType::class, [
+//                    'label' => 'Short name',
+//                    'attr' => [
+//                        'placeholder' => 'Short Name'
+//                    ]
+//                ])
+//            ->add('initials',
+//                TextType::class,[
+//                    'label' => 'Initials',
+//                    'attr' => [
+//                        'placeholder' => 'Initials'
+//                    ]
+//                ])
+//            ->add('memo',
+//                TextareaType::class,[
+//                    'label' => 'Memo',
+//                    'attr' => [
+//                        'placeholder' => 'Memo text'
+//                ])
+
+
+//            ->add('birthdate',[
+//
+//            ])
 //            ->add('nationality')
-//            ->add('passengertype')
+
         ;
     }
 

@@ -29,7 +29,7 @@
             </div>
 
         </div>
-        <a href="" class="btn btn-danger">Remove Principal investigator<br>from the system</a>
+        <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': principalInvestigator.investigatorid}) }}" class="btn btn-danger">Remove Principal investigator<br>from the system</a>
 
         <a href="{{ path('principalinvestigators_index') }}" class="btn btn-primary">Return to list of<br>principal investigators</a>
     </div>

@@ -32,20 +32,17 @@ class PrincipalInvestigatorController extends AbstractController
         $investigator = new Investigators();
         $form = $this->createForm(InvestigatorsType::class);
         $form->handleRequest($request);
-//
-//        if($form->isSubmitted() && $form->isValid()){
-//            $manager->persist($investigator);
-//            $manager->flush();
-//            return $this->redirectToRoute('principalinvestigator_details', [
-//                'principalInvestigatorId' => $investigator->getInvestigatorid()
-//            ]);
-//        }
-
-
-
-        return $this->render('forms/form_PInvestigator_new.html.twig', [
+        if($form->isSubmitted() && $form->isValid()){
+            $manager->persist($investigator);
+            $manager->flush();
+            return $this->redirectToRoute('principalinvestigator_details', [
+                'principalInvestigatorId' => $investigator->getInvestigatorid()
+            ]);
+        }
+        return $this->render('forms/form_PInvestigator.html.twig', [
             'formInvestigator' => $form->createView(),
-            'investigator' => $investigator
+            'investigator' => $investigator,
+            'mode' => 'create'
         ]);
     }
 
@@ -60,15 +57,52 @@ class PrincipalInvestigatorController extends AbstractController
         ]);
     }
 
+
+
     /**
-     * @Route("/PI/{principalInvestigatorId}/remove", name="remove_principalinvestigator")
+     * @Route("/PI/edit/{principalInvestigatorId}", name="edit_principalinvestigator")
+     */
+    public function editPI(ObjectManager $manager, Request $request, $principalInvestigatorId) {
+        $investigator = $manager->getRepository(Investigators::class)
+            ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
+        $form = $this->createForm(InvestigatorsType::class, $investigator);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $manager->persist($investigator);
+            $manager->flush();
+            return $this->redirectToRoute('principalinvestigator_details', [
+                'principalInvestigatorId' => $investigator->getInvestigatorid()
+            ]);
+        }
+        return $this->render('forms/form_PInvestigator.html.twig', [
+            'formInvestigator' => $form->createView(),
+            'investigator' => $investigator,
+            'mode' => 'edit'
+        ]);
+    }
+
+    /**
+     * @Route("/PI/remove_PI_warning/{principalInvestigatorId}", name="remove_PI_warning")
+     */
+    public function warnRemovePI (ObjectManager $manager, $principalInvestigatorId){
+        $investigator = $manager->getRepository(Investigators::class)
+            ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
+        return $this->render('remove/remove_PI.html.twig',[
+            'investigator' => $investigator
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/PI/remove_PI/{principalInvestigatorId}", name="remove_PI")
      */
     public function removePI(ObjectManager $manager, $principalInvestigatorId ){
         $principalInvestigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
-        return $this->render('remove/remove_PI.html.twig', [
-            'principalInvestigator' => $principalInvestigator
-        ]);
+        $manager->remove($principalInvestigator);
+        $manager->flush();
+        return $this->redirectToRoute('principalinvestigators_index');
     }
 
 

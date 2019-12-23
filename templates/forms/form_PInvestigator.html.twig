@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+{#        <div class="row">#}
+            <div class="card">
+                <div class="card-header">
+                    {% if mode == 'create' %}
+                    <h5>Create new principal investigator(PI)</h5> {% elseif mode == 'edit' %}
+                    <h5>Edit principal investigator</h5><p>{{ investigator.surname }}, {{ investigator.firstname }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    {{ form_start(formInvestigator) }}
+                    {{ form_widget(formInvestigator) }}
+
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">
+                        {% if mode == 'edit' %}
+                            Confirm edit{% elseif mode == 'create' %}
+                            Create PI {% endif %}
+                    </button>
+                    {{ form_end(formInvestigator) }}
+                </div>
+            </div>
+{#        </div>#}
+    </div>
+
+
+
+
+{% endblock %}

@@ -4,9 +4,10 @@
 
 {% block body %}
 
-    <a href="{{ path('new_investigator') }}" class="btn btn-primary">Add a principal investigator</a>
+
 
     <div class="container">
+        <h3>List of principal investigators</h3><a href="{{ path('create_investigator') }}" class="btn btn-success">Add a principal investigator</a>
         <table class="table-hover table-bordered display" id="myDataTable" width="100%">
             <thead>
             {% set headerRow = "
@@ -23,8 +24,12 @@
             {% for investigator in principalInvestigators %}
                 <tr>
                     <td>{{ investigator.surname }}
-                        <a href="" class=""><i style="color:red" class="fa fa-trash "></i></a>
-                        <a href="{{ path('principalinvestigator_details', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i  class="fa fa-info-circle "></i></a>
+                        <a href="{{ path('principalinvestigator_details', {'principalInvestigatorId': investigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                        <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit "></i></a>
+                        <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash "></i></a>
+
+
+
                     </td>
                     <td>{{ investigator.firstname }}</td>
                     <td>{{ investigator.imisnr }}</td>
