@@ -39,6 +39,12 @@ function cloneTrip(contextElement){
         // const sectionTripToClone = $(this.dataset.target).parent('fieldset');
         // console.log(sectionTripToClone);
         const target = this.dataset.target;
+        //Select every input inside the target...loop throug them ....copy the value of the imput into the innerHTML  (attr() is the HTML attribute)
+
+        $("input", target).each(function (idx, inputelement) {
+             var ie = $(inputelement);
+             ie.attr("value", ie.val())
+        })
         const clonedTrip = $(target).parent('fieldset').clone();
         // console.log(clonedTrip);
 
@@ -203,7 +209,6 @@ $(document).ready(function () {
     cloneTrip(window.document);
     AddTripInvestigatorsHandler(window.document);
     deleteTripinvestigators(window.document);
-
 
 });
 

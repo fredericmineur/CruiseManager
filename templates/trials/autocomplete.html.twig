@@ -10,18 +10,29 @@
 {% block body %}
 
     <input type="text" id="basics" />
+{#    {% dump(nameJSON) %}#}
 
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js') }}"></script>
     <script>
+
         var options = {
-            // data: ["blue", "green", "pink", "red", "yellow"]
-            data: {{firsnameJSON}}
+            //data: ["blue", "green", "pink", "red", "yellow"]
+            data: {{ nameJSON |raw }},
+            // url: "midasmanagement/jsonresponse",
+            getValue: "first_name",
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+
         };
 
         $("#basics").easyAutocomplete(options);
+
     </script>
 
 

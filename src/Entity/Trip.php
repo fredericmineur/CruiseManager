@@ -27,6 +27,9 @@ class Trip
      * @var \DateTime|null
      *
      * @ORM\Column(name="Startdate", type="datetime", nullable=true)
+     * @Assert\NotBlank(message="no null date")
+     * @Assert\DateTime
+     * @var string A "d-m-Y" formatted value
      */
     private $startdate;
 
@@ -34,6 +37,9 @@ class Trip
      * @var \DateTime|null
      *
      * @ORM\Column(name="Enddate", type="datetime", nullable=true)
+     * @Assert\NotBlank(message="no null date")
+     * @Assert\DateTime
+     * @var string A "d-m-Y" formatted value
      */
     private $enddate;
 
@@ -132,7 +138,7 @@ class Trip
 
 
     /**
-     * @var \Cruise
+     * @var Cruise
      *
      * @ORM\ManyToOne(targetEntity="Cruise", inversedBy="trips")
      * @ORM\JoinColumns({
