@@ -9,10 +9,10 @@
 
 <div class="container">
     <h3>Details of the campaign</h3>
-    <p>Title: "<strong>{{ campaign.campaign |convert_encoding('UTF-8','CP1252') }}</strong>" </p>
+    <p>Title: "<strong>{{ campaign.campaign}}</strong>" </p>
 
     <p>IMIS Project Number: <strong>{{ campaign.imisprojectnr }} </strong><span style="font-size: x-small">Midas ID: {{ campaign.campaignid }}</span></p>
-    <p>Notes: <strong><i>{{ campaign.memo |convert_encoding('UTF-8','CP1252') }}</i></strong></p>
+    <p>Notes: <strong><i>{{ campaign.memo }}</i></strong></p>
 
     <h3>Cruises</h3>
 
@@ -60,6 +60,7 @@
 
 {% block javascripts %}
 
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
 <script src="/js/dataTables.fixedHeader.min.js"></script>
 <script type="text/javascript">
     $(document).ready( function () {

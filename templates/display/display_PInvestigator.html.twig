@@ -25,13 +25,34 @@
                         </div>
 
                     {% endfor %}
+                    <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': principalInvestigator.investigatorid}) }}"><i class="fa fa-edit fa-2x"></i></a>
+
+                    <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': principalInvestigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
+
                 </div>
             </div>
 
-        </div>
-        <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': principalInvestigator.investigatorid}) }}" class="btn btn-danger">Remove Principal investigator<br>from the system</a>
 
-        <a href="{{ path('principalinvestigators_index') }}" class="btn btn-primary">Return to list of<br>principal investigators</a>
+        </div>
+        <a href="{{ path('principalinvestigators_index') }}" class="btn btn-dark">PI list</a>
+
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            {% for cruise in principalInvestigator.cruises %}
+                <div class="card">
+                    <p>Cruise {{ cruise.plancode }} for campaign(s): {% for campaign in cruise.campaign %}"{{ campaign.campaign }}", {% endfor %}</p>
+                    <p>Trips:
+                        {% for trip in cruise.trips %}
+                            {{ trip.startdate |date('d/m/Y') }} to {{ trip.enddate |date('d/m/Y') }}<br>
+                        {% endfor %}
+                    </p>
+                </div>
+
+            {% endfor %}
+        </div>
     </div>
 
 

@@ -104,6 +104,28 @@ class CampaignController extends AbstractController
             ]);
     }
 
+    /**
+     * @Route("/campaign/remove_campaign_warning/{campaignId}", name="remove_campaign_warning")
+     */
+    public function warnRemoveCampaign (ObjectManager $manager, $campaignId){
+        $campaign = $manager->getRepository(Campaign::class)
+            ->findOneBy(['campaignid'=> $campaignId]);
+        return $this->render('remove/remove_campaign.html.twig',[
+            'campaign' => $campaign
+        ]);
+    }
+
+    /**
+     * @Route("/campaign/remove_campaign/{campaignId}", name="remove_campaigm")
+     */
+    public function removeCampaign(ObjectManager $manager, $campaignId ){
+        $campaign = $manager->getRepository(Campaign::class)
+            ->findOneBy(['campaignid'=> $campaignId]);
+        $manager->remove($campaign);
+        $manager->flush();
+        return $this->redirectToRoute('campaigns_index');
+    }
+
 
 
 

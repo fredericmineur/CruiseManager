@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="container">
-
+        <h3>List of campaigns</h3><a href="{{ path('campaign_create') }}" class="btn btn-success">Add a campaign</a>
         <table class="table-hover table-bordered display" id="myDataTable" width="100%">
             <thead>
                 <tr>
@@ -18,8 +18,14 @@
             <tbody>
             {% for campaign in campaigns %}
                 <tr>
-                    <td>{{ campaign.campaign |convert_encoding('UTF-8','CP1252')}}
-                        <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid})}}"><i class="fa fa-info-circle"></i></a>
+                    <td>{{ campaign.campaign}}
+                        <a href="{{ path('campaign_details', {'campaignId': campaign.campaignid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                        <a href="{{ path('campaign_edit', {'campaignId': campaign.campaignid}) }}"><i class="fa fa-edit "></i></a>
+                        <a href="{{ path('remove_campaign_warning', {'campaignId': campaign.campaignid}) }}" class=""><i style="color:red" class="fa fa-trash "></i></a>
+
+
+
+
                     </td>
                     <td>
                         {% set linkImis = 'http://www.vliz.be/en/imis?module=project&proid=' %}

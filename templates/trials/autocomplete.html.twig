@@ -9,7 +9,9 @@
 
 {% block body %}
 
-    <input type="text" id="basics" />
+    <input type="text" class="basics" />
+    <h2>Break</h2>
+    <input type="text" class="basics" />
 {#    {% dump(nameJSON) %}#}
 
 {% endblock %}
@@ -31,7 +33,7 @@
 
         };
 
-        $("#basics").easyAutocomplete(options);
+        $(".basics").easyAutocomplete(options);
 
     </script>
 
