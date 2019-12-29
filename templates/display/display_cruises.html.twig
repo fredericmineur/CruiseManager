@@ -48,7 +48,7 @@
             {% for cruise in cruisesForDisplay  %}
                 <tr>
 
-                    <td>{{ cruise.plancode}}  <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></a></td>
+                    <td>{{ cruise.plancode}}  <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></td>
                     <td><span style="display:none">{{ cruise.startdate|date('Y/m/d')}}</span>
 
                         {% if cruise.trips %}{% set nbTrips = cruise.trips|length %}{% endif %}
@@ -73,8 +73,8 @@
                     <td>
                         {% set arrayOrphanIds = [0, 264, 549, 556, 637] %}
                         {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanIds %}
-                            {{ cruise.principalinvestigator.firstname |convert_encoding('UTF-8','CP1252') }}
-                            {{ cruise.principalinvestigator.surname |convert_encoding('UTF-8','CP1252') }}
+                            {{ cruise.principalinvestigator.firstname }}
+                            {{ cruise.principalinvestigator.surname }}
                         {% endif %}
                     </td>
 

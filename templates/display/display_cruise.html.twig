@@ -15,9 +15,9 @@
                         <p>Duration: <strong>{{ cruiseStartDate | date ('d/m/Y') }}
                                 - {{ cruiseEndDate | date ('d/m/Y') }}</strong></p>
                         <p>Principal investigator: <strong>
-                                {% if cruise.principalinvestigator is not null %}
-                                    {{ cruise.principalinvestigator.firstname |convert_encoding('UTF-8','CP1252') }}
-                                    {{ cruise.principalinvestigator.surname|convert_encoding('UTF-8','CP1252') }}
+                                {% if cruise.principalinvestigator is defined and cruise.principalinvestigator is not null and cruise.principalinvestigator.investigatorid !=0 %}
+                                    {{ cruise.principalinvestigator.firstname }}
+                                    {{ cruise.principalinvestigator.surname }}
                                 {% else %} None selected {% endif %}
                             </strong></p>
 
@@ -80,7 +80,7 @@
 {#                        <div class="card-footer">#}
                             <p>Investigators:
                             {% for investigator in trip.tripinvestigators %}
-                                {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}
+                                {{ investigator.firstname  }} {{ investigator.surname}}
                                 {% if loop.last %}{% else %}, {% endif %}
                             {% endfor %}
                                 <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i

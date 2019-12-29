@@ -52,8 +52,12 @@ class PrincipalInvestigatorController extends AbstractController
     public function displayPI(ObjectManager $manager, $principalInvestigatorId){
         $principalInvestigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
+//        $cruises = $principalInvestigator->getCruises();
+        $cruisesInvestigator = $manager->getRepository(Cruise::class)->findBy(['principalinvestigator'=> $principalInvestigator->getInvestigatorid()], ['plancode'=> 'ASC']);
+        dump($cruisesInvestigator);
         return $this->render('display/display_PInvestigator.html.twig', [
-            'principalInvestigator' => $principalInvestigator
+            'principalInvestigator' => $principalInvestigator,
+            'cruisesPI'=> $cruisesInvestigator
         ]);
     }
 

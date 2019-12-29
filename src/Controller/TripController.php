@@ -12,8 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class TripController extends AbstractController
 {
+
     /**
-     * @Route("/trips/{tripId}", name="trip_edit")
+     * @Route("/trips/{tripId}", name="trip_details")
+     */
+    public function tripDetails(ObjectManager $manager, $tripId){
+        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=>$tripId]);
+        return $this->render();
+    }
+
+    /**
+     * @Route("/trips/{tripId}/edit", name="trip_edit")
      */
     public function editTrip($tripId, Request $request, ObjectManager $manager)
     {
