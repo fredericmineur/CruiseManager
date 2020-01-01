@@ -65,7 +65,7 @@ function cloneTrip(contextElement){
         //REMOVE THE CLONE BUTTON (for simplification no event handler for that functionality)...
         // clonedTripHTML = clonedTripHTML.replace(/<button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="cruise_trips_\d+" data-target="#block_cruise_trips_\d+"><i class="fa fa-clone fa-2x"><\/i><\/button>/,'');
 
-        clonedTripHTML = clonedTripHTML.replace(/<button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="cruise_trips_\d+" data-target="#block_cruise_trips_\d+">[\s\n]*<i class="fa fa-clone fa-2x"><\/i>[\s\n]*<\/button>/,'');
+        // clonedTripHTML = clonedTripHTML.replace(/<button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="cruise_trips_\d+" data-target="#block_cruise_trips_\d+">[\s\n]*<i class="fa fa-clone fa-2x"><\/i>[\s\n]*<\/button>/,'');
 
 
         console.log(clonedTripHTML);
@@ -80,6 +80,7 @@ function cloneTrip(contextElement){
         /// !!!!! context ELEMENT?????
         AddTripInvestigatorsHandler(clonedTripElement)
         deleteTripinvestigators(clonedTripElement);
+        cloneTrip(clonedTripElement);
 
 
 
@@ -203,7 +204,7 @@ function deleteTripinvestigators(contextElement){
 
 
 $(document).ready(function () {
-    //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller
+    //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
     updateCounterTrips();
     deleteTrip(window.document);
     cloneTrip(window.document);

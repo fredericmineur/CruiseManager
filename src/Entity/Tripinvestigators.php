@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Tripinvestigators
- *
+ * @ORM\Entity(repositoryClass="App\Repository\TripinvestigatorsRepository")
  * @ORM\Table(name="TripInvestigators", indexes={@ORM\Index(name="IDX_915DA6EE1644F87", columns={"InvestigatorNR"}), @ORM\Index(name="IDX_915DA6EE67E1FAAF", columns={"TripNr"})})
- * @ORM\Entity
  */
 class Tripinvestigators
 {
