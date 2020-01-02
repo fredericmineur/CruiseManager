@@ -6,6 +6,7 @@ use App\Entity\Campaign;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
 use App\Entity\Trip;
+use App\Entity\Tripinvestigators;
 use App\Form\CruiseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -102,9 +103,12 @@ class CruiseController extends AbstractController
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
+
+
         return $this->render('forms/form_cruise_new.html.twig', [
             'formCruise' => $form->createView(),
-//            'mode' => 'create'
+            'firstNamesTripInvJson' => $this->generateJsonDistinctFirstNamesTripInvestigators($manager),
+            'surnamesTripInvJson' => $this->generateDistinctSurnamesTripInvestigators($manager)
         ]);
     }
 
@@ -199,6 +203,29 @@ class CruiseController extends AbstractController
             'cruiseStartDate' => $cruiseStartDate,
             'cruiseEndDate' => $cruiseEndDate
         ]);
+    }
+
+    public function generateJsonDistinctFirstNamesTripInvestigators (ObjectManager $manager){
+        $tripInvestigatorsFirstNames = $manager->getRepository(Tripinvestigators::class)
+            ->findDistinctFirstNames();
+        $arrayFirstNames = [];
+        foreach($tripInvestigatorsFirstNames as $firstName) {
+            $firstName = trim($firstName['firstname']);
+            array_push($arrayFirstNames, $firstName);
+        }
+        return json_encode($arrayFirstNames);
+
+    }
+
+    public function generateDistinctSurnamesTripInvestigators(ObjectManager $manager) {
+        $tripInvestigatorsSurnames = $manager->getRepository(Tripinvestigators::class)
+            ->findDistinctSurnames();
+        $arraySurnames = [];
+        foreach ($tripInvestigatorsSurnames as $surname) {
+            $surname = trim($surname['surname']);
+            array_push($arraySurnames, $surname);
+        }
+        return json_encode($arraySurnames);
     }
 
 

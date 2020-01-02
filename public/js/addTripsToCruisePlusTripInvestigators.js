@@ -39,7 +39,7 @@ function cloneTrip(contextElement){
         // const sectionTripToClone = $(this.dataset.target).parent('fieldset');
         // console.log(sectionTripToClone);
         const target = this.dataset.target;
-        //Select every input inside the target...loop through them ....copy the value of the input into the innerHTML  (attr() is the HTML attribute)
+        //Select every input inside the target...loop through them ....copy the value of the input, and set it as value into the innerHTML  (attr() is the HTML attribute)
 
         $("input", target).each(function (idx, inputElement) {
              var ie = $(inputElement);
@@ -183,6 +183,7 @@ function  AddTripInvestigatorsHandler(contextElement){
         $('input[id^=widgets-counter-tripinvestigators-cruise_trips_' + tripId+ '_tripinvestigators]').val(indexTInvestigators+1);
 
         deleteTripinvestigators(elementTripinvestigator);
+        addClassForAutocomplete(elementTripinvestigator);
 
 
     })
@@ -199,6 +200,12 @@ function deleteTripinvestigators(contextElement){
     })
 }
 
+function addClassForAutocomplete(contextElement){
+    $('input[name$="[firstname]"]', contextElement).addClass("autocomplete-first-name");
+    $('input[name$="[surname]"]', contextElement).addClass("autocomplete-surname");
+    $(".autocomplete-first-name").easyAutocomplete(optionsFirstNames);
+    $(".autocomplete-surname").easyAutocomplete(optionsSurnames);
+}
 
 
 
@@ -210,6 +217,7 @@ $(document).ready(function () {
     cloneTrip(window.document);
     AddTripInvestigatorsHandler(window.document);
     deleteTripinvestigators(window.document);
+    addClassForAutocomplete(window.document);
 
 });
 

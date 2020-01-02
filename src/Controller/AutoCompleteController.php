@@ -64,8 +64,12 @@ class AutoCompleteController extends AbstractController
         }
         $firstNamesJSON = json_encode($arrayFirstNameTripInvestigators);
         $surnamesJSON = json_encode($arraySurnameTripInvestigators);
-        dd($surnamesJSON);
-        dd($firstNamesJSON);
+//        dd($surnamesJSON);
+//        dd($firstNamesJSON);
+        return $this->render('trials/autocomplete.html.twig',[
+            'firstNamesJSON' => $firstNamesJSON,
+            'surnamesJSON' => $surnamesJSON
+        ]);
 
     }
 
@@ -87,15 +91,15 @@ class AutoCompleteController extends AbstractController
             array_push($arrayNameInvestigators, $value);
         }
         $nameJSON = json_encode($arrayNameInvestigators);
-//        dd($nameJSON);
+        dd($nameJSON);
 
 
 
 
-        return $this->render('trials/autocomplete.html.twig', [
-            'nameJSON' => $nameJSON
+//        return $this->render('trials/autocomplete.html.twig', [
+//            'nameJSON' => $nameJSON
 
-        ]);
+//        ]);
     }
 
 
