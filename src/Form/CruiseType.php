@@ -57,7 +57,7 @@ class CruiseType extends AbstractType
                                'required' => false,
 
                                'choice_label' => function($campaign) {
-                                   return utf8_encode($campaign->getImisprojectnr().' '.$campaign->getCampaign());
+                                   return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
                                },
                                'query_builder' => function(EntityRepository $er) {
                                    return $er->createQueryBuilder('i')

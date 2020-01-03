@@ -161,6 +161,8 @@ class CruiseController extends AbstractController
         return $this->render('forms/form_cruise_edit.html.twig', [
             'formCruise' => $form->createView(),
             'cruise'=> $cruise,
+            'firstNamesTripInvJson' => $this->generateJsonDistinctFirstNamesTripInvestigators($manager),
+            'surnamesTripInvJson' => $this->generateDistinctSurnamesTripInvestigators($manager)
 //            'mode' => 'edit'
         ]);
 

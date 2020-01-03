@@ -229,6 +229,31 @@
 
 
 {% block javascripts %}
+    <script src="{{ asset('EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js') }}"></script>
+    <script>
+        var optionsFirstNames = {
+            data: {{ firstNamesTripInvJson | raw }},
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+        };
+
+        var optionsSurnames = {
+            data: {{ surnamesTripInvJson | raw }},
+            list: {
+                match: {
+                    enabled: true
+                }
+            }
+        }
+
+        //statements also reinstated when creating a new trip investigator
+        $(".autocomplete-first-name").easyAutocomplete(optionsFirstNames);
+        $(".autocomplete-surname").easyAutocomplete(optionsSurnames);
+
+    </script>
     <script src="{{ asset('js/addTripsToCruisePlusTripInvestigators.js') }}"></script>
 {#    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>#}
     <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
