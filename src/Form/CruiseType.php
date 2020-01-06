@@ -20,7 +20,10 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class CruiseType extends AbstractType
 {
@@ -87,7 +90,7 @@ class CruiseType extends AbstractType
                                    'placeholder' => 'xxxxxx'
                                ],
                                'choice_label' => function ($investigator) {
-                                   return utf8_encode($investigator->getSurname().', '.$investigator->getFirstname());
+                                   return $investigator->getSurname().', '.$investigator->getFirstname();
                                },
                                'query_builder' =>function (EntityRepository $er) {
                                    return $er->createQueryBuilder('i')
@@ -116,42 +119,30 @@ class CruiseType extends AbstractType
 
                     'by_reference' => false,
 
-                    'required' => false
+                    'required' => false,
 //                    'attr' => [
 //                        'class' => 'trips-collection',
 //                    ],
-
                                    ]
-
-
             );
 
+}
 
+//SORTING THE TRIPS BY DATE for the edit form
+//https://stackoverflow.com/questions/34967795/order-of-symfony-form-collectiontype-field/34968046
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        usort($view['trips']->children, function (FormView $a, FormView $b){
+            $startDateA = $a->vars['value']->getStartdate();
+            $startDateB = $b ->vars['value']->getStartdate();
+            if ($startDateA == $startDateB) {
+                return 0;
+            }
 
-
-
-        ;
-//        $builder -> get('startdate')
-//            ->addModelTransformer(new Time8HTransformer());
-//        $builder ->get('enddate')
-//            ->addModelTransformer(new Time17HTransformer());
+            return ($startDateA < $startDateB) ? -1 : 1;
+        });
     }
 
-//    public function generateArrayCampaigns(){
-//        $cr = new CampaignRepository(ManagerRegistry::class);
-//        $array = $cr->arrayCampaigns();
-//
-//        $arrayCampaignIds = [];
-//        $arrayImis =[];
-//        $arrayCampaignNames = [];
-//        foreach ($array as $key => $value) {
-//            array_push($arrayCampaignNames, $value["campaign"]);
-//            array_push($arrayCampaignIds, $value["campaignid"]);
-//            array_push($arrayImis, $value["imisprojectnr"]);
-//        }
-//        return ["CampaignImis"=> $arrayImis,
-//            "CampaignIds"=>$arrayCampaignIds, "CampaignNames"=> $arrayCampaignNames];;
-//    }
 
 
 

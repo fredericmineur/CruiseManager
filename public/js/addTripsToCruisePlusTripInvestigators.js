@@ -86,10 +86,20 @@ function deleteTrip(contextElement){
     $('button.remove-trip[data-action="delete"]', contextElement).click(function(){
 
         // as we have created in Twig a 'data-target' attribute with the id selector of the block
-        const target=this.dataset.target;
+        const target=this.dataset.target; //eg. '#block_cruise_trips_2'
+        const blockTrip = target.replace('#', '');
+        //delete the key/pair of the corresponding trip in the counter
+        delete window.counter[blockTrip];
+
+        //remove the whole trip section in the DOM
         $(target).parent('fieldset').remove();
 
+
     })
+
+
+
+
 }
 
 
