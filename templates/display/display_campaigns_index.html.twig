@@ -40,7 +40,7 @@
 
                     <td>
                         {% for cruise in campaign.cruise  %}
-                            [{{ cruise.plancode }}]
+                            [{{ cruise.plancode }}]<a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a>
                         {% endfor %}
 
 

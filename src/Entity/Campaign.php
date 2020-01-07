@@ -5,12 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Campaign
  *
  * @ORM\Table(name="Campaign")
  * @ORM\Entity(repositoryClass="App\Repository\CampaignRepository")
+ * @UniqueEntity(fields="imisprojectnr", message="IMIS number already in use" )
+ * @UniqueEntity(fields="campaign", message="Title of the campaign already in use")
  */
 class Campaign
 {
@@ -39,8 +43,8 @@ class Campaign
 
     /**
      * @var int|null
-     *
      * @ORM\Column(name="ImisProjectnr", type="integer", nullable=true)
+     * @Assert\Regex(pattern="/^[0-9]{1,5}$/", message="IMIS number only contains digit")
      */
     private $imisprojectnr;
 

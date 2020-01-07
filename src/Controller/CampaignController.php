@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,7 +70,7 @@ class CampaignController extends AbstractController
             ]);
         }
 
-        return $this->render('forms/form_campaign.html.twig', [
+        return $this->render('forms/form_campaign_new.html.twig', [
             'formCampaign' => $form->createView(),
             'mode' => 'create'
         ]);
@@ -78,14 +79,26 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/edit/{campaignId}", name="campaign_edit")
      */
-    public function editCampaign($campaignId)
+    public function editCampaign($campaignId, Request $request, ObjectManager $manager)
     {
         $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
         $campaign = $repoCampaigns->findOneBy(['campaignid'=> $campaignId]);
         $form = $this->createForm(CampaignType::class, $campaign);
-        return $this->render('forms/form_campaign.html.twig', [
-            'form' => $form->createView(),
-            'mode' => 'edit'
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $manager->persist($campaign);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                "The campaign \"{$campaign->getCampaign()}\" has been successfully modified"
+            );
+            return $this->redirectToRoute('campaign_details', [
+                'campaignId' => $campaign->getCampaignid()
+            ]);
+        }
+
+        return $this->render('forms/form_campaign_edit.html.twig', [
+            'formCampaign' => $form->createView()
         ]);
     }
 
@@ -125,13 +138,6 @@ class CampaignController extends AbstractController
         $manager->flush();
         return $this->redirectToRoute('campaigns_index');
     }
-
-
-
-
-
-
-
 
 }
 

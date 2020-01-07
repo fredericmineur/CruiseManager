@@ -138,7 +138,6 @@ class CruiseType extends AbstractType
             if ($startDateA == $startDateB) {
                 return 0;
             }
-
             return ($startDateA < $startDateB) ? -1 : 1;
         });
     }

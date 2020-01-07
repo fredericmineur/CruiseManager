@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="container">
+
+        <h2>Edit the campaign</h2>
+
+
+        {{ form_start(formCampaign) }}
+
+        {{ form_widget(formCampaign) }}
+
+        <button type="submit" class="btn btn-primary">Modify</button>
+
+        {{ form_end(formCampaign) }}
+
+    </div>
+
+
+
+{% endblock %}

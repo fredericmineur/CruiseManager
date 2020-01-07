@@ -31,7 +31,8 @@
                     <td>{{ trip.destinationarea }}</td>
 
                     <td>{% if trip.cruiseid is not null %}
-                            {{ trip.cruiseid.plancode }} {% else %}  NA {% endif %}</td>
+                            {{ trip.cruiseid.plancode }} <a href="{{path('cruise_details', {'cruiseId': trip.cruiseid.cruiseid})}}"><i class="fa fa-info-circle"></i></a>
+                        {% else %}  NA {% endif %}</td>
 {#                    <td>{% for tripstation in trip.tripstations %}#}
 {#                        [{{ tripstation.deflatitude |number_format(2)}}]#}
 {#                        {% endfor %}</td>#}

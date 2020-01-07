@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="Cruise", indexes={@ORM\Index(name="CruizeID", columns={"CruiseID"}), @ORM\Index(name="IDX_9931752D77093E2", columns={"PrincipalInvestigator"})})
  * @ORM\Entity
+ * @UniqueEntity(fields={"plancode"}, message="This plan code is already in use")
  */
 class Cruise
 {
@@ -66,8 +68,8 @@ class Cruise
 
     /**
      * @var string|null
-     *
      * @ORM\Column(name="Plancode", type="string", length=10, nullable=true, options={"fixed"=true})
+     * @Assert\Regex(pattern="/^[0-9]{2}-[0-9]{3}$/", message="Plan code can only contain numbers, in the form XX-XXX")
      */
     private $plancode;
 

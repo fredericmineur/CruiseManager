@@ -9,9 +9,21 @@
 
 <div class="container">
     <h3>Details of the campaign</h3>
-    <p>Title: "<strong>{{ campaign.campaign}}</strong>" </p>
+    <div class="row">
+        <div class="col-10">
+            <p>Title: "<strong>{{ campaign.campaign}}</strong>" </p>
 
-    <p>IMIS Project Number: <strong>{{ campaign.imisprojectnr }} </strong><span style="font-size: x-small">Midas ID: {{ campaign.campaignid }}</span></p>
+            <p>IMIS Project Number: <strong>{{ campaign.imisprojectnr }} </strong><span style="font-size: x-small">Midas ID: {{ campaign.campaignid }}</span></p>
+        </div>
+        <div class="col-2">
+            <a href="{{ path('campaign_edit', {'campaignId': campaign.campaignid}) }}"><i
+                        class="fa fa-edit fa-5x"></i></a>
+        </div>
+    </div>
+
+
+
+
     <p>Notes: <strong><i>{{ campaign.memo }}</i></strong></p>
 
     <h3>Cruises</h3>
@@ -33,13 +45,13 @@
         {% for cruise in cruises|sort %}
 {#            ((a,b)=>a.startdate<=>b.startdate)#}
             <tr>
-                <td>{{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></a></td>
+                <td>{{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></td>
                 <td><span style="display: none">{{ cruise.startdate |date("Y/m/d") }}</span>{{ cruise.startdate |date("d/m/Y") }} </td>
                 <td>{{ cruise.enddate |date("d/m/Y") }} </td>
                 <td>
                     {% for singleCampaign in cruise.campaign %}
                         {% if singleCampaign.campaign != nameOfPresentCampaign %}
-                            {{ singleCampaign.campaign |convert_encoding('UTF-8','CP1252') }}
+                            {{ singleCampaign.campaign }}
 
                             <a href="{{ path('campaign_details', {'campaignId':singleCampaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>
                         {% endif %}
