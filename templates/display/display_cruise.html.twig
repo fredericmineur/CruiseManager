@@ -12,8 +12,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-8">
-                        <p>Duration: <strong>{{ cruiseStartDate | date ('d/m/Y') }}
-                                - {{ cruiseEndDate | date ('d/m/Y') }}</strong></p>
+                        <p>Duration for the trips:
+                            {% if cruise.trips and cruise.trips|length %} {% set nbTrips = cruise.trips|length %}
+                                <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d')}}</span>{{ cruise.trips[0].startdate|date('d/m/Y')}}- {{ cruise.trips[nbTrips-1].enddate|date('d/m/Y') }}
+                            {% else %}No planned trip
+                            {% endif %} </p>
+                        <p>Duration for the cruise: {% if cruise.startdate and cruise.enddate %}<strong>{{ cruise.startdate | date ('d/m/Y') }}
+                                - {{ cruise.enddate | date ('d/m/Y') }}</strong>{% else %}N.A.{% endif %}</p>
                         <p>Principal investigator: <strong>
                                 {% if cruise.principalinvestigator is defined and cruise.principalinvestigator is not null and cruise.principalinvestigator.investigatorid !=0 %}
                                     {{ cruise.principalinvestigator.firstname }}
@@ -55,9 +60,11 @@
         </div>
     </div>
 
+    {% if cruise.trips %}
+
     <div class="container-fluid">
         <div class="row ">
-            {% for trip in trips %}
+            {% for trip in cruise.trips %}
 {#                <div class="col">#}
                     <div class="card" style="width: 300px !important;" >
 
@@ -100,6 +107,7 @@
 
             {% endfor %}
         </div>
+        {% endif %}
 
 
         {#            <h3>Trips: </h3>#}

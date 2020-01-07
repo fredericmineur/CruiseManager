@@ -179,31 +179,31 @@ class CruiseController extends AbstractController
     {
         $repoCruises = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruises->findOneBy(['cruiseid'=>$cruiseId]);
-        $campaigns = $cruise->getCampaign();
-        $trips = $this->getDoctrine()->getRepository(Trip::class)
-            ->findBy(['cruiseid'=> $cruiseId], ['startdate'=>'ASC']);
+//        $campaigns = $cruise->getCampaign();
+//        $trips = $this->getDoctrine()->getRepository(Trip::class)
+//            ->findBy(['cruiseid'=> $cruiseId], ['startdate'=>'ASC']);
 
         //Getting start and end date of the cruise (through the trips collection)
-        $startDates = [];
-        $endDates = [];
-        foreach ($trips as $trip){
-            array_push($startDates, $trip->getStartdate());
-            array_push($endDates, $trip->getEnddate());
-        }
-
-        if ($startDates){
-
-        }
-        $cruiseStartDate = !empty($startDates) ?  min($startDates) : null; //if $starDates is not empty
-        $cruiseEndDate = !empty($endDates) ? max($endDates) : null;
-        dump($cruiseStartDate, $cruiseEndDate);
+//        $startDates = [];
+//        $endDates = [];
+//        foreach ($trips as $trip){
+//            array_push($startDates, $trip->getStartdate());
+//            array_push($endDates, $trip->getEnddate());
+//        }
+//
+//        if ($startDates){
+//
+//        }
+//        $cruiseStartDate = !empty($startDates) ?  min($startDates) : null; //if $starDates is not empty
+//        $cruiseEndDate = !empty($endDates) ? max($endDates) : null;
+//        dump($cruiseStartDate, $cruiseEndDate);
 
         return $this->render('display/display_cruise.html.twig', [
-            'campaigns' => $campaigns,
+//            'campaigns' => $campaigns,
             'cruise' => $cruise,
-            'trips' => $trips,
-            'cruiseStartDate' => $cruiseStartDate,
-            'cruiseEndDate' => $cruiseEndDate
+//            'trips' => $trips,
+//            'cruiseStartDate' => $cruiseStartDate,
+//            'cruiseEndDate' => $cruiseEndDate
         ]);
     }
 

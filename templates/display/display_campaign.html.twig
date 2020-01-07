@@ -33,9 +33,9 @@
     <table class="table-hover table-bordered display" id="myDataTable">
         <thead>
             <tr>
-                <th></th>
-                <th class="searchable">Start date</th>
-                <th>End date</th>
+                <th>Plan code</th>
+                <th class="searchable">P.Investigator</th>
+                <th>Duration</th>
                 <th>Shared campaigns</th>
             </tr>
 
@@ -46,8 +46,18 @@
 {#            ((a,b)=>a.startdate<=>b.startdate)#}
             <tr>
                 <td>{{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></td>
-                <td><span style="display: none">{{ cruise.startdate |date("Y/m/d") }}</span>{{ cruise.startdate |date("d/m/Y") }} </td>
-                <td>{{ cruise.enddate |date("d/m/Y") }} </td>
+                <td>{{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}} </td>
+
+
+                <td>
+                    {% if cruise.trips and cruise.trips|length %} {% set nbTrips = cruise.trips|length %}
+                        <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d')}}</span>{{ cruise.trips[0].startdate|date('d/m/Y')}}- {{ cruise.trips[nbTrips-1].enddate|date('d/m/Y') }}
+                    {% else %}No planned trip
+                    {% endif %}</td>
+
+
+
+
                 <td>
                     {% for singleCampaign in cruise.campaign %}
                         {% if singleCampaign.campaign != nameOfPresentCampaign %}
