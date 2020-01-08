@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Trip;
+use App\Entity\Tripstations;
 use App\Form\TripType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -18,8 +19,15 @@ class TripController extends AbstractController
      */
     public function tripDetails(ObjectManager $manager, $tripId){
         $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=>$tripId]);
-        return $this->render();
+
+
+        return $this->render('display/display_trip.html.twig', [
+            'trip' => $trip
+        ]);
     }
+
+    //MANY TO MANY WITH A SUPPLEMENTARY FIELD IN THE INTERMEDIARY TABLE
+    //https://openclassrooms.com/forum/sujet/symfony-manytomany-avec-un-champs-supplementaire
 
     /**
      * @Route("/trips/{tripId}/edit", name="trip_edit")
@@ -37,11 +45,44 @@ class TripController extends AbstractController
             $originalTripinvestigators->add($tripinvestigator);
         }
 
+        $originalTripstations = new ArrayCollection();
+
 
         $form= $this->createForm(TripType::class, $trip);
         $form->handleRequest($request);
 
+//        dd($form->get('stations')->getData());
+
+//        foreach($form)
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($form->get('stations')->getData() as $st)
+            {
+                if(!$trip->getStations()->contains($st))
+                {
+                    $newTripstation = new Tripstations();
+                    $newTripstation->setTripnr($trip);
+                    $newTripstation->setStationnr($st);
+                    $trip->addTripstation($newTripstation);
+                }
+
+            }
+
+            foreach ($trip->getStations() as $st)
+            {
+                if(!$form->get('stations')->getData()->contains($st))
+                {
+                    $oldTripstation= $this->getDoctrine()->getRepository(Tripstations::class)->findOneBy(['tripnr'=>$trip, 'stationnr' => $st])   ;
+                    $trip->removeTripstation($oldTripstation);
+                }
+            }
+
+
+
+
+
+
             foreach ($originalTripinvestigators as $tripinvestigator) {
                 if (false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
                     $manager->remove($tripinvestigator);
@@ -50,8 +91,8 @@ class TripController extends AbstractController
             $cruise = $trip->getCruiseid();
             $manager->persist($trip);
             $manager -> flush();
-            return $this->redirectToRoute('cruise_edit', [
-                'cruiseId' => $cruise->getCruiseId()
+            return $this->redirectToRoute('trip_details', [
+                'tripId' => $trip->getTripid()
             ]);
         }
 

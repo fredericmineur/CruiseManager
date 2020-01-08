@@ -172,7 +172,7 @@ class Trip
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr")
+     * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr", cascade={"persist"})
      */
     private $tripstations;
 
@@ -191,6 +191,34 @@ class Trip
         $this->tripstations = new ArrayCollection();
         $this->tripactions = new ArrayCollection();
     }
+
+    public function getStations(): \Doctrine\Common\Collections\Collection
+    {
+        $stations = new ArrayCollection();
+        foreach ($this->tripstations as $tripstation){
+            $stations[] = $tripstation->getStationnr();
+        }
+        return $stations;
+
+    }
+
+    public function setStations($stations)
+    {
+
+    }
+
+//    public function addStation (Stations $station ): self
+//    {
+//        $stations = $this->tripstations
+//        if (!$this->tripstations)
+//
+//        $tripstations = $this->tripstations;
+//        foreach ($tripstations as $tripstation){
+//
+//        }
+//    }
+
+
 
     public function getTripid(): ?int
     {

@@ -23,7 +23,7 @@
 
         <div class="card">
             <div class="card-header">
-                <h3>Trip  {{ trip.startdate | date('m/d/Y')}} - {{ trip.enddate | date('m/d/Y')}}</h3>
+                <h3>Trip  {{ trip.startdate | date('d/m/Y')}} - {{ trip.enddate | date('d/m/Y')}}</h3>
             </div>
             <div class="card-body">
                 <p>Destination: {{ trip.destinationarea }}</p>
@@ -75,6 +75,15 @@
 
 
     </div>
+
+        <div class="card">
+            <div class="card-header">
+{#                {{ form_label(formTrip.tripstation) }}#}FROMTRIP
+            </div>
+            <div class="card-body">
+{#                {{ form_widget(formCruise.campaign) }}#}FROMTRIP
+            </div>
+        </div>
 
 
         <button type="submit" class="btn btn-warning">Submit modifications</button>

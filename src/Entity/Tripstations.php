@@ -91,7 +91,7 @@ class Tripstations
      *
      * @ORM\Column(name="Serverdate", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $serverdate = 'CURRENT_TIMESTAMP';
+    private $serverdate ;
 
     /**
      * @var \DateTime|null

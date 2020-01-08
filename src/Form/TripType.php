@@ -3,9 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Cruise;
+use App\Entity\Stations;
 use App\Entity\Trip;
+use App\Entity\Tripstations;
 use App\Form\DataTransformer\Time17HTransformer;
 use App\Form\DataTransformer\Time8HTransformer;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -81,6 +84,23 @@ class TripType extends AbstractType
                     ]
                 ]
             )
+            ->add('stations', CollectionType::class,[
+                'allow_add' => true,
+                'by_reference'=>false,
+                'entry_type'=> EntityType::class,
+                'entry_options' => [
+                    'label' => 'Station code',
+                    'class' => Stations::class,
+                    'required' =>false,
+                    'choice_label' => function($station){
+                        return $station->getCode();
+                    },
+                    'query_builder' => function(EntityRepository $er) {
+                        return $er->createQueryBuilder('s')
+                            ->orderBy('s.code', 'ASC');
+                    }
+                ]
+            ])
 
 
 

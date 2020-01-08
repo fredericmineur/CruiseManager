@@ -3,13 +3,15 @@
 {% block title %}Trips{% endblock %}
 
 {% block body %}
-<h1>Trips</h1>
 
-    <table class="table-hover table-bordered display" id="myDataTable">
-        <thead>
-        {% set headerRow =
-            "<tr>
-                <th>Start Date</th>
+    <div class="container">
+        <h1>Trips</h1>
+
+        <table class="table-hover table-bordered display" id="myDataTable">
+            <thead>
+            {% set headerRow =
+                "<tr>
+                <th>Start Date [Nb days]</th>
 
                 <th>Destination</th>
 
@@ -19,42 +21,46 @@
                 <th>Ship</th>
 
             </tr>"
-        %}
-        {{ headerRow | raw }}
+            %}
+            {{ headerRow | raw }}
 
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             {% for trip in trips %}
                 <tr>
-                    <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{{ trip.startdate|date('d/m/Y')}}</td>
+                    <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{{ trip.startdate|date('d/m/Y')}}
+                        {% if trip.startdate is not null and trip.enddate is not null %}
+                            {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}
+                            [{{ diffDays.days + 1 }}]
+                            {#                            {% if diffDays.days > 0 %} (multi-day) {% else %} (single day) {% endif %}#}
+                        {% endif %}
+                        <a href="{{path('trip_details', {'tripId': trip.tripid})}}"><i class="fa fa-info-circle"></i></a>
+                    </td>
+
+
 
                     <td>{{ trip.destinationarea }}</td>
 
                     <td>{% if trip.cruiseid is not null %}
                             {{ trip.cruiseid.plancode }} <a href="{{path('cruise_details', {'cruiseId': trip.cruiseid.cruiseid})}}"><i class="fa fa-info-circle"></i></a>
-                        {% else %}  NA {% endif %}</td>
-{#                    <td>{% for tripstation in trip.tripstations %}#}
-{#                        [{{ tripstation.deflatitude |number_format(2)}}]#}
-{#                        {% endfor %}</td>#}
+                        {% else %}  NA {% endif %}
+
+
+                    </td>
                     <td>{{ trip.tripstations |length }}</td>
                     <td>{{ trip.status }}-{{ trip.tripid }} </td>
                     <td>{{ trip.ship }}</td>
-{#                    <td>#}
-{#                        {% set startday = trip.startdate |date('d') %}#}
-{#                        {% set endday = trip.enddate|date('d') %}#}
-{#                        {% if startday == endday %}#}
-{#                        No{% else %}Yes{% endif %}#}
 
-
-{#                    </td>#}
 
                 </tr>
             {% endfor %}
-        </tbody>
-        <tfoot> {{ headerRow | raw }}</tfoot>
+            </tbody>
+            <tfoot> {{ headerRow | raw }}</tfoot>
 
 
-    </table>
+        </table>
+    </div>
+
 
 {% endblock %}
 
