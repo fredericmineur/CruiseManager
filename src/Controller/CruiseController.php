@@ -121,13 +121,17 @@ class CruiseController extends AbstractController
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
 
+        //Due to the presence of some '0' values for the principal investigator ID in the database
+        if($cruise->getPrincipalinvestigator()->getInvestigatorId()==0){
+            $cruise->setPrincipalinvestigator(null);
+        }
+
         $originalTrips = new ArrayCollection();
-//
+
         foreach ($cruise->getTrips() as $trip) {
-//            $tripCopy = clone($trip);
+
             $originalTrips->add($trip);
         }
-//        dump($originalTrips);
 
 
         $form = $this ->createForm(CruiseType::class, $cruise);

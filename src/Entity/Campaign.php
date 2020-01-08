@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="Campaign")
  * @ORM\Entity(repositoryClass="App\Repository\CampaignRepository")
- * @UniqueEntity(fields="imisprojectnr", message="IMIS number already in use" )
+ * @UniqueEntity(fields="imisprojectnr", message="IMIS number already in use", ignoreNull=true)
  * @UniqueEntity(fields="campaign", message="Title of the campaign already in use")
  */
 class Campaign
@@ -60,6 +60,7 @@ class Campaign
      *     @ORM\JoinColumn(name="Cruise", referencedColumnName="CruiseID")
      *   }
      * )
+     * @ORM\OrderBy({"plancode"="ASC"})
      */
     private $cruise;
 

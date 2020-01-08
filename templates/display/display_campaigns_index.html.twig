@@ -31,8 +31,9 @@
                         {% set linkImis = 'http://www.vliz.be/en/imis?module=project&proid=' %}
                         {{ campaign.imisprojectnr }}
                         {% if (campaign.imisprojectnr is not null) and (campaign.imisprojectnr is not empty) %}
-                        <a href="{{ linkImis }}{{campaign.imisprojectnr}}"><i class="fa fa-info-circle"></i></a>
+                        <a href="{{ linkImis }}{{campaign.imisprojectnr}}" target="_blank"><i class="fa fa-link"></i></a>
                         {% endif %}
+
 
                     </td>
 

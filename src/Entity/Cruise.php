@@ -102,6 +102,7 @@ class Cruise
      * @var Collection
      * @ORM\OneToMany(targetEntity="Trip", mappedBy="cruiseid", cascade={"all"}, orphanRemoval=true)
      * @Assert\Valid
+     * @ORM\OrderBy({"startdate"="ASC"})
      */
     private $trips;
 

@@ -46,7 +46,11 @@
 {#            ((a,b)=>a.startdate<=>b.startdate)#}
             <tr>
                 <td>{{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></td>
-                <td>{{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}} </td>
+                <td>{% set arrayOrphanInvestigatorIds = [0, 264, 549, 556, 637] %}
+                    {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanInvestigatorIds %}
+                    {{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}}
+                        <a href="{{ path('principalinvestigator_details', {'principalInvestigatorId': cruise.principalinvestigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                    {% endif %}</td>
 
 
                 <td>

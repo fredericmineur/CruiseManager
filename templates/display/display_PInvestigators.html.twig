@@ -12,9 +12,10 @@
             <thead>
             {% set headerRow = "
                 <tr>
-                    <th>Surname</th>
-                    <th>First name</th>
+                    <th>Name</th>
+
                     <th>IMIS</th>
+                    <th>Passenger type</th>
                 </tr>
                 " %}
 
@@ -23,7 +24,7 @@
             <tbody>
             {% for investigator in principalInvestigators %}
                 <tr>
-                    <td>{{ investigator.surname }}
+                    <td>{{ investigator.surname }}, {{ investigator.firstname }}
                         <a href="{{ path('principalinvestigator_details', {'principalInvestigatorId': investigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
                         <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit "></i></a>
                         <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash "></i></a>
@@ -31,8 +32,16 @@
 
 
                     </td>
-                    <td>{{ investigator.firstname }}</td>
-                    <td>{{ investigator.imisnr }}</td>
+
+                    <td>
+                        {% set linkImis = 'http://www.vliz.be/en/imis?module=person&persid=' %}
+                        {{ investigator.imisnr }}
+                        {% if (investigator.imisnr is not null) and (investigator.imisnr is not empty) %}
+                            <a href="{{ linkImis }}{{investigator.imisnr}}" target="_blank"><i class="fa fa-link"></i></a>
+                        {% endif %}
+
+                    </td>
+                    <td>{{ investigator.passengertype }}</td>
 
                 </tr>
             {% endfor %}

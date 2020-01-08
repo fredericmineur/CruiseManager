@@ -6,8 +6,16 @@
 
         <div class="card">
             <div class="card-header">
-                <h3>Cruise <strong>{{ cruise.plancode }}</strong><span
-                            style="font-size: x-small"> [MIDAS ID {{ cruise.cruiseid }}]</span></h3>
+                <div style="float: left; display: inline-block">
+                    <h3>Cruise <strong>{{ cruise.plancode }}</strong><span style="font-size: x-small"> [MIDAS ID {{ cruise.cruiseid }}]</span></h3>
+                </div style="float: left; display: inline-block">
+                    {% set cruiseLink = 'http://www.vliz.be/vmdcdata/midas/report.php?cruise=' %}
+                <a href="{{ cruiseLink }}{{ cruise.cruiseid }}" target="_blank"><i
+                            class="fa fa-link fa-2x"></i></a>
+                <div>
+
+                </div>
+
             </div>
             <div class="card-body">
                 <div class="row">

@@ -77,8 +77,8 @@
                         {% endfor %}
                     </td>
                     <td>
-                        {% set arrayOrphanIds = [0, 264, 549, 556, 637] %}
-                        {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanIds %}
+                        {% set arrayOrphanInvestigatorIds = [0, 264, 549, 556, 637] %}
+                        {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanInvestigatorIds %}
                             {{ cruise.principalinvestigator.firstname }}
                             {{ cruise.principalinvestigator.surname }}
                         {% endif %}
