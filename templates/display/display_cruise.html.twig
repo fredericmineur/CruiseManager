@@ -19,7 +19,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col">
                         <p>Duration for the trips:
                             {% if cruise.trips and cruise.trips|length %} {% set nbTrips = cruise.trips|length %}
                                 <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d')}}</span>{{ cruise.trips[0].startdate|date('d/m/Y')}}- {{ cruise.trips[nbTrips-1].enddate|date('d/m/Y') }}
@@ -41,7 +41,14 @@
                     </div>
                     <div class="col">
                         <a href="{{ path('cruise_edit', {'cruiseId': cruise.cruiseid}) }}"><i
-                                    class="fa fa-edit fa-5x"></i></a>
+                                    class="btn btn-success fa fa-edit fa-4x"></i></a>
+                        <a href="{{ path('cruise_remove_warning', {'cruiseId': cruise.cruiseid}) }}"><i
+                                    class="btn btn-danger fa fa-trash fa-4x"></i></a>
+
+{#                        <button type="button" class="btn btn-danger" id="remove-tripinvestigator"#}
+{#                                data-action="delete" data-target="#block_{{ id }}" >#}
+{#                            <i class="fa fa-trash"></i>#}
+{#                        </button>#}
                     </div>
                 </div>
 

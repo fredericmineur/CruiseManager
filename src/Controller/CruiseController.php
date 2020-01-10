@@ -10,6 +10,7 @@ use App\Entity\Tripinvestigators;
 use App\Form\CruiseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,6 +53,26 @@ class CruiseController extends AbstractController
 
 
     /**
+     * @Route("/cruises/remove_warning/{cruiseId}", name="cruise_remove_warning")
+     */
+    public function warnRemoveCruise(ObjectManager $manager, $cruiseId)
+    {
+        $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid' => $cruiseId]);
+        return $this->render('remove/remove_cruise.html.twig', [
+            'cruise' => $cruise
+        ]);
+    }
+
+    /**
+     * @Route("/cruises/remove_cruise/{cruiseId}", name="cruise_remove")
+     */
+    public function removeCruise(ObjectManager $manager, $cruiseId)
+    {
+
+    }
+
+
+    /**
      * @Route("/cruises/new", name="cruise_create")
      */
     public function createCruiseOriginal(Request $request, ObjectManager $manager)
@@ -86,11 +107,50 @@ class CruiseController extends AbstractController
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
 
+                foreach ($trip->getTripinvestigators() as $tripinvestigator)
+                {
+                    $arrayMatchingInvestigators = [];
+                    $investigators = $manager->getRepository(Investigators::class)
+                        ->findAll();
+                    foreach ($investigators as $investigator){
+                        if (($tripinvestigator->getFirstname() != null)
+                            && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
+                            && ($tripinvestigator->getSurname() != null)
+                            && ($tripinvestigator->getSurname() == $investigator->getSurname())){
+
+                            $arrayMatchingInvestigators[]=$investigator;
+
+                            }
+                    }
+                    if(count($arrayMatchingInvestigators)==1){
+                        $tripinvestigator->setInvestigatornr($investigator)
+                                    ->setImisnr($investigator->getImisnr())
+                                    ->setPassengertype($investigator->getPassengertype())
+                                    ->setBirthdate($investigator->getBirthdate())
+                                    ->setNationality($investigator->getNationality());
+                        $manager->persist($tripinvestigator);
+                    }
+//                    dd($arrayMatchingInvestigators);
+
+
+
+
+
+                }
+
+
+
+
                 $manager->persist($trip);
             }
 
 
             $manager->persist($cruise);
+
+
+
+
+
             $manager->flush();
 
             $this->addFlash(
@@ -211,7 +271,7 @@ class CruiseController extends AbstractController
         ]);
     }
 
-    public function generateJsonDistinctFirstNamesTripInvestigators (ObjectManager $manager){
+    public static function generateJsonDistinctFirstNamesTripInvestigators (ObjectManager $manager){
         $tripInvestigatorsFirstNames = $manager->getRepository(Tripinvestigators::class)
             ->findDistinctFirstNames();
         $arrayFirstNames = [];
@@ -223,7 +283,7 @@ class CruiseController extends AbstractController
 
     }
 
-    public function generateDistinctSurnamesTripInvestigators(ObjectManager $manager) {
+    public static function generateDistinctSurnamesTripInvestigators(ObjectManager $manager) {
         $tripInvestigatorsSurnames = $manager->getRepository(Tripinvestigators::class)
             ->findDistinctSurnames();
         $arraySurnames = [];
@@ -232,6 +292,10 @@ class CruiseController extends AbstractController
             array_push($arraySurnames, $surname);
         }
         return json_encode($arraySurnames);
+    }
+
+    public static function completeTripInvestigatorFields(ObjectManager $manager, Tripinvestigators $tripinvestigator) {
+
     }
 
 

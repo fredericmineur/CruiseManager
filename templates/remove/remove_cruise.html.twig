@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h5>You are about to remove:</h5>
+        <h3>Cruise {{ cruise.plancode }}</h3>
+        <h5>All trips associated with the cruise will also be removed from the system. Do you really want to proceed?</h5>
+        <a href="{{ path('cruise_remove', {'cruiseId': cruise.cruiseid}) }}" class="btn btn-danger">Yes, remove the cruise</a>
+        <a href="{{ path('cruise_edit', {'cruiseId': cruise.cruiseid}) }}" class="btn btn-success">Edit</a>
+        <a href="{{ path('cruises_index') }}" class="btn btn-dark">cruises list</a>
+    </div>
+
+
+
+{% endblock %}
