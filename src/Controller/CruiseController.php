@@ -10,6 +10,7 @@ use App\Entity\Tripinvestigators;
 use App\Form\CruiseType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +56,7 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/remove_warning/{cruiseId}", name="cruise_remove_warning")
      */
-    public function warnRemoveCruise(ObjectManager $manager, $cruiseId)
+    public function warnRemoveCruise(EntityManagerInterface $manager, $cruiseId)
     {
         $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid' => $cruiseId]);
         return $this->render('remove/remove_cruise.html.twig', [
@@ -66,7 +67,7 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/remove_cruise/{cruiseId}", name="cruise_remove")
      */
-    public function removeCruise(ObjectManager $manager, $cruiseId)
+    public function removeCruise(EntityManagerInterface $manager, $cruiseId)
     {
         $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid'=>$cruiseId]);
 //        foreach ($cruise->getTrips() as $trip) {
@@ -85,7 +86,7 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/new", name="cruise_create")
      */
-    public function createCruiseOriginal(Request $request, ObjectManager $manager)
+    public function createCruiseOriginal(Request $request, EntityManagerInterface $manager)
     {
         $cruise = new Cruise();
 //        $trip1 = new Trip();
@@ -192,7 +193,7 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/{cruiseId}/edit", name="cruise_edit")
      */
-    public function editCruise(Request $request, ObjectManager $manager, $cruiseId)
+    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId)
     {
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
@@ -295,7 +296,7 @@ class CruiseController extends AbstractController
         ]);
     }
 
-    public static function generateJsonDistinctFirstNamesTripInvestigators (ObjectManager $manager){
+    public static function generateJsonDistinctFirstNamesTripInvestigators (EntityManagerInterface $manager){
         $tripInvestigatorsFirstNames = $manager->getRepository(Tripinvestigators::class)
             ->findDistinctFirstNames();
         $arrayFirstNames = [];
@@ -307,7 +308,7 @@ class CruiseController extends AbstractController
 
     }
 
-    public static function generateDistinctSurnamesTripInvestigators(ObjectManager $manager) {
+    public static function generateDistinctSurnamesTripInvestigators(EntityManagerInterface $manager) {
         $tripInvestigatorsSurnames = $manager->getRepository(Tripinvestigators::class)
             ->findDistinctSurnames();
         $arraySurnames = [];
@@ -321,7 +322,7 @@ class CruiseController extends AbstractController
     /**
      * If the tripinvestigator is in the investigators table, fill the required file
      */
-    public static function completeTripInvestigatorFields(ObjectManager $manager, Tripinvestigators $tripinvestigator) :Tripinvestigators
+    public static function completeTripInvestigatorFields(EntityManagerInterface $manager, Tripinvestigators $tripinvestigator) :Tripinvestigators
     {
         $investigators = $manager->getRepository(Investigators::class)
             ->findAll();

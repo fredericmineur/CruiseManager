@@ -15,6 +15,7 @@ use App\Form\TripType;
 use App\Repository\CampaignRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
@@ -49,7 +50,7 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/new", name="campaign_create")
      */
-    public function createCampaign(Request $request, ObjectManager $manager)
+    public function createCampaign(Request $request, EntityManagerInterface $manager)
     {
 
 
@@ -79,7 +80,7 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/edit/{campaignId}", name="campaign_edit")
      */
-    public function editCampaign($campaignId, Request $request, ObjectManager $manager)
+    public function editCampaign($campaignId, Request $request, EntityManagerInterface $manager)
     {
         $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
         $campaign = $repoCampaigns->findOneBy(['campaignid'=> $campaignId]);
@@ -120,7 +121,7 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/remove_campaign_warning/{campaignId}", name="remove_campaign_warning")
      */
-    public function warnRemoveCampaign (ObjectManager $manager, $campaignId){
+    public function warnRemoveCampaign (EntityManagerInterface $manager, $campaignId){
         $campaign = $manager->getRepository(Campaign::class)
             ->findOneBy(['campaignid'=> $campaignId]);
         return $this->render('remove/remove_campaign.html.twig',[
@@ -131,7 +132,7 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/remove_campaign/{campaignId}", name="remove_campaigm")
      */
-    public function removeCampaign(ObjectManager $manager, $campaignId ){
+    public function removeCampaign(EntityManagerInterface $manager, $campaignId ){
         $campaign = $manager->getRepository(Campaign::class)
             ->findOneBy(['campaignid'=> $campaignId]);
         $manager->remove($campaign);

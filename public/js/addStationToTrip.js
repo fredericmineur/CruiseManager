@@ -1,12 +1,15 @@
 $('#add-station').click(function () {
     // console.log('add station');
-    const index = +$('#widgets-counter-stations').val();
+    // const index = +$('#widgets-counter-stations').val();
+    const index = window.counterStations.count;
     const tmpl = $('#trip_stations').data('prototype').replace(/__name__/g, index);
     var elementStation=$(tmpl);
 
     // console.log(tmpl);
     $('#trip_stations').append(elementStation);
-    $('#widgets-counter-stations').val(index+1);
+
+    window.counterStations.count = index+1;
+    // $('#widgets-counter-stations').val(index+1);
     deleteStations(elementStation);
 });
 
@@ -21,7 +24,8 @@ function deleteStations(contextElement){
 
 function updateCounterStations() {
     const count = $('div.block-station').length;
-    $('#widgets-counter-stations').val(count);
+    window.counterStations.count = count;
+    // $('#widgets-counter-stations').val(count);
 }
 
 function addClassForAutocomplete(contextElement){
@@ -33,6 +37,7 @@ function addClassForAutocomplete(contextElement){
 
 
 $(document).ready(function () {
+    counterStations = {count: 0};
     updateCounterStations();
     deleteStations(window.document);
     addClassForAutocomplete(window.document);

@@ -7,6 +7,7 @@ use App\Entity\Investigators;
 use App\Entity\Trip;
 use App\Form\InvestigatorsType;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,7 +17,7 @@ class PrincipalInvestigatorController extends AbstractController
     /**
      * @Route("/PI", name="principalinvestigators_index")
      */
-    public function displayPIs (ObjectManager $manager){
+    public function displayPIs (EntityManagerInterface $manager){
         $repoInvestigators = $manager->getRepository(Investigators::class);
         $investigators = $repoInvestigators->findBy([],['surname'=>'ASC']);
 //        dd($investigators);
@@ -28,7 +29,7 @@ class PrincipalInvestigatorController extends AbstractController
     /**
      * @Route("/PI/create_investigator", name="create_investigator")
      */
-    public function createPI (ObjectManager $manager, Request $request){
+    public function createPI (EntityManagerInterface $manager, Request $request){
         $investigator = new Investigators();
         $form = $this->createForm(InvestigatorsType::class);
         $form->handleRequest($request);
@@ -49,7 +50,7 @@ class PrincipalInvestigatorController extends AbstractController
     /**
      * @Route("/PI/{principalInvestigatorId}", name="principalinvestigator_details")
      */
-    public function displayPI(ObjectManager $manager, $principalInvestigatorId){
+    public function displayPI(EntityManagerInterface $manager, $principalInvestigatorId){
         $principalInvestigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
 //        $cruises = $principalInvestigator->getCruises();
@@ -66,7 +67,7 @@ class PrincipalInvestigatorController extends AbstractController
     /**
      * @Route("/PI/edit/{principalInvestigatorId}", name="edit_principalinvestigator")
      */
-    public function editPI(ObjectManager $manager, Request $request, $principalInvestigatorId) {
+    public function editPI(EntityManagerInterface $manager, Request $request, $principalInvestigatorId) {
         $investigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
         $form = $this->createForm(InvestigatorsType::class, $investigator);
@@ -88,7 +89,7 @@ class PrincipalInvestigatorController extends AbstractController
     /**
      * @Route("/PI/remove_PI_warning/{principalInvestigatorId}", name="remove_PI_warning")
      */
-    public function warnRemovePI (ObjectManager $manager, $principalInvestigatorId){
+    public function warnRemovePI (EntityManagerInterface $manager, $principalInvestigatorId){
         $investigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
         return $this->render('remove/remove_PI.html.twig',[
@@ -101,7 +102,7 @@ class PrincipalInvestigatorController extends AbstractController
     /**
      * @Route("/PI/remove_PI/{principalInvestigatorId}", name="remove_PI")
      */
-    public function removePI(ObjectManager $manager, $principalInvestigatorId ){
+    public function removePI(EntityManagerInterface $manager, $principalInvestigatorId ){
         $principalInvestigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
         $manager->remove($principalInvestigator);

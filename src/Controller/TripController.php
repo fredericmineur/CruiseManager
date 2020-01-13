@@ -7,6 +7,7 @@ use App\Entity\Tripstations;
 use App\Form\TripType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +18,7 @@ class TripController extends AbstractController
     /**
      * @Route("/trips/{tripId}", name="trip_details")
      */
-    public function tripDetails(ObjectManager $manager, $tripId){
+    public function tripDetails(EntityManagerInterface $manager, $tripId){
         $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=>$tripId]);
 
 
@@ -33,7 +34,7 @@ class TripController extends AbstractController
     /**
      * @Route("/trips/{tripId}/edit", name="trip_edit")
      */
-    public function editTrip($tripId, Request $request, ObjectManager $manager)
+    public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
     {
         $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
         $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
