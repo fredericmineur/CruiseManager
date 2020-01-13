@@ -29,7 +29,12 @@
                 <p>Start and end points: {{ trip.startpoint }}-{{ trip.endpoint }}</p>
                 <p>Ship: {{ trip.ship }}</p>
                 <p>Stations:
-                {% for tripstation in trip.tripstations %}"{{ tripstation.stationnr.code}}/{{ tripstation.code }}" {% endfor %}
+                {% for tripstation in trip.tripstations %}"{{ tripstation.stationnr.code}}" {% endfor %}
+                </p>
+                <p>Investigators:
+                    {% for tripinvestigator in trip.tripinvestigators %} {{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}
+                    {% if tripinvestigator.investigatornr is not null %}[*]{% endif %}
+                    {% endfor %}
 
                 </p>
             </div>

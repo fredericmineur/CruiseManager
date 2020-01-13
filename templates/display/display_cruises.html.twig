@@ -2,7 +2,11 @@
 
 {% block title %}Cruises{% endblock %}
 
-{% block stylesheets %}<link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/fixedHeader.dataTables.min.css') }}">
+
+{% endblock %}
 
 
 {% block body %}
@@ -119,8 +123,8 @@
 {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>#}
 {#    <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>#}
 
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
-    <script src="/js/myDataTable/tableSearchHeaders.js"></script>
+    <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/myDataTable/tableSearchHeaders.js') }}"></script>
 
 
 {% endblock %}

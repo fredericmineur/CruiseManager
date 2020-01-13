@@ -68,7 +68,17 @@ class CruiseController extends AbstractController
      */
     public function removeCruise(ObjectManager $manager, $cruiseId)
     {
-
+        $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid'=>$cruiseId]);
+//        foreach ($cruise->getTrips() as $trip) {
+//            foreach ($trip->getTripinvestigators() as $tripinvestigator)
+//            {
+//                $trip->removeTripinvestigator($tripinvestigator);
+//            }
+//            $manager->persist($trip);
+//        }
+        $manager->remove($cruise);
+        $manager->flush();
+        return $this->redirectToRoute('cruises_index');
     }
 
 
@@ -109,33 +119,39 @@ class CruiseController extends AbstractController
 
                 foreach ($trip->getTripinvestigators() as $tripinvestigator)
                 {
-                    $arrayMatchingInvestigators = [];
-                    $investigators = $manager->getRepository(Investigators::class)
-                        ->findAll();
-                    foreach ($investigators as $investigator){
-                        if (($tripinvestigator->getFirstname() != null)
-                            && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
-                            && ($tripinvestigator->getSurname() != null)
-                            && ($tripinvestigator->getSurname() == $investigator->getSurname())){
-
-                            $arrayMatchingInvestigators[]=$investigator;
-
-                            }
-                    }
-                    if(count($arrayMatchingInvestigators)==1){
-                        $tripinvestigator->setInvestigatornr($investigator)
-                                    ->setImisnr($investigator->getImisnr())
-                                    ->setPassengertype($investigator->getPassengertype())
-                                    ->setBirthdate($investigator->getBirthdate())
-                                    ->setNationality($investigator->getNationality());
-                        $manager->persist($tripinvestigator);
-                    }
-//                    dd($arrayMatchingInvestigators);
-
-
-
-
-
+                    $tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
+                    // start the function here function($tripinvestigator  //BREAK ....CONTINUE....
+//                    $investigators = $manager->getRepository(Investigators::class)
+//                        ->findAll();
+//                    $i=0;
+//                    $len = count($investigators);
+//                    foreach ($investigators as $investigator)
+//                    {
+//                        if (($tripinvestigator->getFirstname() != null)
+//                            && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
+//                            && ($tripinvestigator->getSurname() != null)
+//                            && ($tripinvestigator->getSurname() == $investigator->getSurname()))
+//                        {
+//                            $tripinvestigator->setInvestigatornr($investigator)
+//                                ->setImisnr($investigator->getImisnr())
+//                                ->setPassengertype($investigator->getPassengertype())
+//                                ->setBirthdate($investigator->getBirthdate())
+//                                ->setNationality($investigator->getNationality());
+//                            //return $tripinvestigator
+//                            break;
+//                        }
+//                        if($i = $len -1)
+//                        {
+//                            $tripinvestigator-> setInvestigatornr(null)
+//                                ->setImisnr(null)
+//                                ->setPassengertype(null)
+//                                ->setBirthdate(null)
+//                                ->setNationality(null);
+//                        }
+//                        $i++;
+//                    }
+                    //END the function
+                    $manager->persist($tripinvestigator);
                 }
 
 
@@ -209,6 +225,14 @@ class CruiseController extends AbstractController
 //                    $trip->setCruiseid(null);
 //                    $trip->setCruiseid($trip);
                 }
+
+                foreach ($trip->getTripinvestigators() as $tripinvestigator)
+                {
+                    $tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
+                    $manager->persist($tripinvestigator);
+                }
+
+
             }
 
             $manager->persist($cruise);
@@ -294,8 +318,34 @@ class CruiseController extends AbstractController
         return json_encode($arraySurnames);
     }
 
-    public static function completeTripInvestigatorFields(ObjectManager $manager, Tripinvestigators $tripinvestigator) {
-
+    /**
+     * If the tripinvestigator is in the investigators table, fill the required file
+     */
+    public static function completeTripInvestigatorFields(ObjectManager $manager, Tripinvestigators $tripinvestigator) :Tripinvestigators
+    {
+        $investigators = $manager->getRepository(Investigators::class)
+            ->findAll();
+        foreach ($investigators as $investigator)
+        {
+            if (($tripinvestigator->getFirstname() != null)
+                && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
+                && ($tripinvestigator->getSurname() != null)
+                && ($tripinvestigator->getSurname() == $investigator->getSurname()))
+            {
+                $tripinvestigator->setInvestigatornr($investigator)
+                    ->setImisnr($investigator->getImisnr())
+                    ->setPassengertype($investigator->getPassengertype())
+                    ->setBirthdate($investigator->getBirthdate())
+                    ->setNationality($investigator->getNationality());
+                return $tripinvestigator;
+            }
+        }
+        $tripinvestigator-> setInvestigatornr(null)
+            ->setImisnr(null)
+            ->setPassengertype(null)
+            ->setBirthdate(null)
+            ->setNationality(null);
+        return $tripinvestigator;
     }
 
 

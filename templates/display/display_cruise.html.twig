@@ -2,30 +2,28 @@
 
 {% block body %}
 
-    <div class="container" >
+    <div class="container">
 
         <div class="card">
             <div class="card-header">
                 <div style="float: left; display: inline-block">
-                    <h3>Cruise <strong>{{ cruise.plancode }}</strong><span style="font-size: x-small"> [MIDAS ID {{ cruise.cruiseid }}]</span></h3>
-                </div style="float: left; display: inline-block">
-                    {% set cruiseLink = 'http://www.vliz.be/vmdcdata/midas/report.php?cruise=' %}
+                    <h3>Cruise <strong>{{ cruise.plancode }}</strong><span
+                                style="font-size: x-small"> [MIDAS ID {{ cruise.cruiseid }}]</span></h3>
+                </div>
+                {% set cruiseLink = 'http://www.vliz.be/vmdcdata/midas/report.php?cruise=' %}
                 <a href="{{ cruiseLink }}{{ cruise.cruiseid }}" target="_blank"><i
                             class="fa fa-link fa-2x"></i></a>
-                <div>
-
-                </div>
-
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col">
                         <p>Duration for the trips:
                             {% if cruise.trips and cruise.trips|length %} {% set nbTrips = cruise.trips|length %}
-                                <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d')}}</span>{{ cruise.trips[0].startdate|date('d/m/Y')}}- {{ cruise.trips[nbTrips-1].enddate|date('d/m/Y') }}
+                                <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d') }}</span>{{ cruise.trips[0].startdate|date('d/m/Y') }}- {{ cruise.trips[nbTrips-1].enddate|date('d/m/Y') }}
                             {% else %}No planned trip
                             {% endif %} </p>
-                        <p>Duration for the cruise: {% if cruise.startdate and cruise.enddate %}<strong>{{ cruise.startdate | date ('d/m/Y') }}
+                        <p>Duration for the cruise: {% if cruise.startdate and cruise.enddate %}
+                                <strong>{{ cruise.startdate | date ('d/m/Y') }}
                                 - {{ cruise.enddate | date ('d/m/Y') }}</strong>{% else %}N.A.{% endif %}</p>
                         <p>Principal investigator: <strong>
                                 {% if cruise.principalinvestigator is defined and cruise.principalinvestigator is not null and cruise.principalinvestigator.investigatorid !=0 %}
@@ -44,129 +42,57 @@
                                     class="btn btn-success fa fa-edit fa-4x"></i></a>
                         <a href="{{ path('cruise_remove_warning', {'cruiseId': cruise.cruiseid}) }}"><i
                                     class="btn btn-danger fa fa-trash fa-4x"></i></a>
-
-{#                        <button type="button" class="btn btn-danger" id="remove-tripinvestigator"#}
-{#                                data-action="delete" data-target="#block_{{ id }}" >#}
-{#                            <i class="fa fa-trash"></i>#}
-{#                        </button>#}
                     </div>
                 </div>
 
-
-                        <p>Campaign(s):
-
-
-
-                        {% if not cruise.campaign |length %} N.A.{% else %}
-                            {% for campaign in cruise.campaign %}
-                                <strong>"{{ campaign.campaign }}"</strong>
-                                    <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}">
-                                        <i class="fa fa-info-circle"></i></a>{% if loop.last %}{% else %}, {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        </p>
-
-
-
-
-
+                <p>Campaign(s):
+                    {% if not cruise.campaign |length %} N.A.{% else %}
+                        {% for campaign in cruise.campaign %}
+                            <strong>"{{ campaign.campaign }}"</strong>
+                        <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}">
+                                <i class="fa fa-info-circle"></i></a>{% if loop.last %}{% else %}, {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </p>
             </div>
-
         </div>
     </div>
 
     {% if cruise.trips %}
-
-    <div class="container-fluid">
+        <div class="container-fluid">
         <div class="row ">
             {% for trip in cruise.trips %}
-{#                <div class="col">#}
-                    <div class="card" style="width: 300px !important;" >
-
-                        <div class="card-header">
-                            <p>Trip: <span
-                                        style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>
-                                {{ trip.startdate|date('d/m/Y') }}-{{ trip.enddate|date('d/m/Y') }} </p>
-                        </div>
-                        <div class="card-body">
-                            <p>Number of days:
-                                {% if trip.startdate is not null %}
-                                    {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}
-                                    {{ diffDays.days + 1 }}
-                                    {% if diffDays.days > 0 %} (multi-day) {% else %} (single day) {% endif %}
-                                {% endif %}
-                            </p>
-                            <p>Destination: {{ trip.destinationarea }}</p>
-
-
-{#                        <div class="card-footer">#}
-                            <p>Investigators:
-                            {% for investigator in trip.tripinvestigators %}
-                                {{ investigator.firstname  }} {{ investigator.surname}}
+                {#                <div class="col">#}
+                <div class="card" style="width: 300px !important;">
+                    <div class="card-header">
+                        <p>Trip: <span
+                                    style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>
+                            {{ trip.startdate|date('d/m/Y') }}-{{ trip.enddate|date('d/m/Y') }} </p>
+                    </div>
+                    <div class="card-body">
+                        <p>Number of days:
+                            {% if trip.startdate is not null %}
+                                {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}
+                                {{ diffDays.days + 1 }}
+                                {% if diffDays.days > 0 %} (multi-day) {% else %} (single day) {% endif %}
+                            {% endif %}
+                        </p>
+                        <p>Destination: {{ trip.destinationarea }}</p>
+                        <p>Investigators:
+                            {% for tripinvestigator in trip.tripinvestigators %}
+                                {{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}
+                                {% if tripinvestigator.investigatornr is not null %}[*]{% endif %}
                                 {% if loop.last %}{% else %}, {% endif %}
                             {% endfor %}
-                                <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i
-                                            class="btn btn-default fa fa-edit fa-2x"></i></a>
-                            </p>
-                        </div>
-{#                        </div>#}
-
-
-
-
-
+                            <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i
+                                        class="btn btn-default fa fa-edit fa-2x"></i></a>
+                        </p>
+                        <p>[*] = in Investigators directory in db</p>
                     </div>
-{#                </div>#}
-
-
-
+                </div>
             {% endfor %}
         </div>
-        {% endif %}
-
-
-        {#            <h3>Trips: </h3>#}
-
-{#            <table class="table-hover table-bordered display" id="myDataTable" width="100%">#}
-
-{#                <thead>#}
-{#                    <tr>#}
-{#                        <th>Start Date</th>#}
-{#                        <th>Number of days</th>#}
-{#                        <th>Trip Investigators</th>#}
-
-{#                    </tr>#}
-{#                </thead>#}
-{#                <tbody>#}
-{#                    {% for trip in cruise.trips %}#}
-{#                        <tr>#}
-{#                            <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{% if trip.startdate is not null %}#}
-{#                                {{ trip.startdate|date('d/m/Y')}}{% else %}N.A.{% endif %}</td>#}
-{#                            <td>{% if trip.startdate is not null %}#}
-{#                                {% set numberDays = date(trip.startdate).diff(date(trip.enddate)) %}#}
-{#                                {{ numberDays.days + 1 }}#}
-{#                                {% endif %}#}
-{#                            </td>#}
-{#                            <td>#}
-{#                                {% for investigator in trip.tripinvestigators %}#}
-{#                                    {{ investigator.firstname |convert_encoding('UTF-8','CP1252') }} {{ investigator.surname|convert_encoding('UTF-8','CP1252') }}<br>#}
-{#                                {% endfor %}#}
-{#                                <p><a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i class="fa fa-edit fa-2x" ></i></a></p>#}
-{#                            </td>#}
-
-{#                        </tr>#}
-{#                    {% endfor %}#}
-
-{#                </tbody>#}
-{#            </table>#}
+    {% endif %}
     </div>
-
-
-
-
-
-
-
-
 {% endblock %}
 

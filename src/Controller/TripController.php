@@ -88,8 +88,17 @@ class TripController extends AbstractController
                 if (false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
                     $manager->remove($tripinvestigator);
                 }
+
             }
-            $cruise = $trip->getCruiseid();
+
+            foreach ($trip->getTripinvestigators() as $tripinvestigator)
+            {
+                $tripinvestigator = CruiseController::completeTripInvestigatorFields($manager, $tripinvestigator);
+//                dd($tripinvestigator);
+                $manager->persist($tripinvestigator);
+            }
+
+//            $cruise = $trip->getCruiseid();
             $manager->persist($trip);
             $manager -> flush();
             return $this->redirectToRoute('trip_details', [
