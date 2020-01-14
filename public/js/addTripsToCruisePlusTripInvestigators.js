@@ -108,17 +108,17 @@ function updateCounterTrips(){
     //counting the number of trip sections and allocate it to the counter
     const count = $('.block-trip').length;
     window.counter.countTrip = count;
-    console.log(counter);
+    // console.log(counter);
 
     //Initializing or updating the number of tripinvestigators for each trip (looping through 'block-trip'S
     $('.block-trip').each(function(){
-        console.log (this);
+        // console.log (this);
         let idBlockTrip = this['id'];
         // idBlockTrip = idBlockTrip.replace('block_', '');
         const countTripInvestigatorForObj = $('.block-tripinvestigator[id^='+idBlockTrip+']').length;
         window.counter[idBlockTrip]=countTripInvestigatorForObj;
     })
-    console.log(counter);
+    // console.log(counter);
 
 }
 

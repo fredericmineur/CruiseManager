@@ -112,35 +112,4 @@ class PrincipalInvestigatorController extends AbstractController
 
 
 
-//    public function cruiseDuration(ObjectManager $manager, $cruiseId)
-//    {
-////        $repoCruises = $this->getDoctrine()->getRepository(Cruise::class);
-//        $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid'=>$cruiseId]);
-//        $trips = $this->getDoctrine()->getRepository(Trip::class)
-//            ->findBy(['cruiseid'=> $cruiseId], ['startdate'=>'ASC']);
-//
-//        //Getting start and end date of the cruise (through the trips collection)
-//        $startDates = [];
-//        $endDates = [];
-//        foreach ($trips as $trip){
-//            array_push($startDates, $trip->getStartdate());
-//            array_push($endDates, $trip->getEnddate());
-//        }
-//
-//        if ($startDates){
-//
-//        }
-//        $cruiseStartDate = !empty($startDates) ?  min($startDates) : null; //if $starDates is not empty
-//        $cruiseEndDate = !empty($endDates) ? max($endDates) : null;
-////        dump($cruiseStartDate, $cruiseEndDate);
-//
-//        return $this->render('display/display_cruise.html.twig', [
-//            'campaigns' => $campaigns,
-//            'cruise' => $cruise,
-//            'trips' => $trips,
-//            'cruiseStartDate' => $cruiseStartDate,
-//            'cruiseEndDate' => $cruiseEndDate
-//        ]);
-//    }
-
 }

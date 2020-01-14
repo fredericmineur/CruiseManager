@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fixedHeader.dataTables.min.css') }}">
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
 {#    <link rel="stylesheet" href="/css/jquery.dataTables.min.css">#}
 {#    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>#}
 
@@ -14,7 +14,10 @@
 
 
     <div class="container">
-        <h3>List of principal investigators</h3><a href="{{ path('create_investigator') }}" class="btn btn-success">Add a principal investigator</a>
+        <div style="float: left; display: inline-block; margin-right: 20px">
+            <h3>List of investigators</h3>
+        </div>
+        <a href="{{ path('create_investigator') }}" class="btn btn-success">Add an investigator</a>
         <table class="table-hover table-bordered display" id="myDataTable" width="100%">
             <thead>
             {% set headerRow = "
@@ -68,8 +71,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/myDataTable/tableSearchHeaders.js') }}"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>
 {#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
 {#    <script src="/js/myDataTable/tableSearchHeaders.js"></script>#}
 

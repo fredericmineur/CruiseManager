@@ -229,7 +229,7 @@
 
 
 {% block javascripts %}
-    <script src="{{ asset('EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js') }}"></script>
+    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
     <script>
         var optionsFirstNames = {
             data: {{ firstNamesTripInvJson | raw }},
@@ -254,9 +254,9 @@
         $(".autocomplete-surname").easyAutocomplete(optionsSurnames);
 
     </script>
-    <script src="{{ asset('js/addTripsToCruisePlusTripInvestigators.js') }}"></script>
+    <script src="/js/addTripsToCruisePlusTripInvestigators.js"></script>
 {#    <script src="{{ asset('js/addTripsToCruise.js') }}"></script>#}
-    <script src="{{ asset('js/addCampaignsToCruise.js') }}"></script>
+    <script src="/js/addCampaignsToCruise.js"></script>
 {#    <script src="{{ asset('js/addTripinvestigatorsToTrip.js') }}"></script>#}
 
 {% endblock %}

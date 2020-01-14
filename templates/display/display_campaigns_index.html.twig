@@ -2,8 +2,8 @@
 
 {% block stylesheets %}
 
-    <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fixedHeader.dataTables.min.css') }}">
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
 {#    <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.min.css') }}">#}
 {#    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>#}
 
@@ -16,14 +16,15 @@
         <h3>List of campaigns</h3><a href="{{ path('campaign_create') }}" class="btn btn-success">Add a campaign</a>
         <table class="table-hover table-bordered display" id="myDataTable" width="100%">
             <thead>
+            {% set headerRow = "
                 <tr>
                     <th>Campaign name </th>
-                    <th>
+                    <th>Imis Project number </th>
 
-                        Imis Project number </th>
-{#                    <th>Notes</th>#}
                     <th>Cruises (by Plan Code)</th>
                 </tr>
+                " %}
+            {{ headerRow | raw }}
             </thead>
             <tbody>
             {% for campaign in campaigns %}
@@ -61,6 +62,9 @@
             {% endfor %}
 
             </tbody>
+            <tfoot>
+            {{ headerRow | raw }}
+            </tfoot>
 
         </table>
     </div>
@@ -68,8 +72,8 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="{{ asset('js/datatables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/myDataTable/tableSearchHeaders.js') }}"></script>
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
+    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>
 {#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
 {#    <script src="/js/myDataTable/tableSearchHeaders.js"></script>#}
 

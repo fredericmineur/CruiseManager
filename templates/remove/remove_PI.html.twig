@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container">
-        <h5>You are about to remove the principal investigator:</h5>
+        <h5>You are about to remove the investigator:</h5>
         <h3>{{ investigator.surname }}, {{ investigator.firstname }}</h3>
         <h5>Do you really want to proceed?</h5>
         <a href="{{ path('remove_PI', {'principalInvestigatorId': investigator.investigatorid}) }}" class="btn btn-danger">Yes, remove the PI</a>
