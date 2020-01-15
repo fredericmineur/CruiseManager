@@ -2,54 +2,64 @@
 
 {% block title %}Campaigns{% endblock %}
 
-{% block stylesheets %}<link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
+{% endblock %}
 
 
 {% block body %}
 
 <div class="container">
-    <h3>Details of the campaign</h3>
-    <div class="row">
-        <div class="col-10">
-            <p>Title: "<strong>{{ campaign.campaign}}</strong>" </p>
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-10">
+                    <h3>Campaign: "<strong>{{ campaign.campaign}}</strong>" </h3>
 
-            <p>IMIS Project Number: <strong>{{ campaign.imisprojectnr }} </strong><span style="font-size: x-small">Midas ID: {{ campaign.campaignid }}</span></p>
+                    <p>IMIS Project Number: <strong>{{ campaign.imisprojectnr }} </strong><span style="font-size: x-small">Midas ID: {{ campaign.campaignid }}</span></p>
+                </div>
+                <div class="col-2">
+                    <a href="{{ path('campaign_edit', {'campaignId': campaign.campaignid}) }}"><i
+                                class="fa fa-edit fa-5x"></i></a>
+                </div>
+            </div>
         </div>
-        <div class="col-2">
-            <a href="{{ path('campaign_edit', {'campaignId': campaign.campaignid}) }}"><i
-                        class="fa fa-edit fa-5x"></i></a>
+        <div class="card-body">
+            <p><strong><i>{{ campaign.memo }}</i></strong></p>
         </div>
     </div>
 
 
+</div>
 
 
-    <p>Notes: <strong><i>{{ campaign.memo }}</i></strong></p>
-
+<div class="container">
     <h3>Cruises</h3>
 
-    {% set nameOfPresentCampaign =campaign.campaign %}
 
-    <table class="table-hover table-bordered display" id="myDataTable">
+
+    <table class="table-hover table-bordered display" id="myDataTable" width="100%">
         <thead>
-            <tr>
-                <th>Plan code</th>
-                <th class="searchable">P.Investigator</th>
-                <th>Duration</th>
-                <th>Shared campaigns</th>
-            </tr>
+        <tr>
+            <th>Plan code</th>
+            <th class="searchable">P.Investigator</th>
+            <th>Duration</th>
+            <th>Shared campaigns</th>
+        </tr>
 
         </thead>
-{#        {{ dump(cruises) }}#}
+        {#        {{ dump(cruises) }}#}
         <tbody>
+        {% set nameOfPresentCampaign =campaign.campaign %}
         {% for cruise in cruises|sort %}
-{#            ((a,b)=>a.startdate<=>b.startdate)#}
+            {#            ((a,b)=>a.startdate<=>b.startdate)#}
             <tr>
                 <td>{{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></td>
                 <td>{% set arrayOrphanInvestigatorIds = [0, 264, 549, 556, 637] %}
                     {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanInvestigatorIds %}
-                    {{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}}
-                        <a href="{{ path('principalinvestigator_details', {'principalInvestigatorId': cruise.principalinvestigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                        {{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}}
+                        <a href="{{ path('principalinvestigator_details', {'investigatorId': cruise.principalinvestigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
                     {% endif %}</td>
 
 
@@ -77,28 +87,37 @@
         </tbody>
 
     </table>
-
-
-
 </div>
+
+
+
+
+
+
+
+
+
 
 {% endblock %}
 
 {% block javascripts %}
 
-{#    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>#}
     <script type="text/javascript" src="/js/datatables.min.js"></script>
-<script src="/js/dataTables.fixedHeader.min.js"></script>
-<script type="text/javascript">
-    $(document).ready( function () {
-        $('#myDataTable').DataTable({
-            // "dom": '<"top"i>rt<"bottom"flp><"clear">',
-            fixedHeader: {
-                footer: true
-            }
-            // "scrollX": true
-        });
-    } );
-</script>
+    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>
+
+{#    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>#}
+{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
+{#<script src="/js/dataTables.fixedHeader.min.js"></script>#}
+{#<script type="text/javascript">#}
+{#    $(document).ready( function () {#}
+{#        $('#myDataTable').DataTable({#}
+{#            // "dom": '<"top"i>rt<"bottom"flp><"clear">',#}
+{#            fixedHeader: {#}
+{#                footer: true#}
+{#            }#}
+{#            // "scrollX": true#}
+{#        });#}
+{#    } );#}
+{#</script>#}
 
 {% endblock %}

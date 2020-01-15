@@ -35,7 +35,7 @@
             {% for investigator in principalInvestigators %}
                 <tr>
                     <td>{{ investigator.surname }}, {{ investigator.firstname }}
-                        <a href="{{ path('principalinvestigator_details', {'principalInvestigatorId': investigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                        <a href="{{ path('principalinvestigator_details', {'investigatorId': investigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
                         <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit "></i></a>
                         <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash "></i></a>
 

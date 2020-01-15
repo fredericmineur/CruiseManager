@@ -37,6 +37,17 @@ class TripinvestigatorsRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findForTripAndInvestigator ($tripId, $investigatorId) {
+        return $this->createQueryBuilder('tinv')
+            ->andWhere('tinv.tripnr = :tripId')
+            ->andWhere('tinv.investigatornr = :investigatorId')
+            ->setParameter('tripId', $tripId)
+            ->setParameter('investigatorId', $investigatorId)
+            ->orderBy('tinv.tripnr', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
     // /**
     //  * @return Tripinvestigators[] Returns an array of Tripinvestigators objects

@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
 use App\Entity\Trip;
+use App\Entity\Tripinvestigators;
 use App\Form\InvestigatorsType;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,9 +33,11 @@ class PrincipalInvestigatorController extends AbstractController
      */
     public function createPI (EntityManagerInterface $manager, Request $request){
         $investigator = new Investigators();
-        $form = $this->createForm(InvestigatorsType::class);
+        $form = $this->createForm(InvestigatorsType::class, $investigator);
         $form->handleRequest($request);
+//        dd($form);
         if($form->isSubmitted() && $form->isValid()){
+//            dd($investigator);
             $manager->persist($investigator);
             $manager->flush();
             return $this->redirectToRoute('principalinvestigator_details', [
@@ -48,17 +52,48 @@ class PrincipalInvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/PI/{principalInvestigatorId}", name="principalinvestigator_details")
+     * @Route("/PI/{investigatorId}", name="principalinvestigator_details")
      */
-    public function displayPI(EntityManagerInterface $manager, $principalInvestigatorId){
-        $principalInvestigator = $manager->getRepository(Investigators::class)
-            ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
+    public function displayPI(EntityManagerInterface $manager, $investigatorId){
+        $investigator = $manager->getRepository(Investigators::class)
+            ->findOneBy(['investigatorid'=> $investigatorId]);
 //        $cruises = $principalInvestigator->getCruises();
-        $cruisesInvestigator = $manager->getRepository(Cruise::class)->findBy(['principalinvestigator'=> $principalInvestigator->getInvestigatorid()], ['plancode'=> 'ASC']);
-        dump($cruisesInvestigator);
+        $cruisesPrincipalInvestigator = $manager->getRepository(Cruise::class)->findBy(['principalinvestigator'=> $investigator->getInvestigatorid()], ['plancode'=> 'ASC']);
+        $tripInvestigatorsAsInvestigator = $manager->getRepository(Tripinvestigators::class)->findBy(['investigatornr'=>$investigator->getInvestigatorid()], ['id'=>'ASC']);
+//        dump($tripInvestigatorsAsInvestigator);
+        $tripsAsInvestigator = [];
+        foreach ($tripInvestigatorsAsInvestigator as $tripInvestigatorAsInvestigator) {
+            array_push($tripsAsInvestigator, $tripInvestigatorAsInvestigator->getTripnr());
+        }
+        dump($tripsAsInvestigator);
+        $cruisesAsInvestigator=[];
+        foreach ($tripsAsInvestigator as $trip){
+//            dump($trip->getCruiseid());
+            if(! in_array( $trip->getCruiseid(), $cruisesAsInvestigator)){
+                array_push($cruisesAsInvestigator, $trip->getCruiseid());
+            }
+        }
+//        dd($cruisesAsInvestigator);
+
+//        dd($tripsAsInvestigators);
+//        $cruisesIdAsInvestigator = [];
+//        foreach ($tripsAsInvestigators as $tripsAsInvestigator) {
+//            if(! in_array($cruisesIdAsInvestigator, $tripsAsInvestigator->getCruiseid())) {
+//                array_push($cruisesIdAsInvestigator, $tripsAsInvestigator->getCruiseid());
+//            }
+//
+//        }
+//        dd($cruisesIdAsInvestigator);
+
+
+
+
+
         return $this->render('display/display_PInvestigator.html.twig', [
-            'principalInvestigator' => $principalInvestigator,
-            'cruisesPI'=> $cruisesInvestigator
+            'investigator' => $investigator,
+            'cruisesPI'=> $cruisesPrincipalInvestigator,
+            'cruisesAsInvestigator'=>$cruisesAsInvestigator,
+            'tripAsInvestigator'=>$tripsAsInvestigator
         ]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Entity;
 use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Investigators
@@ -61,6 +62,7 @@ class Investigators
      * @var int|null
      *
      * @ORM\Column(name="ImisNR", type="integer", nullable=true)
+     * @Assert\Regex(pattern="/^[0-9]{1,7}$/", message="IMIS number only contains digit")
      */
     private $imisnr;
 

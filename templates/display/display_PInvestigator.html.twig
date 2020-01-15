@@ -6,32 +6,30 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h4>Principal investigator</h4> <a href="{{ path('principalinvestigators_index') }}" class="btn btn-dark">PI list</a>
+                    <h4>Investigator</h4> <a href="{{ path('principalinvestigators_index') }}" class="btn btn-dark">Investigators list</a>
 
 
                 </div>
                 <div class="card-body">
-                    <p>{{ principalInvestigator.surname }}, {{ principalInvestigator.firstname }}</p>
-                    <p>IMIS number: {{ principalInvestigator.imisnr }}</p>
-                    <p>Passenger type: {{ principalInvestigator.passengertype }}</p>
+                    <p>{{ investigator.surname }}, {{ investigator.firstname }}</p>
+                    <p>IMIS number: {{ investigator.imisnr }}</p>
+                    <p>Passenger type: {{ investigator.passengertype }}</p>
                 </div>
                 <div class="card-footer">
 
-                    <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': principalInvestigator.investigatorid}) }}"><i class="fa fa-edit fa-2x"></i></a>
+                    <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit fa-2x"></i></a>
 
-                    <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': principalInvestigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
+                    <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
 
                 </div>
             </div>
 
-
-
-
-
-
     </div>
 
-    <div class="container-fluid">
+    <hr style="border-top: 3px dashed;">
+    {% if cruisesPI is not empty %}
+    <div class="container">
+        <div><h3>Cruises as principal investigator</h3></div>
         <div class="row">
             {% for cruise in cruisesPI %}
                 <div class="card" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
@@ -55,6 +53,43 @@
             {% endfor %}
         </div>
     </div>
+
+        <hr style="border-top: 3px dashed;">
+    {% endif %}
+
+    <div class="container">
+        <div><h3>Cruises as investigator</h3>
+        <p>(*)=present, (-)=absent</p>
+        </div>
+            <div class="row">
+                {% for cruise in cruisesAsInvestigator %}
+                    <div class="card" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
+                        <div class="card-header">
+                            <p>Cruise {{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></p>
+                            <p>Campaign(s): <br>
+                                {% for campaign in cruise.campaign %}&nbsp;&nbsp;&nbsp;&nbsp;"{{ campaign.campaign }}"
+                                    <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br> {% endfor %}</p>
+                        </div>
+                        <div class="card-body">
+                            <p>Trips: <br>
+                                {% for trip in cruise.trips %}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;{{ trip.startdate |date('d/m/Y') }}--{{ trip.enddate |date('d/m/Y') }}
+                                    {% if trip in tripAsInvestigator %}(*){% else %}(-){% endif %}
+                                        <br>
+
+
+                                {% endfor %}
+
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+    </div>
+
+
 
 
 

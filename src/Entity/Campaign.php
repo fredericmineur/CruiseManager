@@ -44,7 +44,7 @@ class Campaign
     /**
      * @var int|null
      * @ORM\Column(name="ImisProjectnr", type="integer", nullable=true)
-     * @Assert\Regex(pattern="/^[0-9]{1,5}$/", message="IMIS number only contains digit")
+     * @Assert\Regex(pattern="/^[0-9]{1,6}$/", message="IMIS number only contains digit")
      */
     private $imisprojectnr;
 
