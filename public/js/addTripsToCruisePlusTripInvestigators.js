@@ -77,6 +77,7 @@ function cloneTrip(contextElement){
         deleteTripinvestigators(clonedTripElement);
         cloneTrip(clonedTripElement);
         deleteTrip(clonedTripElement);
+        addClassForAutocomplete(clonedTripElement);
 
     })
 }

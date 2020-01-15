@@ -336,7 +336,7 @@ class CruiseController extends AbstractController
                 $tripinvestigator->setInvestigatornr($investigator)
                     ->setImisnr($investigator->getImisnr())
                     ->setPassengertype($investigator->getPassengertype())
-                    ->setBirthdate($investigator->getBirthdate())
+//                    ->setBirthdate($investigator->getBirthdate())
                     ->setNationality($investigator->getNationality());
                 return $tripinvestigator;
             }
@@ -344,7 +344,7 @@ class CruiseController extends AbstractController
         $tripinvestigator-> setInvestigatornr(null)
             ->setImisnr(null)
             ->setPassengertype(null)
-            ->setBirthdate(null)
+//            ->setBirthdate(null)
             ->setNationality(null);
         return $tripinvestigator;
     }
