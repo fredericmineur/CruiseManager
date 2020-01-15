@@ -3,15 +3,9 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="/css/datatables.min.css">
     <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
-{#    <link rel="stylesheet" href="/css/jquery.dataTables.min.css">#}
-{#    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>#}
-
-{#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
-    {% endblock %}
+{% endblock %}
 
 {% block body %}
-
-
 
     <div class="container">
         <div style="float: left; display: inline-block; margin-right: 20px">
@@ -32,15 +26,12 @@
             {{ headerRow | raw }}
             </thead>
             <tbody>
-            {% for investigator in principalInvestigators %}
+            {% for investigator in investigators %}
                 <tr>
                     <td>{{ investigator.surname }}, {{ investigator.firstname }}
-                        <a href="{{ path('principalinvestigator_details', {'investigatorId': investigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
-                        <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit "></i></a>
-                        <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash "></i></a>
-
-
-
+                        <a href="{{ path('investigator_details', {'investigatorId': investigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                        <a href="{{ path('edit_investigator', {'investigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit "></i></a>
+                        <a href="{{ path('remove_investigator_warning', {'investigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash "></i></a>
                     </td>
 
                     <td>
@@ -59,22 +50,12 @@
             <tfoot>
             {{ headerRow | raw }}
             </tfoot>
-
-
         </table>
-
     </div>
-
-
-
 
 {% endblock %}
 
 {% block javascripts %}
     <script type="text/javascript" src="/js/datatables.min.js"></script>
     <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>
-{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
-{#    <script src="/js/myDataTable/tableSearchHeaders.js"></script>#}
-
-
 {% endblock %}

@@ -151,7 +151,7 @@ class Trip
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="tripnr", cascade={"all"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="tripnr", cascade={"all"}, orphanRemoval=true)
      */
     private $tripinvestigators;
 

@@ -6,7 +6,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    <h4>Investigator</h4> <a href="{{ path('principalinvestigators_index') }}" class="btn btn-dark">Investigators list</a>
+                    <h4>Investigator</h4> <a href="{{ path('investigators_index') }}" class="btn btn-dark">Investigators list</a>
 
 
                 </div>
@@ -17,9 +17,9 @@
                 </div>
                 <div class="card-footer">
 
-                    <a href="{{ path('edit_principalinvestigator', {'principalInvestigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit fa-2x"></i></a>
+                    <a href="{{ path('edit_investigator', {'investigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit fa-2x"></i></a>
 
-                    <a href="{{ path('remove_PI_warning', {'principalInvestigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
+                    <a href="{{ path('remove_investigator_warning', {'investigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
 
                 </div>
             </div>
@@ -27,8 +27,9 @@
     </div>
 
     <hr style="border-top: 3px dashed;">
-    {% if cruisesPI is not empty %}
+
     <div class="container">
+        {% if cruisesPI is not empty %}
         <div><h3>Cruises as principal investigator</h3></div>
         <div class="row">
             {% for cruise in cruisesPI %}
@@ -51,13 +52,16 @@
                 </div>
 
             {% endfor %}
-        </div>
+        </div> {% else %} <div><h3>No cruise as principal investigator</h3></div>
+    {% endif %}
     </div>
 
         <hr style="border-top: 3px dashed;">
-    {% endif %}
+
+
 
     <div class="container">
+        {% if cruisesAsInvestigator is not empty %}
         <div><h3>Cruises as investigator</h3>
         <p>(*)=present, (-)=absent</p>
         </div>
@@ -86,7 +90,7 @@
                 {% endfor %}
             </div>
 
-
+        {% else %}<div><h3>No cruise as investigator</h3></div>{% endif %}
     </div>
 
 

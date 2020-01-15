@@ -20,36 +20,41 @@ class CruiseController extends AbstractController
 {
     /**
      * @Route("/cruises", name="cruises_index")
-     * @Route("/campaign/{campaignId}/cruises", name="cruises_for_campaign")
      */
-    public function cruisesIndex($campaignId = null)
+    public function displayCruises(EntityManagerInterface $manager)
     {
-        $cruisesForCampaign=false;
-        if ($campaignId) {
-            $cruisesForCampaign=true;
-        }
-        $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
-        $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
+//        $cruisesForCampaign=false;
+//        if ($campaignId) {
+//            $cruisesForCampaign=true;
+//        }
+        $cruises = $manager->getRepository(Cruise::class)->findAll();
+//        $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
+//        $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
 
 
         //Check findBy with first array empty https://stackoverflow.com/questions/7124340/doctrine-coregettable-findall-how-to-specify-order
 
-        $cruises = $repoCruise->findAll();
-        $investigators = $repoInvestigator->findAll();
-        $repoCampaign = $this->getDoctrine()->getRepository(Campaign::class);
-        $campaigns1 = $repoCampaign->findAll();
+//        $cruises = $repoCruise->findAll();
+//        $investigators = $repoInvestigator->findAll();
+//        $repoCampaign = $this->getDoctrine()->getRepository(Campaign::class);
+//        $campaigns1 = $repoCampaign->findAll();
 
-        $campaign = $repoCampaign->findOneBy(['campaignid' => $campaignId ]);
-//        dump($campaign);
-//        dump($campaignId);
-//        dump($campaigns1);
+//        $campaign = $repoCampaign->findOneBy(['campaignid' => $campaignId ]);
 
         return $this->render('display/display_cruises.html.twig', [
             'cruises' => $cruises,
-            'investigators' => $investigators,
-            'campaign' => $campaign,
-            'cruisesForCampaign' =>$cruisesForCampaign
+//            'investigators' => $investigators,
+//            'campaign' => $campaign,
+//            'cruisesForCampaign' =>$cruisesForCampaign
         ]);
+    }
+
+
+    /**
+     * @Route("/campaign/{campaignId}/cruises", name="cruises_for_campaign")
+     */
+    function displayCruisesPerCampaign(){
+
     }
 
 

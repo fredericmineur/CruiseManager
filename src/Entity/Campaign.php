@@ -51,7 +51,7 @@ class Campaign
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Cruise", inversedBy="campaign", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="Cruise", inversedBy="campaign")
      * @ORM\JoinTable(name="camppercruise",
      *   joinColumns={
      *     @ORM\JoinColumn(name="Campaign", referencedColumnName="CampaignID")
