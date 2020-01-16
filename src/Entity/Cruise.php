@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Cruise
  *
  * @ORM\Table(name="Cruise", indexes={@ORM\Index(name="CruizeID", columns={"CruiseID"}), @ORM\Index(name="IDX_9931752D77093E2", columns={"PrincipalInvestigator"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\CruiseRepository")
  * @UniqueEntity(fields={"plancode"}, message="This plan code is already in use")
  */
 class Cruise

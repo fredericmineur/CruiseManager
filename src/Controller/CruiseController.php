@@ -27,7 +27,7 @@ class CruiseController extends AbstractController
 //        if ($campaignId) {
 //            $cruisesForCampaign=true;
 //        }
-        $cruises = $manager->getRepository(Cruise::class)->findAll();
+        $cruises = $manager->getRepository(Cruise::class)->findBy([], ['plancode'=> 'DESC']);
 //        $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
 //        $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
 
