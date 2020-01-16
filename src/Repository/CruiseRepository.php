@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: filipw
@@ -6,18 +7,23 @@
  * Time: 4:01 PM
  */
 
+
 namespace App\Repository;
 
 use App\Entity\Cruise;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-class CruiseRepository extends ServiceEntityRepository{
+
+
+class CruiseRepository extends ServiceEntityRepository
+{
 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Cruise::class);
     }
+
 
     public function GetAllCruises(): array
     {

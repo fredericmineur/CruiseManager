@@ -10,9 +10,7 @@
 
 
 {% block body %}
-{#    {% for cruise in cruises %}#}
-{#        <p>{{ cruise.destination }}</p>#}
-{#    {% endfor %}#}
+
 
     <div class="container">
 
@@ -31,44 +29,10 @@
             </tr>"
         %}
 
-        {#<th>Campaigns</th>#}
         {{ headerRow | raw}}
 
         </thead>
-        {#<tbody>#}
-            {#{% for cruise in cruises  %}#}
-                {#<tr>#}
 
-                    {#<td>#}
-                        {#{{ cruise.plancode}}  <a href="{{path('cruise_details', {'cruiseId': cruise.CruiseID})}}"><i class="fa fa-info-circle"></i></a>#}
-                    {#</td>#}
-
-                    {#<td>{% for singleCampaign in cruise.campaign %}#}
-                            {#{{ singleCampaign.campaign }}#}
-                            {#<a href="{{ path('campaign_details', {'campaignId':singleCampaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br>#}
-                        {#{% endfor %}#}
-                    {#</td>#}
-                    {#<td>#}
-                        {#{{ cruise.startdate|date('Y/m/d') }}#}
-                    {#</td>#}
-
-                    {#<td>#}
-                        {#{{ cruise.enddate|date('Y/m/d') }}#}
-                    {#</td>#}
-
-                    {#<td>#}
-                        {#{{cruise.principalinvestigator.firstname|default('') ~ ' ' ~ cruise.principalinvestigator.surname|default('') }}#}
-                    {#</td>#}
-
-                    {#<td>#}
-                        {#{{ cruise.trips|length}}#}
-                    {#</td>#}
-
-                {#</tr>#}
-
-
-            {#{% endfor %}#}
-        {#</tbody>#}
         <tfoot>
 
         {{ headerRow | raw}} {# Variable containing columns headers, see above #}
@@ -79,8 +43,6 @@
     </div>
 {#    </div>#}
 
-
-{#    {{ dump(investigators) }}#}
 
 {% endblock %}
 

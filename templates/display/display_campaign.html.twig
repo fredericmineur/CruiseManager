@@ -59,7 +59,7 @@
                 <td>{% set arrayOrphanInvestigatorIds = [0, 264, 549, 556, 637] %}
                     {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanInvestigatorIds %}
                         {{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}}
-                        <a href="{{ path('principalinvestigator_details', {'investigatorId': cruise.principalinvestigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
+                        <a href="{{ path('investigator_details', {'investigatorId': cruise.principalinvestigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
                     {% endif %}</td>
 
 
