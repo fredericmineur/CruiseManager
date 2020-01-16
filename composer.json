@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "friendsofsymfony/jsrouting-bundle": "^2.5",
         "ninsuo/symfony-collection": "^2.1",
         "pugx/autocompleter-bundle": "^1.4",
         "sensio/framework-extra-bundle": "^5.1",

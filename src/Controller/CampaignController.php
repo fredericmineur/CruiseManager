@@ -104,7 +104,7 @@ class CampaignController extends AbstractController
     }
 
     /**
-     * @Route("/campaign/{campaignId}", name="campaign_details")
+     * @Route("/campaign/{campaignId}",options={"expose"=true}, name="campaign_details")
      */
     public function campaignDetails($campaignId)
     {

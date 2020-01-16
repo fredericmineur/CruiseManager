@@ -13,15 +13,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CruiseController extends AbstractController
 {
+
     /**
-     * @Route("/cruises", name="cruises_index")
-     * @Route("/campaign/{campaignId}/cruises", name="cruises_for_campaign")
-     */
+ * @Route("/campaign/{campaignId}/cruises", name="cruises_for_campaign")
+ */
     public function cruisesIndex($campaignId = null)
     {
         $cruisesForCampaign=false;
@@ -52,6 +53,40 @@ class CruiseController extends AbstractController
         ]);
     }
 
+
+    /**
+     * @Route("/cruises", name="cruises_index")
+     */
+    public function cruises (){
+        return $this->render('display/display_cruisesList.html.twig');
+    }
+
+
+    /**
+     * @Route("/api/getcruises", name="get_cruises")
+     * @return JsonResponse
+     */
+
+    public function cruiseList()
+    {
+        $cruises=$this->getDoctrine()
+            ->getRepository(Cruise::class)->GetAllCruises();
+
+        $campaigns=$this->getDoctrine()
+            ->getRepository(Cruise::class)->ListCampaignsPerCruise();
+
+        foreach ($campaigns as $campaign) {
+           $cruisekey = array_search($campaign['cruiseid'], array_column($cruises, 'CruiseID'));
+           foreach ($campaign['campaign'] as $k=>$v) {
+               unset($campaign['campaign'][$k]['memo']);
+               unset($campaign['campaign'][$k]['imisprojectnr']);
+
+           }
+           $cruises[$cruisekey]['campaigns']= $campaign['campaign'];
+       }
+
+        return  new JsonResponse(array('data'=>$cruises));
+    }
 
     /**
      * @Route("/cruises/remove_warning/{cruiseId}", name="cruise_remove_warning")
@@ -262,7 +297,7 @@ class CruiseController extends AbstractController
     }
 
     /**
-     * @Route ("/cruises/{cruiseId}", name="cruise_details")
+     * @Route ("/cruises/{cruiseId}", options={"expose"=true}, name="cruise_details")
      */
     public function cruiseDetails($cruiseId)
     {
