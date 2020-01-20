@@ -7,12 +7,15 @@ use App\Entity\Investigators;
 use App\Entity\Trip;
 use App\Entity\Tripinvestigators;
 use App\Form\InvestigatorsType;
+use App\Repository\InvestigatorsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class InvestigatorController extends AbstractController
 {
@@ -26,6 +29,25 @@ class InvestigatorController extends AbstractController
             'investigators' => $investigators
         ]);
     }
+
+
+    /**
+     * @Route("/api/getinvestigators_names", name="get_investigators_names", methods={"GET"})
+     */
+    public function getInvestigatorsJson (SerializerInterface $serializer, InvestigatorsRepository $investigatorsRepository)
+    {
+        $investigators = $investigatorsRepository->findAll();
+
+        $jsonInvestigators = $serializer->serialize($investigators, 'json', ['groups'=>"get_investigators_names"]);
+
+        return new JsonResponse($jsonInvestigators, 200, [], true);
+    }
+
+//    /**
+//     * @Route("/api/getinvestigators", name="get_investigators", methods={"GET"})
+//     */
+//    public function
+
 
     /**
      * @Route("/investigators/create_investigator", name="create_investigator")

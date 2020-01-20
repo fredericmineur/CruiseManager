@@ -5,6 +5,7 @@ namespace App\Entity;
 use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,6 +21,7 @@ class Investigators
      * @ORM\Column(name="InvestigatorID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("get_investigators_names")
      */
     private $investigatorid;
 
@@ -34,6 +36,7 @@ class Investigators
      * @var string|null
      *
      * @ORM\Column(name="Surname", type="string", length=35, nullable=true)
+     * @Groups("get_investigators_names")
      */
     private $surname;
 
@@ -41,6 +44,7 @@ class Investigators
      * @var string|null
      *
      * @ORM\Column(name="Firstname", type="string", length=35, nullable=true)
+     * @Groups("get_investigators_names")
      */
     private $firstname;
 
