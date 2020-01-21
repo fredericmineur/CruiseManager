@@ -26,8 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
-
+use Symfony\Component\Serializer\SerializerInterface;
 
 
 class CampaignController extends AbstractController
@@ -38,12 +37,55 @@ class CampaignController extends AbstractController
      */
     public function campaignsIndex()
     {
-        $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
-        $campaigns = $repoCampaigns->findAll();
+//        $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
+//        $campaigns = $repoCampaigns->findAll();
+//
+//        return $this->render('display/display_campaigns_index.html.twig', [
+//            'campaigns' => $campaigns
+//        ]);
 
-        return $this->render('display/display_campaigns_index.html.twig', [
-            'campaigns' => $campaigns
-        ]);
+        return $this->render('display/display_campaignsListAjax.html.twig', []);
+    }
+
+    //Postman on localhost : 33.98s, 7.03s, 14.66s, 25.69s, 7.06s
+    /**
+     * @Route("/api/getcampaigns", name="api_get_campaigns")
+     */
+    public function serializeCampaignList(SerializerInterface $serializer, CampaignRepository $campaignRepository, EntityManagerInterface $em)
+    {
+        $campaigns = $campaignRepository->getCampaignsWithCruises();
+        $jsonCampaigns = $serializer->serialize($campaigns, 'json' );
+
+
+        return new JsonResponse($jsonCampaigns, 200, [], true);
+    }
+
+
+    //Postman on localhost : 6.98s, 32s, 6.87s, 32.29s, 32.46s
+    /**
+     * @Route("/api/getcampaignsslim", name="api_get_campaigns_slim")
+     */
+    public function getCampaignList (CampaignRepository $campaignRepository)
+    {
+        $campaigns = $campaignRepository->getSlimCampaigns();
+
+        $campaignsWitCruises = $campaignRepository->getCampaignsWithCruises();
+//
+        foreach($campaignsWitCruises as $singleCampaignWithCruises) {
+            $campaignKey = array_search($singleCampaignWithCruises['campaignid'], array_column($campaigns, 'campaignid'));
+            //hardly any difference in query time with or with unsetting elements
+            foreach ($singleCampaignWithCruises['cruise'] as $k=>$v){
+                unset($singleCampaignWithCruises['cruise'][$k]['startdate']);
+                unset($singleCampaignWithCruises['cruise'][$k]['enddate']);
+                unset($singleCampaignWithCruises['cruise'][$k]['destination']);
+                unset($singleCampaignWithCruises['cruise'][$k]['memo']);
+                unset($singleCampaignWithCruises['cruise'][$k]['ship']);
+                unset($singleCampaignWithCruises['cruise'][$k]['purpose']);
+            }
+            $campaigns[$campaignKey]['cruise']=$singleCampaignWithCruises['cruise'];
+        }
+
+        return new JsonResponse($campaigns, 200);
     }
 
 
