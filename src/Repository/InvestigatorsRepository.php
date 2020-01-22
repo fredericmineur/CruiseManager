@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Investigators;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Investigators|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,25 @@ class InvestigatorsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Investigators::class);
+    }
+
+
+
+    public function getAllInvestigatorsForTable(EntityManagerInterface $em)
+    {
+        $qb = $em->createQueryBuilder();
+        $qb -> select('inv.investigatorid',
+            'inv.surname', 'inv.firstname', 'inv.imisnr',
+            '(inv.surname + \' \'+ inv.firstname) as fullname',
+            '(inv.surname +  \', \'+ inv.firstname) as fullname_comma',
+            'inv.passengertype'
+            )
+            ->from(Investigators::class, 'inv')
+            ;
+
+        $query = $qb->getQuery();
+        return $query->getArrayResult();
+
     }
 
 

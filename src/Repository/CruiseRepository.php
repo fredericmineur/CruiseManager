@@ -69,12 +69,7 @@ class CruiseRepository extends ServiceEntityRepository
 
 
     public function GetAllCruisesForTable(EntityManagerInterface $em){
-//        $query = $em->createQuery(
-//            'SELECT cr
-//            FROM App\Entity\Cruise cr
-//            LEFT JOIN App\Entity\Trip tr ON cr.cruiseid = tr.cruiseid
-//            ');
-//        dd($query->getResult());
+
 
         $qb = $em->createQueryBuilder();
         $qb -> select( 'cr.cruiseid',
@@ -89,11 +84,10 @@ class CruiseRepository extends ServiceEntityRepository
             ->leftJoin('cr.principalinvestigator', 'PI')
 
 
-//            ->addSelect('ca')
             ->groupBy('cr.cruiseid')
-//            ->orderBy('cr.cruiseid', 'DESC')
+
             ->innerJoin('cr.campaign', 'ca')
-//            ->addSelect('ca')
+
 
         ;
         $query = $qb->getQuery();

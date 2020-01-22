@@ -23,11 +23,13 @@ class InvestigatorController extends AbstractController
      * @Route("/investigators", name="investigators_index")
      */
     public function displayInvestigators (EntityManagerInterface $manager){
-        $repoInvestigators = $manager->getRepository(Investigators::class);
-        $investigators = $repoInvestigators->findBy([],['surname'=>'ASC']);
-        return $this->render('display/display_investigators.html.twig', [
-            'investigators' => $investigators
-        ]);
+//        $repoInvestigators = $manager->getRepository(Investigators::class);
+//        $investigators = $repoInvestigators->findBy([],['surname'=>'ASC']);
+//        return $this->render('display/display_investigators.html.twig', [
+//            'investigators' => $investigators
+//        ]);
+
+        return $this->render('display/display_investigatorsListAjax.html.twig');
     }
 
 
@@ -43,10 +45,16 @@ class InvestigatorController extends AbstractController
         return new JsonResponse($jsonInvestigators, 200, [], true);
     }
 
-//    /**
-//     * @Route("/api/getinvestigators", name="get_investigators", methods={"GET"})
-//     */
-//    public function
+    /**
+     * @Route("/api/getinvestigators", name="get_investigators", methods={"GET"})
+     */
+    public function getInvestigatorsTable (SerializerInterface $serializer, InvestigatorsRepository $investigatorsRepository, EntityManagerInterface $em)
+    {
+        $investigators = $investigatorsRepository->getAllInvestigatorsForTable($em);
+        $jsonInvestigators = $serializer->serialize($investigators, 'json');
+
+        return new JsonResponse($jsonInvestigators, 200, [], true);
+    }
 
 
     /**
@@ -71,23 +79,23 @@ class InvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/investigators/{investigatorId}", name="investigator_details")
+     * @Route("/investigators/{investigatorId}", name="investigator_details", options={"expose"=true})
      */
     public function displayPI(EntityManagerInterface $manager, $investigatorId){
         $investigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $investigatorId]);
-//        $cruises = $principalInvestigator->getCruises();
+
         $cruisesPrincipalInvestigator = $manager->getRepository(Cruise::class)->findBy(['principalinvestigator'=> $investigator->getInvestigatorid()], ['plancode'=> 'ASC']);
         $tripInvestigatorsAsInvestigator = $manager->getRepository(Tripinvestigators::class)->findBy(['investigatornr'=>$investigator->getInvestigatorid()], ['id'=>'ASC']);
-//        dump($tripInvestigatorsAsInvestigator);
+
         $tripsAsInvestigator = [];
         foreach ($tripInvestigatorsAsInvestigator as $tripInvestigatorAsInvestigator) {
             array_push($tripsAsInvestigator, $tripInvestigatorAsInvestigator->getTripnr());
         }
-        dump($tripsAsInvestigator);
+
         $cruisesAsInvestigator=[];
         foreach ($tripsAsInvestigator as $trip){
-//            dump($trip->getCruiseid());
+
             if(! in_array( $trip->getCruiseid(), $cruisesAsInvestigator)){
                 array_push($cruisesAsInvestigator, $trip->getCruiseid());
             }
@@ -104,11 +112,11 @@ class InvestigatorController extends AbstractController
 
 
     /**
-     * @Route("/investigators/edit/{investigatorId}", name="edit_investigator")
+     * @Route("/investigators/edit/{investigatorId}", name="edit_investigator", options={"expose"=true})
      */
-    public function editPI(EntityManagerInterface $manager, Request $request, $principalInvestigatorId) {
+    public function editPI(EntityManagerInterface $manager, Request $request, $investigatorId) {
         $investigator = $manager->getRepository(Investigators::class)
-            ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
+            ->findOneBy(['investigatorid'=> $investigatorId]);
         $form = $this->createForm(InvestigatorsType::class, $investigator);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -126,11 +134,11 @@ class InvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/investigators/remove_warning/{investigatorId}", name="remove_investigator_warning")
+     * @Route("/investigators/remove_warning/{investigatorId}", name="remove_investigator_warning", options={"expose"=true})
      */
-    public function warnRemoveInvestigator (EntityManagerInterface $manager, $principalInvestigatorId){
+    public function warnRemoveInvestigator (EntityManagerInterface $manager, $investigatorId){
         $investigator = $manager->getRepository(Investigators::class)
-            ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
+            ->findOneBy(['investigatorid'=> $investigatorId]);
         return $this->render('remove/remove_PI.html.twig',[
             'investigator' => $investigator
         ]);
@@ -141,10 +149,10 @@ class InvestigatorController extends AbstractController
     /**
      * @Route("/investigators/remove_PI/{investigatorId}", name="remove_investigator")
      */
-    public function removePI(EntityManagerInterface $manager, $principalInvestigatorId ){
-        $principalInvestigator = $manager->getRepository(Investigators::class)
-            ->findOneBy(['investigatorid'=> $principalInvestigatorId]);
-        $manager->remove($principalInvestigator);
+    public function removePI(EntityManagerInterface $manager, $investigatorId ){
+        $investigator = $manager->getRepository(Investigators::class)
+            ->findOneBy(['investigatorid'=> $investigatorId]);
+        $manager->remove($investigator);
         $manager->flush();
         return $this->redirectToRoute('investigators_index');
     }
