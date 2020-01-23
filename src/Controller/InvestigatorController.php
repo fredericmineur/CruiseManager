@@ -82,7 +82,7 @@ class InvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/investigators/{investigatorId}", name="investigator_details", options={"expose"=true})
+     * @Route("/investigators/display/{investigatorId}", name="investigator_details", options={"expose"=true})
      */
     public function displayPI(EntityManagerInterface $manager, $investigatorId){
         $investigator = $manager->getRepository(Investigators::class)
