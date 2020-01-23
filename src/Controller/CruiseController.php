@@ -8,14 +8,17 @@ use App\Entity\Investigators;
 use App\Entity\Trip;
 use App\Entity\Tripinvestigators;
 use App\Form\CruiseType;
+use App\Repository\CruiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Method;
 use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CruiseController extends AbstractController
 {
@@ -62,30 +65,46 @@ class CruiseController extends AbstractController
     }
 
 
+//Postman on localhost: 7.04s, 42.36s, 18.56s, 6.98s, 32.06s
     /**
      * @Route("/api/getcruises", name="get_cruises")
      * @return JsonResponse
      */
 
-    public function cruiseList()
+    public function cruiseJsonForTable()
     {
         $cruises=$this->getDoctrine()
-            ->getRepository(Cruise::class)->GetAllCruises();
+            ->getRepository(Cruise::class)->GetAllCruisesWithPIAndNumberOfTrips();
 
         $campaigns=$this->getDoctrine()
-            ->getRepository(Cruise::class)->ListCampaignsPerCruise();
+            ->getRepository(Cruise::class)->GetAllCruisesWithCampaigns();
 
         foreach ($campaigns as $campaign) {
            $cruisekey = array_search($campaign['cruiseid'], array_column($cruises, 'CruiseID'));
            foreach ($campaign['campaign'] as $k=>$v) {
                unset($campaign['campaign'][$k]['memo']);
                unset($campaign['campaign'][$k]['imisprojectnr']);
-
            }
            $cruises[$cruisekey]['campaigns']= $campaign['campaign'];
        }
 
         return  new JsonResponse(array('data'=>$cruises));
+    }
+
+    /**
+     * @Route("/api/getcruisesserializer", name="get_cruises_serializer", methods={"GET"})
+     */
+    public function cruiseJsonForTableSerializer(SerializerInterface $serializer, CruiseRepository $cruiseRepository, EntityManagerInterface $em)
+    {
+
+        $cruises= $cruiseRepository->GetAllCruisesForTable($em);
+
+        $cruisesForTable= $cruiseRepository->GetAllCruisesWithPIAndNumberOfTrips();
+        $cruisesWithCampaigns = $cruiseRepository->GetAllCruisesWithCampaigns();
+//        dd($cruisesForTable);
+        $jsonCruisesForTable = $serializer->serialize($cruises, 'json');
+
+        return new JsonResponse($jsonCruisesForTable, 200, [], true);
     }
 
 

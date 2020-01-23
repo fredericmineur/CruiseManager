@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Trip
  *
  * @ORM\Table(name="Trip", indexes={@ORM\Index(name="CruiseID", columns={"CruiseID"}), @ORM\Index(name="EndDate", columns={"Enddate"}), @ORM\Index(name="GpsStart", columns={"GPSStart"}), @ORM\Index(name="GpsStop", columns={"GPSStop"}), @ORM\Index(name="StartDate", columns={"Startdate"}), @ORM\Index(name="TripID", columns={"TripID"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\TripRepository")
  */
 class Trip
 {

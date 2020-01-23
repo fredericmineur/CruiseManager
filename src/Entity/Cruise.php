@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,6 +34,7 @@ class Cruise
      * @ORM\Column(name="CruiseID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("get_cruises_for_table")
      */
     private $cruiseid;
 
@@ -89,6 +91,7 @@ class Cruise
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Campaign", mappedBy="cruise" )
+     * Groups("get_cruises_for_table")
      */
     private $campaign;
 

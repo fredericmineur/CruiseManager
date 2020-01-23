@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+
+    <link rel="stylesheet" href="/css/datatables.min.css">
+    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
+
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h3>List of campaigns</h3><a href="{{ path('campaign_create') }}" class="btn btn-success">Add a campaign</a>
+        <table class="table-hover table-bordered display" id="myDataTable" width="100%">
+            <thead>
+            {% set headerRow = "
+                <tr>
+                    <th>Campaign name </th>
+                    <th>Imis Project number </th>
+
+                    <th>Cruises (by Plan Code)</th>
+                </tr>
+                " %}
+            {{ headerRow | raw }}
+            </thead>
+
+            <tfoot>
+            {{ headerRow | raw }}
+            </tfoot>
+
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/js/datatables.min.js"></script>
+{#    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>#}
+    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready( function () {
+            //allow sorting date
+            // $.fn.dataTable.moment("D/M/YYYY");
+
+            //Add another header below the first
+            $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
+
+            //Transform the second header row to have the search input fields
+            $('#myDataTable thead tr:odd th').each( function () {
+                $(this).html('<input type="text" placeholder="Search" />');
+            });
+
+            //Create the table
+            var table =
+                $('#myDataTable').DataTable({
+                    "ajax": {
+                        "url": "api/getcampaignsslim",
+                        "dataSrc" : ""
+                    },
+
+                    "order": [[0, "desc"]],
+                    "columns" : [
+                        {"data" : "campaign"},
+                        {"data" : "imisprojectnr"},
+
+                        {"data" : "cruise",
+                        "defaultContent" : ""},
+                        {"data" : "campaignid"}
+                    ],
+                    "columnDefs": [
+                        {
+                            "targets": -1,
+                            "visible": false
+                        },
+                        {
+                            "targets": 0,
+                            "render": function(data, type, row) {
+                                campaignOutput = '<a href="' + Routing.generate('campaign_details', {campaignId: row.campaignId}) +    '" title="Open Campaign">'
+                                    + data + '</a>';
+                                return campaignOutput;
+                            }
+                        },
+                        {"targets":2,
+                            "render":function(data, type, row) {
+                                var cruisesOutput = '';
+                                if(Array.isArray(data) && data.length) {
+                                    for (var i =0; i < data.length; i++) {
+                                        cruisesOutput += '[<a href="' + Routing.generate('cruise_details', {cruiseId: data[i]['cruiseid']}) + '" title="Open Cruise">'
+                                            // + '<i class="fa fa-map-marker" aria-hidden="true"></i>'
+                                            + data[i]['plancode'] + '</a>]'
+                                        if ((i+1) % 8 == 0) {
+                                            cruisesOutput += '<br/>'
+                                        }
+                                    }
+                                    return cruisesOutput;
+                                }
+
+                            }
+
+                        }
+
+                    ]
+                });
+
+
+
+            //Hide the generic search field
+            $('#myDataTable_filter').hide();
+
+
+            // Apply the search on every column
+            table.columns().every( function () {
+                var that = this;
+
+                $( 'input', this.header() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+
+
+
+            //prevent that clicking on the search field sort the column
+            //https://stackoverflow.com/questions/31677257/datatables-only-allow-sorting-with-buttons
+
+            $('#myDataTable thead input').on('click', function(e){
+                e.stopPropagation();
+            });
+
+        } );
+    </script>
+
+
+
+{% endblock %}

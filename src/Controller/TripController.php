@@ -5,12 +5,15 @@ namespace App\Controller;
 use App\Entity\Trip;
 use App\Entity\Tripstations;
 use App\Form\TripType;
+use App\Repository\TripRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class TripController extends AbstractController
 {
@@ -128,10 +131,24 @@ class TripController extends AbstractController
      */
     public function tripsIndex()
     {
-        $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
-        $trips = $repoTrips->findAll();
-        return $this->render('display/display_trips.html.twig', [
-            'trips'=> $trips
-        ]);
+//        $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
+//        $trips = $repoTrips->findAll();
+//        return $this->render('display/display_trips.html.twig', [
+//            'trips'=> $trips
+//        ]);
+
+        return $this->render('display/display_tripsListAjax.html.twig');
+    }
+
+    /**
+     * @Route("/api/gettrips", name="get_trips")
+     */
+    public function getTripsForTable(SerializerInterface $serializer, TripRepository $tripRepository, EntityManagerInterface $em)
+    {
+        $trips = $tripRepository->getAllTripsForTable();
+//        dd($trips);
+        $jsonTrips = $serializer->serialize($trips, 'json');
+
+        return new JsonResponse($jsonTrips, 200, [], true);
     }
 }

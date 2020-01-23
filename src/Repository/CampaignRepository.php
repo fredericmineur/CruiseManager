@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Campaign;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
+use phpDocumentor\Reflection\DocBlock\Serializer;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @method Campaign|null find($id, $lockMode = null, $lockVersion = null)
@@ -40,6 +43,29 @@ class CampaignRepository extends ServiceEntityRepository
         return ["CampaignImis"=> $arrayImis,
             "CampaignIds"=>$arrayCampaignIds, "CampaignNames"=> $arrayCampaignNames];
     }
+
+    public function getCampaignsWithCruises()
+    {
+        $qb=$this->createQueryBuilder('ca')
+            ->innerJoin('ca.cruise', 'cr')
+            ->addSelect('cr');
+        $query = $qb->getQuery();
+        return $query->getArrayResult();
+    }
+
+
+    public function getSlimCampaigns()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('ca.campaignid', 'ca.campaign', 'ca.imisprojectnr')
+            ->from(Campaign::class, 'ca');
+        $query = $qb->getQuery();
+        return $query->getArrayResult();
+    }
+
+
+
+
 
 
     // /**
