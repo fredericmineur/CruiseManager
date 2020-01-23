@@ -2,19 +2,33 @@
 
 namespace App\Form;
 
+use App\Entity\Investigators;
 use App\Entity\Tripinvestigators;
+use App\Form\DataTransformer\InvestigatorToNumberTransformer;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TripinvestigatorsType extends AbstractType
 {
+
+    private $transformer;
+
+    public function __construct( InvestigatorToNumberTransformer $transformer )
+    {
+        $this->transformer=$transformer;
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-//            ->add('shortname')
+//           ->add('shortname')
             ->add('surname',
                 TextType::class,
                 [
@@ -34,6 +48,18 @@ class TripinvestigatorsType extends AbstractType
                     ]
                 ]
                 )
+            ->add('fullname',
+                TextType::class,
+                [
+                    'label'=>'Investigator',
+                    'invalid_message' => 'That is not a valid investigator'
+                ]
+                )
+
+            ->add('investigatornr', HiddenType::class)
+
+
+
 //            ->add('initials')
 //            ->add('serverdate')
 //            ->add('campaignnr')
@@ -55,9 +81,12 @@ class TripinvestigatorsType extends AbstractType
 //                )
 
 //            ->add('expid')
-//            ->add('investigatornr')
 //            ->add('tripnr')
         ;
+
+        $builder->get('investigatornr')
+            ->addModelTransformer($this->transformer);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

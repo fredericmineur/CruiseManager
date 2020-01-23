@@ -36,7 +36,8 @@ class TripType extends AbstractType
                     'html5'=> false,
                     'format'=> 'yyyy-MM-dd',
                     'attr'=>[
-                        'placeholder' => 'YYYY-mm-dd'
+                        'placeholder' => 'YYYY-mm-dd',
+                        'class' => 'js-datepicker'
                     ]
                 ]
                 //                [
@@ -57,7 +58,8 @@ class TripType extends AbstractType
                     'html5'=> false,
                     'format'=> 'yyyy-MM-dd',
                     'attr'=>[
-                        'placeholder' => 'YYYY-mm-dd'
+                        'placeholder' => 'YYYY-mm-dd',
+                        'class' => 'js-datepicker'
                     ]
                 ]
             )

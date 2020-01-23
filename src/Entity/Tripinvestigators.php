@@ -124,6 +124,27 @@ class Tripinvestigators
      */
     private $tripnr;
 
+    /**
+     * @var string|null
+     *
+     */
+    private $fullname;
+
+    /**
+     * @param null|string $fullname
+     */
+    public function setFullname(?string $fullname): void
+    {
+        $this->fullname = $fullname;
+    }
+
+    public function getFullname() : ?string
+    {
+
+        return $this->fullname;
+
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -146,82 +146,38 @@ class CruiseController extends AbstractController
         $form = $this->createForm(CruiseType::class, $cruise);
         $form -> handleRequest($request);
 
-
-
         if ($form->isSubmitted() && $form->isValid()) {
-
-//            dd($form);
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
 
-                foreach ($trip->getTripinvestigators() as $tripinvestigator)
-                {
-                    $tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
-                    // start the function here function($tripinvestigator  //BREAK ....CONTINUE....
-//                    $investigators = $manager->getRepository(Investigators::class)
-//                        ->findAll();
-//                    $i=0;
-//                    $len = count($investigators);
-//                    foreach ($investigators as $investigator)
-//                    {
-//                        if (($tripinvestigator->getFirstname() != null)
-//                            && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
-//                            && ($tripinvestigator->getSurname() != null)
-//                            && ($tripinvestigator->getSurname() == $investigator->getSurname()))
-//                        {
-//                            $tripinvestigator->setInvestigatornr($investigator)
-//                                ->setImisnr($investigator->getImisnr())
-//                                ->setPassengertype($investigator->getPassengertype())
-//                                ->setBirthdate($investigator->getBirthdate())
-//                                ->setNationality($investigator->getNationality());
-//                            //return $tripinvestigator
-//                            break;
-//                        }
-//                        if($i = $len -1)
-//                        {
-//                            $tripinvestigator-> setInvestigatornr(null)
-//                                ->setImisnr(null)
-//                                ->setPassengertype(null)
-//                                ->setBirthdate(null)
-//                                ->setNationality(null);
-//                        }
-//                        $i++;
-//                    }
-                    //END the function
-                    $manager->persist($tripinvestigator);
+                foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+                    if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
+                        $tripinvestigator->setInvestigatornr(null);
+                        //$tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
+                        $manager->persist($tripinvestigator);
+                    }
                 }
-
-
-
 
                 $manager->persist($trip);
             }
 
-
             $manager->persist($cruise);
-
-
-
-
-
             $manager->flush();
+
 
             $this->addFlash(
                 'success',
                 "The new cruise <strong>{$cruise->getPlancode()}</strong> has been submitted !"
             );
 
-
             return $this->redirectToRoute('cruise_details', [
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
 
-
-        return $this->render('forms/form_cruise_new.html.twig', [
+        return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
-            'firstNamesTripInvJson' => $this->generateJsonDistinctFirstNamesTripInvestigators($manager),
-            'surnamesTripInvJson' => $this->generateDistinctSurnamesTripInvestigators($manager)
+            'mode' => 'new'
         ]);
     }
 
@@ -242,7 +198,11 @@ class CruiseController extends AbstractController
         $originalTrips = new ArrayCollection();
 
         foreach ($cruise->getTrips() as $trip) {
-
+            foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+                if ($tripinvestigator->getInvestigatornr()!== null) {
+                    $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
+                }
+            }
             $originalTrips->add($trip);
         }
 
@@ -261,15 +221,23 @@ class CruiseController extends AbstractController
                     $manager->remove($trip);
 //                    $trip->setCruiseid(null);
 //                    $trip->setCruiseid($trip);
+                } else {
+                    foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+                        if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
+                            $tripinvestigator->setInvestigatornr(null);
+                            //$tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
+                            $manager->persist($tripinvestigator);
+                        }
+                    }
                 }
 
+                /*
                 foreach ($trip->getTripinvestigators() as $tripinvestigator)
                 {
                     $tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
                     $manager->persist($tripinvestigator);
                 }
-
-
+                 */
             }
 
             $manager->persist($cruise);
@@ -279,22 +247,15 @@ class CruiseController extends AbstractController
                 'success',
                 "The cruise <strong>{$cruise->getPlancode()}</strong> has been edited !"
             );
+
             return $this->redirectToRoute('cruise_details', [
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
-        return $this->render('forms/form_cruise_edit.html.twig', [
+        return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
-            'cruise'=> $cruise,
-            'firstNamesTripInvJson' => $this->generateJsonDistinctFirstNamesTripInvestigators($manager),
-            'surnamesTripInvJson' => $this->generateDistinctSurnamesTripInvestigators($manager)
-//            'mode' => 'edit'
+            'mode' => 'edit'
         ]);
-
-//        return $this->render('forms/form_cruise_plugin_collection.html.twig', [
-//            'formCruise' => $form->createView(),
-//            'cruise'=> $cruise
-//        ]);
     }
 
     /**
@@ -384,8 +345,5 @@ class CruiseController extends AbstractController
             ->setNationality(null);
         return $tripinvestigator;
     }
-
-
-
 
 }

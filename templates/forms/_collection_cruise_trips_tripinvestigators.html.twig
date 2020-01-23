@@ -68,8 +68,10 @@
     <div class="card" style="background-color: #95c9ec">
         <div class="card-header">
             <div class="row">
-                <div class="col-4">Surname</div>
-                <div class="col-4">First name</div>
+
+                <div class="col-3">investigator</div>
+                <div class="col-3">Surname</div>
+                <div class="col-3">First name</div>
 
             </div>
             <input type="hidden" id="widgets-counter-tripinvestigators-{{ id }}" value="0">
@@ -95,14 +97,23 @@
     <div class="form-group block-tripinvestigator" id="block_{{ id }}">
         {#        {% dump(id) %}#}
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
+                {#{% if form.vars.data is not null %}#}
+                    {#{% set form[fullname] = form.vars.data.investigatornr.surname~' '~ form.vars.data.investigatornr.firstname %}#}
+                    {#{{ dump (fullname) }}#}
+                {#{% endif %}#}
+                {{ form_widget(form.fullname) }}
+                {{ form_widget(form.investigatornr) }}
+            </div>
+
+            <div class="col-3">
                 {{ form_widget(form.surname) }}
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 {{ form_widget(form.firstname) }}
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete" data-id="{{ id }}"
                         data-target="#block_{{ id }}">
                     X

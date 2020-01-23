@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" integrity="sha256-bLNUHzSMEvxBhoysBE7EXYlIrmo7+n7F4oJra1IgOaM=" crossorigin="anonymous" />
+    <style>
+
+        div[id^=block_cruise_trips_] {
+            margin-bottom: 0px!important;
+            margin-top: 0px!important;
+            padding-bottom: 0px!important;
+            padding-top: 0px!important;
+        }
+        div[id^=block_cruise_trips_] div.row  {
+            margin-bottom: 0px!important;
+            margin-top: 0px!important;
+            padding-bottom: 0px!important;
+            padding-top: 0px!important;
+        }
+
+    </style>
+
+{% endblock %}
+
+{% form_theme formCruise with
+    [
+    'forms/_collection_cruise_campaigns.html.twig',
+    'forms/_collection_cruise_trips_tripinvestigators.html.twig',
+    _self
+    ]
+%}
+
+{% block body %}
+
+    {% if mode=='new' %}
+        <h2>Create Cruise</h2>
+    {% elseif mode=='edit'%}
+        <h2>Edit Cruise</h2>
+    {% endif %}
+
+    {{ form_start(formCruise) }}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        {{ form_label(formCruise.plancode) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(formCruise.plancode) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header">
+                        {{ form_label(formCruise.principalinvestigator) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(formCruise.principalinvestigator) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+                {% if mode=='new' %}
+                    <button type="submit" class="btn btn-primary">Submit the new cruise</button>
+                {% elseif mode=='edit'%}
+                    <button type="submit" class="btn btn-primary">Submit modifications</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card my-3">
+            <div class="card-header">
+                {{ form_label(formCruise.campaign) }}
+            </div>
+            <div class="card-body">
+                {{ form_widget(formCruise.campaign) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        {{ form_widget(formCruise.trips) }}
+    </div>
+    {{ form_end(formCruise) }}
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+    <script src="/js/addTripsToCruisePlusTripInvestigators.js"></script>
+    <script src="/js/addCampaignsToCruise.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha256-bqVeqGdJ7h/lYPq6xrPv/YGzMEb6dNxlfiTUHSgRCp8=" crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#add-trip').click(function(e){
+                //getting the number of trips from the counter
+                const index = counter.countTrip;
+
+                //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
+                const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
+                //Injection of the new code
+                var elementTrip = $(tmpl);
+                $('#cruise_trips').append(elementTrip);
+
+                //Starting the tripinvestigator for the trip
+                counter['block_cruise_trips_'+ index] = 0;
+
+                //Add 1 to the index (for counter)
+                counter.countTrip = index + 1;
+
+                //bind the event handler to the 'remove-trip', 'clone trip' , and 'add investigator' buttons that have been created
+                deleteTrip(elementTrip);
+                cloneTrip(elementTrip);
+                addTripInvestigatorsHandler(elementTrip);
+                //check the events linked ot the button
+                // console.log($._data($('[data-action="delete"]')[0], 'events'));
+            });
+            //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
+
+
+            $('#add-campaign').click(function(){
+                // const index = $('#cruise_campaign div.form-group').length;
+                // const index = +$('#widgets-counter-campaigns').val();
+                const index = window.counterCampaigns.count;
+
+                const tmpl = $('#cruise_campaign').data('prototype').replace(/__name__/g, index);
+                $('#cruise_campaign').append(tmpl);
+
+
+                // $('#widgets-counter-campaigns').val(index+1);
+                window.counterCampaigns.count = index+1;
+                handleDeleteButtonsCampaigns();
+            });
+            counter = {countTrip: 0};
+            counterCampaigns = {count : 0};
+
+            $('.js-datepicker').datepicker({
+                format: 'yyyy-mm-dd'
+            });
+
+
+            {% if mode=='edit' %}
+                updateCounterTrips();
+                deleteTrip(window.document);
+                cloneTrip(window.document);
+                addTripInvestigatorsHandler(window.document);
+                deleteTripinvestigators(window.document);
+                handleDeleteButtonsCampaigns();
+                updateCounterCampaigns();
+
+                for (var property in counter) {
+                    if (property.substring(0, 19)==='block_cruise_trips_'){
+                        var indexTrip = property.substring(19);
+                        var numberOfinvestigators = counter[property]
+                        for (i = 0; i < numberOfinvestigators; i++) {
+                            addAutocompleteForInvestigator(indexTrip, i)
+                        }
+                    }
+                }
+            {% endif %}
+        });
+    </script>
+
+{% endblock %}

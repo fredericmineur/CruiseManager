@@ -19,34 +19,27 @@ class InvestigatorsRepository extends ServiceEntityRepository
         parent::__construct($registry, Investigators::class);
     }
 
+/*
+ * sqlSELECT article FROM Entity\Article article WHERE 'string' LIKE CONCAT(article.property, '%');
+ * $qb->expr()->concat($qb->expr()->literal(' '), 'p.lastName', )
+ *
+ * */
 
-
-    // /**
-    //  * @return Investigators[] Returns an array of Investigators objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
+    public function findByName ($value){
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('CONCAT(CONCAT(i.surname, \' \'), i.firstname) AS fullname,i.firstname, i.surname, i.investigatorid ')
+            ->andWhere('CONCAT(CONCAT(i.surname, \' \'), i.firstname) LIKE :query')
+            ->setParameter('query', '%' .  $value . '%' )
+            ->orderBy('CONCAT(CONCAT(i.surname, \' \'), i.firstname)')
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-    */
 
-    /*
-    public function findOneBySomeField($value): ?Investigators
-    {
+    public function giveAllNames (){
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->select('CONCAT(CONCAT(i.surname, \' \'), i.firstname) AS fullname,i.firstname, i.surname, i.investigatorid')
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getResult();
     }
-    */
+
 }

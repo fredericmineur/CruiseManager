@@ -10,9 +10,13 @@ use App\Form\InvestigatorsType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class InvestigatorController extends AbstractController
 {
@@ -49,7 +53,7 @@ class InvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/investigators/{investigatorId}", name="investigator_details")
+     * @Route("/investigators/{investigatorId}", name="investigator_details",  requirements={"investigatorId"="\d+"})
      */
     public function displayPI(EntityManagerInterface $manager, $investigatorId){
         $investigator = $manager->getRepository(Investigators::class)
@@ -127,6 +131,30 @@ class InvestigatorController extends AbstractController
         return $this->redirectToRoute('investigators_index');
     }
 
+    /**
+     * @Route("/investigators/getInvestigatorNames/{query?}", name="get_investigator_names")
+     */
+    public function  getInvestigatorNames (Request $request, $query){
+        $em=$this->getDoctrine()->getManager();
 
+        if($query!==null){
+            $data=$em->getRepository(Investigators::class)->findByName($query);
+        } else {
+            $data=$em->getRepository(Investigators::class)->giveAllNames();
+        }
 
+        $normalizers=[
+            new ObjectNormalizer()
+        ];
+
+        $encoders = [
+            new JsonEncoder()
+        ];
+
+        $serializer = new Serializer($normalizers, $encoders);
+        $data=$serializer->serialize($data,'json');
+
+        return new JsonResponse($data, 200, [], true );
+
+    }
 }

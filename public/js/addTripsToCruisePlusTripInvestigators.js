@@ -1,29 +1,3 @@
-$('#add-trip').click(function(e){
-    //getting the number of trips from the counter
-    const index = counter.countTrip;
-
-
-    //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
-    const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
-    //Injection of the new code
-    var elementTrip = $(tmpl);
-    $('#cruise_trips').append(elementTrip);
-
-    //Starting the tripinvestigator for the trip
-    counter['block_cruise_trips_'+ index] = 0;
-
-    //Add 1 to the index (for counter)
-    counter.countTrip = index + 1;
-
-    //bind the event handler to the 'remove-trip', 'clone trip' , and 'add investigator' buttons that have been created
-    deleteTrip(elementTrip);
-    cloneTrip(elementTrip);
-    addTripInvestigatorsHandler(elementTrip);
-    //check the events linked ot the button
-    // console.log($._data($('[data-action="delete"]')[0], 'events'));
-
-})
-
 function cloneTrip(contextElement){
     $('button.clone-trip[data-action="clone"]', contextElement).click(function(){
 
@@ -71,14 +45,11 @@ function cloneTrip(contextElement){
         //Updating the number of trips
         window.counter.countTrip = index +1;
 
-
         /// !!!!! context ELEMENT?????
         addTripInvestigatorsHandler(clonedTripElement);
         deleteTripinvestigators(clonedTripElement);
         cloneTrip(clonedTripElement);
         deleteTrip(clonedTripElement);
-        addClassForAutocomplete(clonedTripElement);
-
     })
 }
 
@@ -97,13 +68,7 @@ function deleteTrip(contextElement){
 
 
     })
-
-
-
-
 }
-
-
 
 function updateCounterTrips(){
     //counting the number of trip sections and allocate it to the counter
@@ -120,14 +85,14 @@ function updateCounterTrips(){
         window.counter[idBlockTrip]=countTripInvestigatorForObj;
     })
     // console.log(counter);
-
 }
-
 
 function  addTripInvestigatorsHandler(contextElement){
     //Put the event as argument, as it allow us to get info on the target button
     $( '.add-tripinvestigator',contextElement).click(function(e){
 
+
+        //console.log(contextElement);
         //e.target.parentElement.parentElement is actually the block of html code on which is located the clicked button
         // (all cases, whatever contextElement put as parameter, corresponding to a trip).
         // e.g. <div id="block_cruise_trips_0" class="form-group">....</div>
@@ -138,14 +103,14 @@ function  addTripInvestigatorsHandler(contextElement){
         const indexTInvestigators = window.counter[idBlockTrip];
         // console.log('index');console.log(idBlockTrip);console.log(window.counter);console.log(indexInvestigators);console.log(idTrip);
 
-
-
         //Replace the generic with adequates labels for the tripinvestigator in the prototype
         //Also, the tripinvestigator prototype that is produced with new trips has already some (wrong) tripinvestigator index by default (instead of '__name__')
         const tmpl = $('div[id=cruise_trips_' + idTrip + '_tripinvestigators]').data('prototype').replace(/_tripinvestigators_(__name__|\d+)/g, '_tripinvestigators_'+ indexTInvestigators);
         const tmpl2 = tmpl.replace(/\[tripinvestigators\]\[(__name__|\d+)\]/g, '[tripinvestigators]['+indexTInvestigators+']');
 
         const elementTripinvestigator = $(tmpl2);
+        //console.log('elementTripinvestigator');
+        //console.log(tmpl);
 
         //append the modified prototype to the section (ad hoc trip section)
         $('div[id=cruise_trips_' + idTrip + '_tripinvestigators]').append(elementTripinvestigator);
@@ -153,11 +118,8 @@ function  addTripInvestigatorsHandler(contextElement){
         //update the counter of investigators for the trip
         window.counter[idBlockTrip]=indexTInvestigators + 1;
 
-
         deleteTripinvestigators(elementTripinvestigator);
-        addClassForAutocomplete(elementTripinvestigator);
-
-
+        addAutocompleteForInvestigator(idTrip, indexTInvestigators);
     })
 }
 
@@ -168,30 +130,49 @@ function deleteTripinvestigators(contextElement){
     })
 }
 
-function addClassForAutocomplete(contextElement){
-    $('input[name$="[firstname]"]', contextElement).addClass("autocomplete-first-name");
-    $('input[name$="[surname]"]', contextElement).addClass("autocomplete-surname");
-    $(".autocomplete-first-name").easyAutocomplete(optionsFirstNames);
-    $(".autocomplete-surname").easyAutocomplete(optionsSurnames);
+
+
+
+function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
+
+    var tripinvestigatorFullNameID='cruise_trips_'+indexTrip+'_tripinvestigators_'+ indexTInvestigators+'_fullname';
+    var tripinvestigatorSurnameID='cruise_trips_'+indexTrip+'_tripinvestigators_'+ indexTInvestigators+'_surname';
+    var tripinvestigatorFirstnameID='cruise_trips_'+indexTrip+'_tripinvestigators_'+ indexTInvestigators+'_firstname';
+    var tripinvestigatornrID='cruise_trips_'+indexTrip+'_tripinvestigators_'+ indexTInvestigators+'_investigatornr';
+
+    var options = {
+        url: function(phrase) {
+            return "/investigators/getInvestigatorNames/"+phrase
+        },
+
+        getValue: function(element) {
+            return element.fullname;
+        },
+
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.phrase = $("#"+tripinvestigatorFullNameID).val();
+            return data;
+        },
+
+        list: {
+            onChooseEvent: function() {
+                $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
+                $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
+                $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+            }
+        },
+
+        requestDelay: 400
+    };
+    $("#"+tripinvestigatorFullNameID).easyAutocomplete(options);
 }
-
-
-
-
-$(document).ready(function () {
-    //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
-   counter = {countTrip: 0};
-
-    updateCounterTrips();
-    deleteTrip(window.document);
-    cloneTrip(window.document);
-    addTripInvestigatorsHandler(window.document);
-    deleteTripinvestigators(window.document);
-    addClassForAutocomplete(window.document);
-
-});
-
-
-
 
 
