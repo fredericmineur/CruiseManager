@@ -2,24 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Cruise;
 use App\Entity\Stations;
 use App\Entity\Trip;
-use App\Entity\Tripstations;
-use App\Form\DataTransformer\Time17HTransformer;
-use App\Form\DataTransformer\Time8HTransformer;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class TripType extends AbstractType
 {
@@ -28,29 +23,27 @@ class TripType extends AbstractType
         $builder
             ->add(
                 'startdate',
-                DateTimeType::class,
+                DateType::class,
                 [
                     'widget'=>'single_text',
-                   'label'=>'Start Date',
+                    'label'=>'Start Date',
                     'required' => true,
                     'html5'=> false,
                     'format'=> 'yyyy-MM-dd',
                     'attr'=>[
                         'placeholder' => 'YYYY-mm-dd',
                         'class' => 'js-datepicker'
+                    ],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Date()
                     ]
                 ]
-                //                [
-                //                    'label' => 'Start Date',
-                //                    'attr' => [
-                //                        'placeholder' => 'd/m/Y'
-                //                    ]
-                //                ]
             )
 
             ->add(
                 'enddate',
-                DateTimeType::class,
+                DateType::class,
                 [
                     'widget'=>'single_text',
                     'label'=>'End Date',
@@ -60,6 +53,13 @@ class TripType extends AbstractType
                     'attr'=>[
                         'placeholder' => 'YYYY-mm-dd',
                         'class' => 'js-datepicker'
+                    ],
+                    'constraints' => [
+                        new NotBlank(),
+                        new Date(),
+                        new GreaterThanOrEqual([
+                            'propertyPath' =>'parent.all[startdate].data'
+                        ])
                     ]
                 ]
             )
