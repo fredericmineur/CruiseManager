@@ -50,6 +50,9 @@ function cloneTrip(contextElement){
         deleteTripinvestigators(clonedTripElement);
         cloneTrip(clonedTripElement);
         deleteTrip(clonedTripElement);
+        $('.js-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
     })
 }
 

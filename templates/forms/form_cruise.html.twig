@@ -117,6 +117,9 @@
                 deleteTrip(elementTrip);
                 cloneTrip(elementTrip);
                 addTripInvestigatorsHandler(elementTrip);
+                $('.js-datepicker').datepicker({
+                    format: 'yyyy-mm-dd'
+                });
                 //check the events linked ot the button
                 // console.log($._data($('[data-action="delete"]')[0], 'events'));
             });
