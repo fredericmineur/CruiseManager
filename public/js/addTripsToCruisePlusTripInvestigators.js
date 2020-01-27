@@ -86,15 +86,23 @@ function updateCounterTrips(){
     $('.block-trip').each(function(){
         // console.log (this);
         let idBlockTrip = this['id'];
+        window.counter[idBlockTrip] = {};
+        console.log('idBlockTrip = ' + idBlockTrip);
         // idBlockTrip = idBlockTrip.replace('block_', '');
         const countTripInvestigatorForObj = $('.block-tripinvestigator[id^='+idBlockTrip+']').length;
-        window.counter[idBlockTrip]=countTripInvestigatorForObj;
+        window.counter[idBlockTrip]['investigators']=countTripInvestigatorForObj;
+        const countTripStationForOBJ = $('.block-tripstation[id^='+ idBlockTrip + ']').length;
+        window.counter[idBlockTrip]['stations'] = countTripStationForOBJ;
     })
     // console.log(counter);
 }
 
 function addTripStationHandler(contextElement){
-
+    $('.add-tripstation', contextElement).click(function(e){
+       const idBlockTrip  = e.target.parentElement.parentElement.attributes['id']['nodeValue'];
+        const idTrip = (idBlockTrip).replace('block_cruise_trips_', ''); //e.g. 0
+        const indexStations = window.counter[idBlockTrip];
+    });
 }
 
 function  addTripInvestigatorsHandler(contextElement){
@@ -110,7 +118,7 @@ function  addTripInvestigatorsHandler(contextElement){
 
         const idBlockTrip = e.target.parentElement.parentElement.attributes['id']['nodeValue']; // e .g block_cruise_trips_0
         const idTrip = (idBlockTrip).replace('block_cruise_trips_', ''); //e.g. 0
-        const indexTInvestigators = window.counter[idBlockTrip];
+        const indexTInvestigators = window.counter[idBlockTrip]['investigator'];
         // console.log('index');console.log(idBlockTrip);console.log(window.counter);console.log(indexInvestigators);console.log(idTrip);
 
         //Replace the generic with adequates labels for the tripinvestigator in the prototype
@@ -126,7 +134,7 @@ function  addTripInvestigatorsHandler(contextElement){
         $('div[id=cruise_trips_' + idTrip + '_tripinvestigators]').append(elementTripinvestigator);
 
         //update the counter of investigators for the trip
-        window.counter[idBlockTrip]=indexTInvestigators + 1;
+        window.counter[idBlockTrip]['investigator']=indexTInvestigators + 1;
 
         deleteTripinvestigators(elementTripinvestigator);
         addAutocompleteForInvestigator(idTrip, indexTInvestigators);
@@ -245,7 +253,7 @@ let addTripsAndInvestigators = (function () {
         for (var property in counter) {
             if (property.substring(0, 19)==='block_cruise_trips_'){
                 var indexTrip = property.substring(19);
-                var numberOfinvestigators = counter[property];
+                var numberOfinvestigators = counter[property]['investigator'];
                 for (i = 0; i < numberOfinvestigators; i++) {
                     addAutocompleteForInvestigator(indexTrip, i)
                 }

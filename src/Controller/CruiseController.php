@@ -152,14 +152,14 @@ class CruiseController extends AbstractController
         $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
             ->setDestinationarea('BCP2');
         $cruise->addTrip($trip1)->addTrip($trip2);
-//        $tripinvestigator1 = new Tripinvestigators();
-//        $tripinvestigator2 = new Tripinvestigators();
-//        $tripinvestigator3 = new Tripinvestigators();
-//        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
-//        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
-//        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
-//        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
-//            ->addTripinvestigator($tripinvestigator3);
+        $tripinvestigator1 = new Tripinvestigators();
+        $tripinvestigator2 = new Tripinvestigators();
+        $tripinvestigator3 = new Tripinvestigators();
+        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
+        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
+        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
+        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
+            ->addTripinvestigator($tripinvestigator3);
         $tripStation1 = new Tripstations();
         $tripStation2 = new Tripstations();
         $tripStation3 = new Tripstations();
