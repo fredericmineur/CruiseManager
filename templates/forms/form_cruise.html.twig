@@ -97,74 +97,12 @@
 
     <script>
         $(document).ready(function () {
-            $('#add-trip').click(function(e){
-                //getting the number of trips from the counter
-                const index = counter.countTrip;
 
-                //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
-                const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
-                //Injection of the new code
-                var elementTrip = $(tmpl);
-                $('#cruise_trips').append(elementTrip);
-
-                //Starting the tripinvestigator for the trip
-                counter['block_cruise_trips_'+ index] = 0;
-
-                //Add 1 to the index (for counter)
-                counter.countTrip = index + 1;
-
-                //bind the event handler to the 'remove-trip', 'clone trip' , and 'add investigator' buttons that have been created
-                deleteTrip(elementTrip);
-                cloneTrip(elementTrip);
-                addTripInvestigatorsHandler(elementTrip);
-                $('.js-datepicker').datepicker({
-                    format: 'yyyy-mm-dd'
-                });
-                //check the events linked ot the button
-                // console.log($._data($('[data-action="delete"]')[0], 'events'));
-            });
             //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
-
-
-            $('#add-campaign').click(function(){
-                // const index = $('#cruise_campaign div.form-group').length;
-                // const index = +$('#widgets-counter-campaigns').val();
-                const index = window.counterCampaigns.count;
-
-                const tmpl = $('#cruise_campaign').data('prototype').replace(/__name__/g, index);
-                $('#cruise_campaign').append(tmpl);
-
-
-                // $('#widgets-counter-campaigns').val(index+1);
-                window.counterCampaigns.count = index+1;
-                handleDeleteButtonsCampaigns();
-            });
-            counter = {countTrip: 0};
-            counterCampaigns = {count : 0};
-
-            $('.js-datepicker').datepicker({
-                format: 'yyyy-mm-dd'
-            });
-
+            addTripsAndInvestigators.init();
+            addCampaigns.init();
 
             {% if mode=='edit' %}
-                updateCounterTrips();
-                deleteTrip(window.document);
-                cloneTrip(window.document);
-                addTripInvestigatorsHandler(window.document);
-                deleteTripinvestigators(window.document);
-                handleDeleteButtonsCampaigns();
-                updateCounterCampaigns();
-
-                for (var property in counter) {
-                    if (property.substring(0, 19)==='block_cruise_trips_'){
-                        var indexTrip = property.substring(19);
-                        var numberOfinvestigators = counter[property]
-                        for (i = 0; i < numberOfinvestigators; i++) {
-                            addAutocompleteForInvestigator(indexTrip, i)
-                        }
-                    }
-                }
             {% endif %}
         });
     </script>

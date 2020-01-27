@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header">
             <h4>Manage the trips </h4>
-            <input type="hidden" id="widgets-counter-trips" value="0">
+{#            <input type="hidden" id="widgets-counter-trips" value="0">#}
         </div>
         <div class="card-body">
             {{ form_widget(form) }}
@@ -49,9 +49,40 @@
 
         {{ form_widget(form.tripinvestigators) }}
 
+        {{ form_widget(form.tripstations) }}
+
 
     </div>
 
+
+{% endblock %}
+
+
+{% block _cruise_trips_entry_tripstations_widget %}
+
+    <div class="card" style="background-color: #f3a29a">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-3">Station code</div>
+            </div>
+        </div>
+        <div class="card-body">
+            {{ form_widget(form) }}
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" id="add-tripstation-to{{ id }}" class="btn btn-success add-tripstation" data-id="{{ id }}">Add station</button>
+    </div>
+
+    <hr style=" border-top: 3px dashed" >
+
+{% endblock %}
+
+{% block _cruise_trips_entry_tripstations_widget_entry_widget %}
+    <div class="form-group block-tripstation" id="block_{{ id }}">
+
+    {{ form_widget(form.code) }}
+    </div>
 
 {% endblock %}
 
@@ -69,12 +100,12 @@
         <div class="card-header">
             <div class="row">
 
-                <div class="col-3">investigator</div>
+                <div class="col-3">INVESTIGATOR</div>
                 <div class="col-3">Surname</div>
                 <div class="col-3">First name</div>
 
             </div>
-            <input type="hidden" id="widgets-counter-tripinvestigators-{{ id }}" value="0">
+{#            <input type="hidden" id="widgets-counter-tripinvestigators-{{ id }}" value="0">#}
         </div>
         <div class="card-body">
             {{ form_widget(form) }}
@@ -83,7 +114,7 @@
     <div class="form-group">
         <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-success add-tripinvestigator" data-id="{{ id }}">Add investigator</button>
     </div>
-    <hr style=" border-top: 3px dashed" >
+{#    <hr style=" border-top: 2px dashed" >#}
 
 
 

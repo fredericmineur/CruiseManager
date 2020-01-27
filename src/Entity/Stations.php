@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Stations
  *
  * @ORM\Table(name="Stations", uniqueConstraints={@ORM\UniqueConstraint(name="ST_codes", columns={"Code"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\StationRepository")
  */
 class Stations
 {

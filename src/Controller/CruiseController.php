@@ -7,6 +7,7 @@ use App\Entity\Cruise;
 use App\Entity\Investigators;
 use App\Entity\Trip;
 use App\Entity\Tripinvestigators;
+use App\Entity\Tripstations;
 use App\Form\CruiseType;
 use App\Repository\CruiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -144,13 +145,13 @@ class CruiseController extends AbstractController
     public function createCruiseOriginal(Request $request, EntityManagerInterface $manager)
     {
         $cruise = new Cruise();
-//        $trip1 = new Trip();
-//        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
-//            ->setDestinationarea('BCP');
-//        $trip2 = new Trip();
-//        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
-//            ->setDestinationarea('BCP2');
-//        $cruise->addTrip($trip1)->addTrip($trip2);
+        $trip1 = new Trip();
+        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+            ->setDestinationarea('BCP');
+        $trip2 = new Trip();
+        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
+            ->setDestinationarea('BCP2');
+        $cruise->addTrip($trip1)->addTrip($trip2);
 //        $tripinvestigator1 = new Tripinvestigators();
 //        $tripinvestigator2 = new Tripinvestigators();
 //        $tripinvestigator3 = new Tripinvestigators();
@@ -159,6 +160,15 @@ class CruiseController extends AbstractController
 //        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
 //        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
 //            ->addTripinvestigator($tripinvestigator3);
+        $tripStation1 = new Tripstations();
+        $tripStation2 = new Tripstations();
+        $tripStation3 = new Tripstations();
+        $tripStation1->setCode('test1');
+        $tripStation2->setCode('test2');
+        $tripStation3->setCode('test3');
+        $trip1->addTripstation($tripStation1)->addTripstation($tripStation2);
+        $trip2->addTripstation($tripStation3);
+
 
 
 

@@ -118,7 +118,7 @@ class CruiseType extends AbstractType
 
 
 
-             ->add(
+            ->add(
                 'trips',
                 CollectionType::class,
 
@@ -139,8 +139,9 @@ class CruiseType extends AbstractType
 //                    'attr' => [
 //                        'class' => 'trips-collection',
 //                    ],
-                                   ]
-            );
+                 ]
+            )
+        ;
 
 }
 

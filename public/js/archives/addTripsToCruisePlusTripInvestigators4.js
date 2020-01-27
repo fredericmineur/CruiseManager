@@ -50,9 +50,6 @@ function cloneTrip(contextElement){
         deleteTripinvestigators(clonedTripElement);
         cloneTrip(clonedTripElement);
         deleteTrip(clonedTripElement);
-
-
-        //add date picker to the newly cloned trip
         $('.js-datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
@@ -93,10 +90,6 @@ function updateCounterTrips(){
     // console.log(counter);
 }
 
-function addTripStationHandler(contextElement){
-
-}
-
 function  addTripInvestigatorsHandler(contextElement){
     //Put the event as argument, as it allow us to get info on the target button
     $( '.add-tripinvestigator',contextElement).click(function(e){
@@ -130,9 +123,6 @@ function  addTripInvestigatorsHandler(contextElement){
 
         deleteTripinvestigators(elementTripinvestigator);
         addAutocompleteForInvestigator(idTrip, indexTInvestigators);
-
-        console.log(counter);
-
     })
 }
 
@@ -187,76 +177,5 @@ function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
     };
     $("#"+tripinvestigatorFullNameID).easyAutocomplete(options);
 }
-
-// Function to initiate the whole module
-let addTripsAndInvestigators = (function () {
-
-    let initObjectTI = {};
-
-    initObjectTI.init = function (){
-
-         counter = {countTrip: 0};
-
-        $('#add-trip').click(function(e){
-            //getting the number of trips from the counter
-            const index = counter.countTrip;
-
-            //Getting the prototype (code used to generate the html template)...and adding the index...e.g. position outside the present length
-            const tmpl = $('#cruise_trips').data('prototype').replace(/__name__/g, index);
-            //Injection of the new code
-            var elementTrip = $(tmpl);
-            $('#cruise_trips').append(elementTrip);
-
-            //Starting the tripinvestigator for the trip
-            counter['block_cruise_trips_'+ index] = 0;
-
-            //Add 1 to the index (for counter)
-            counter.countTrip = index + 1;
-
-            //bind the event handler to the 'remove-trip', 'clone trip' , and 'add investigator' buttons that have been created
-            deleteTrip(elementTrip);
-            cloneTrip(elementTrip);
-            addTripInvestigatorsHandler(elementTrip);
-            $('.js-datepicker').datepicker({
-                format: 'yyyy-mm-dd'
-            });
-            //check the events linked ot the button
-            // console.log($._data($('[data-action="delete"]')[0], 'events'));
-
-            console.log(counter);
-
-        });
-
-        $('.js-datepicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-
-
-        updateCounterTrips();
-        deleteTrip(window.document);
-        cloneTrip(window.document);
-        addTripInvestigatorsHandler(window.document);
-        deleteTripinvestigators(window.document);
-
-        console.log(counter);
-
-
-        // NB The counter is in the following structure : { countTrip: 3, block_cruise_trips_0: 2, block_cruise_trips_1: 3, block_cruise_trips_2: 4 }
-        for (var property in counter) {
-            if (property.substring(0, 19)==='block_cruise_trips_'){
-                var indexTrip = property.substring(19);
-                var numberOfinvestigators = counter[property];
-                for (i = 0; i < numberOfinvestigators; i++) {
-                    addAutocompleteForInvestigator(indexTrip, i)
-                }
-            }
-        }
-
-    }
-
-    return initObjectTI;
-
-})();
-
 
 

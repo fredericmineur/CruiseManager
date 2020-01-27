@@ -52,7 +52,10 @@ class TripinvestigatorsType extends AbstractType
                 TextType::class,
                 [
                     'label'=>'Investigator',
-                    'invalid_message' => 'That is not a valid investigator'
+                    'invalid_message' => 'That is not a valid investigator',
+                    'attr' => [
+                        'placeholder' => 'Type and chose...'
+                    ]
                 ]
                 )
 
