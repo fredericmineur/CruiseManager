@@ -121,6 +121,7 @@ function addTripStationHandler(contextElement){
         console.log(counter);
 
         deleteTripStations(elementTripStation);
+        addAutocompleteForStation(idTrip, indexTStations);
 
 
     });
@@ -214,6 +215,8 @@ function addAutocompleteForStation(indexTrip, indexTStations){
             onChooseEvent: function() {
                 var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
                 $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
+                var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
+                $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
             }
         },
 
@@ -337,6 +340,11 @@ let addTripsAndInvestigators = (function () {
                 var numberOfinvestigators = counter[property]['investigators'];
                 for (i = 0; i < numberOfinvestigators; i++) {
                     addAutocompleteForInvestigator(indexTrip, i)
+                }
+
+                var numberOfStations = counter[property]['stations'];
+                for (i = 0; i < numberOfStations; i++) {
+                    addAutocompleteForStation(indexTrip, i)
                 }
             }
         }

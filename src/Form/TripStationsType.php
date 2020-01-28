@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Tripstations;
+use App\Form\DataTransformer\StationToNumberTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,6 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TripStationsType extends AbstractType
 {
+
+    private $transformer;
+
+    public function __construct(StationToNumberTransformer $transformer)
+    {
+        $this->transformer=$transformer;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder

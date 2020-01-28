@@ -12,7 +12,7 @@ class StationController extends AbstractController
 {
 
     /**
-     * @Route("/api/getStations/{value}", name="get_stations", methods={"GET"})
+     * @Route("/api/getStations/{value}", name="get_stations")
      */
     public function getStations (SerializerInterface $serializer, StationRepository $stationRepository, $value)
     {
