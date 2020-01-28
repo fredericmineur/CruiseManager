@@ -141,6 +141,27 @@ class Tripstations
      */
     private $tripactions;
 
+    /**
+     * @var string
+     */
+    private $codeLatLong;
+
+    /**
+     * @return string
+     */
+    public function getCodeLatLong(): string
+    {
+        return $this->codeLatLong;
+    }
+
+    /**
+     * @param string $codeLatLong
+     */
+    public function setCodeLatLong(string $codeLatLong): void
+    {
+        $this->codeLatLong = $codeLatLong;
+    }
+
     public function __construct()
     {
         $this->tripactions = new ArrayCollection();

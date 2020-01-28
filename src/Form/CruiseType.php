@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class CruiseType extends AbstractType
 {
 
+    /*
     //SORTING THE TRIPS BY DATE for the edit form
 //https://stackoverflow.com/questions/34967795/order-of-symfony-form-collectiontype-field/34968046
     public function finishView(FormView $view, FormInterface $form, array $options)
@@ -41,7 +42,7 @@ class CruiseType extends AbstractType
             return ($startDateA < $startDateB) ? -1 : 1;
         });
     }
-
+*/
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Tripstations;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,6 +24,30 @@ class TripStationsType extends AbstractType
                         'placeholder' => 'Code'
                     ]
                 ])
+
+            ->add('deflatitude',
+                NumberType::class,
+                [
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => 'DefLat'
+                    ]
+                ]
+            )
+            ->add('deflongitude',
+                NumberType::class,
+                [
+                    'label' => false,
+                    'attr' => [
+                        'placeholder' => 'DefLong'
+                    ]
+                ]
+                )
+            ->add('stationnr',
+                HiddenType::class
+                )
+
+
 //            ->add('surname',
 //                TextType::class,
 //                [

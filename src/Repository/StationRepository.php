@@ -29,6 +29,22 @@ class StationRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function listStationCodesWithConcat($value)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT 
+            TRIM(s.code) as stationCode, s.NR as id, s.latitude as Lat, s.Longitude as Long,
+            CONCAT(TRIM(s.code),\' (Lat:\', ROUND(s.latitude, 2), \'_\' , \'Long:\',ROUND(s.Longitude,2), \')\') as LL
+            FROM Stations as s WHERE s.code LIKE ?
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1,'%'.$value.'%');
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     // /**
     //  * @return Stations[] Returns an array of Stations objects
     //  */

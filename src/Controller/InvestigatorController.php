@@ -161,26 +161,17 @@ class InvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/investigators/getInvestigatorNames/{query?}", name="get_investigator_names")
+     * @Route("/investigators/getInvestigatorNames/{query}", name="get_investigator_names")
      */
-    public function  getInvestigatorNames (Request $request, $query){
-        $em=$this->getDoctrine()->getManager();
-
+    public function  getInvestigatorNames ($query, InvestigatorsRepository $investigatorsRepository,
+        SerializerInterface $serializer)
+    {
         if($query!==null){
-            $data=$em->getRepository(Investigators::class)->findByName($query);
+            $data = $investigatorsRepository->findByName($query);
         } else {
-            $data=$em->getRepository(Investigators::class)->giveAllNames();
+            $data= $investigatorsRepository->giveAllNames();
         }
 
-        $normalizers=[
-            new ObjectNormalizer()
-        ];
-
-        $encoders = [
-            new JsonEncoder()
-        ];
-
-        $serializer = new Serializer($normalizers, $encoders);
         $data=$serializer->serialize($data,'json');
 
         return new JsonResponse($data, 200, [], true );

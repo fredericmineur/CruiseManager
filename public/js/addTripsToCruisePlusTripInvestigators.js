@@ -180,6 +180,49 @@ function deleteTripinvestigators(contextElement){
     })
 }
 
+// see http://easyautocomplete.com/example/ajax-post
+
+function addAutocompleteForStation(indexTrip, indexTStations){
+    var tripstationID = 'cruise_trips_'+ indexTrip + '_tripstations_' + indexTStations;
+    var tripstationCodeID = tripstationID + '_code';
+    var tripstationLatitudeID = tripstationID + '_deflatitude';
+    var tripstationLongitudeID = tripstationID + '_deflongitude';
+    var tripstationStationnrID = tripstationID + '_stationnr';
+
+    var options = {
+        url: function(phrase){
+            return "/api/getStations/" + phrase;
+        },
+        getValue: function (element) {
+            return element.stationCode;
+        },
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+
+        preparePostData: function(data) {
+            data.phrase = $("#"+tripstationCodeID).val();
+            return data;
+        },
+        //https://stackoverflow.com/questions/35502054/jquery-easyautocomplete-not-working-properly
+        //http://easyautocomplete.com/example/select-event
+        list: {
+            onChooseEvent: function() {
+                var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
+                $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
+            }
+        },
+
+        requestDelay: 400
+
+    };
+    $('#' + tripstationCodeID).easyAutocomplete(options);
+
+}
 
 
 

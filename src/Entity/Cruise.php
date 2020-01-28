@@ -70,6 +70,7 @@ class Cruise
      * @var string|null
      * @ORM\Column(name="Plancode", type="string", length=10, nullable=true, options={"fixed"=true})
      * @Assert\Regex(pattern="/^[0-9]{2}-[0-9]{3}$/", message="Plan code can only contain numbers, in the form XX-XXX")
+     * @Assert\NotBlank()
      */
     private $plancode;
 

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Tripinvestigators
@@ -31,15 +32,17 @@ class Tripinvestigators
      * @var string|null
      *
      * @ORM\Column(name="Surname", type="string", length=50, nullable=true)
+     * @Assert\NotBlank()
      */
-    private $surname = '';
+    private $surname;
 
     /**
      * @var string|null
      *
      * @ORM\Column(name="Firstname", type="string", length=50, nullable=true)
+     * @Assert\NotBlank()
      */
-    private $firstname = '';
+    private $firstname;
 
     /**
      * @var string|null

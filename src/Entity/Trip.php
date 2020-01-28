@@ -152,6 +152,7 @@ class Trip
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="tripnr", cascade={"all"}, orphanRemoval=true)
+     * @Assert\Valid
      */
     private $tripinvestigators;
 

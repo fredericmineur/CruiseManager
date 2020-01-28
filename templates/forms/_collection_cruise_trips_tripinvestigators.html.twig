@@ -64,6 +64,8 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-3">Station code</div>
+                <div class="col-3">Latitude</div>
+                <div class="col-3">Longitude</div>
             </div>
         </div>
         <div class="card-body">
@@ -83,12 +85,13 @@
         <div class="row">
             <div class="col-3">
                 {{ form_widget(form.code) }}
+                {{ form_widget(form.stationnr) }}
             </div>
             <div class="col-3">
-
+                {{ form_widget(form.deflatitude) }}
             </div>
             <div class="col-3">
-
+                {{ form_widget(form.deflongitude) }}
             </div>
             <div class="col-3">
                 <button type="button" id="remove-trip-station" class="btn btn-danger" data-action="delete" data-id="{{ id }}"

@@ -37,6 +37,7 @@ class Investigators
      *
      * @ORM\Column(name="Surname", type="string", length=35, nullable=true)
      * @Groups("get_investigators_names")
+     * @Assert\NotBlank()
      */
     private $surname;
 
@@ -45,6 +46,7 @@ class Investigators
      *
      * @ORM\Column(name="Firstname", type="string", length=35, nullable=true)
      * @Groups("get_investigators_names")
+     * @Assert\NotBlank()
      */
     private $firstname;
 
