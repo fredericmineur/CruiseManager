@@ -48,6 +48,10 @@ function cloneTrip(contextElement){
         /// !!!!! context ELEMENT?????
         addTripInvestigatorsHandler(clonedTripElement);
         deleteTripinvestigators(clonedTripElement);
+
+        addTripStationHandler(clonedTripElement);
+        deleteTripStations(clonedTripElement);
+
         cloneTrip(clonedTripElement);
         deleteTrip(clonedTripElement);
 
@@ -56,6 +60,8 @@ function cloneTrip(contextElement){
         $('.js-datepicker').datepicker({
             format: 'yyyy-mm-dd'
         });
+
+
     })
 }
 
@@ -112,10 +118,20 @@ function addTripStationHandler(contextElement){
 
         window.counter[idBlockTrip]['stations']=indexTStations + 1;
 
+        console.log(counter);
 
+        deleteTripStations(elementTripStation);
 
 
     });
+}
+
+
+function deleteTripStations(contextElement) {
+    $('button#remove-trip-station[data-action="delete"]', contextElement).click(function(){
+        const target = this.dataset.target;
+        $(target).parent('fieldset').remove();
+    })
 }
 
 function  addTripInvestigatorsHandler(contextElement){
@@ -229,7 +245,10 @@ let addTripsAndInvestigators = (function () {
             $('#cruise_trips').append(elementTrip);
 
             //Starting the tripinvestigator for the trip
-            counter['block_cruise_trips_'+ index] = 0;
+            counter['block_cruise_trips_'+ index] = {};
+            counter['block_cruise_trips_'+ index] ['investigators']= 0;
+            counter['block_cruise_trips_'+ index] ['stations']= 0;
+
 
             //Add 1 to the index (for counter)
             counter.countTrip = index + 1;
@@ -243,6 +262,9 @@ let addTripsAndInvestigators = (function () {
             });
             //check the events linked ot the button
             // console.log($._data($('[data-action="delete"]')[0], 'events'));
+
+            addTripStationHandler(elementTrip);
+            deleteTripStations(elementTrip);
 
             console.log(counter);
 
@@ -260,6 +282,7 @@ let addTripsAndInvestigators = (function () {
         deleteTripinvestigators(window.document);
 
         addTripStationHandler(window.document);
+        deleteTripStations(window.document);
 
         console.log(counter);
 
