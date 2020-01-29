@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{#   {{dump(app.flashes)}}#}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                {% if mode == 'edit' %} Edit campaign
+                {% elseif  mode == 'create'%}Create campaign {% endif %}
+            </div>
+        </div>
+        <div class="card-body">
+            {{ form_start(formCampaign) }}
+
+            <div class="row">
+                <div class="col-8">
+                    {{ form_row(formCampaign.campaign) }}
+                </div>
+                <div class="col-4">
+                    {{ form_row(formCampaign.imisprojectnr) }}
+                </div>
+            </div>
+
+            {{ form_row(formCampaign.memo) }}
+
+
+        <button type="submit" class="btn btn-primary">
+            {% if mode == 'edit' %}
+            Confirm edit{% elseif mode == 'create' %}
+            Submit new campaign {% endif %}
+        </button>
+
+        {{ form_end(formCampaign) }}
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+
+    <script>
+        // function addAutocompleteForCampaign(){
+
+            var options = {
+                url: function(phrase){
+                    return "http://www.vliz.be/imis?module=PROJECT&Field="
+                    + phrase + "&show=json";
+                },
+                getValue: function (element) {
+                    return element.StandardTitle;
+                },
+                ajaxSettings: {
+                    dataType: "json",
+                    method: "POST",
+                    data: {
+                        dataType: "json"
+                    }
+                },
+
+                preparePostData: function(data) {
+                    data.phrase = $('#campaign_campaign').val();
+                    return data;
+                },
+                list: {
+                    onChooseEvent: function () {
+                        var selectedItemValue = $('#campaign_campaign').getSelectedItemData().ProID;
+                        $('#campaign_imisprojectnr').val(selectedItemValue);
+                    }
+                },
+
+                requestDelay: 400
+            };
+
+            $("#campaign_campaign").easyAutocomplete(options);
+
+        // }
+
+    </script>
+
+
+
+{% endblock %}

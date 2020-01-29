@@ -113,7 +113,7 @@ class CampaignController extends AbstractController
             ]);
         }
 
-        return $this->render('forms/form_campaign_new.html.twig', [
+        return $this->render('forms/form_campaign.html.twig', [
             'formCampaign' => $form->createView(),
             'mode' => 'create'
         ]);
@@ -140,8 +140,9 @@ class CampaignController extends AbstractController
             ]);
         }
 
-        return $this->render('forms/form_campaign_edit.html.twig', [
-            'formCampaign' => $form->createView()
+        return $this->render('forms/form_campaign.html.twig', [
+            'formCampaign' => $form->createView(),
+            'mode' => 'edit'
         ]);
     }
 

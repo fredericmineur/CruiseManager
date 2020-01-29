@@ -23,7 +23,7 @@ class CampaignType extends AbstractType
                 )
             ->add('memo',
                 TextareaType::class,
-                $this->getConfiguration('Notes', 'Memo')
+                $this->getConfiguration('Memo', 'Memo')
             )
             ->add('imisprojectnr',
                 TextType::class,

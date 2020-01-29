@@ -145,29 +145,29 @@ class CruiseController extends AbstractController
     public function createCruiseOriginal(Request $request, EntityManagerInterface $manager)
     {
         $cruise = new Cruise();
-        $trip1 = new Trip();
-        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
-            ->setDestinationarea('BCP');
-        $trip2 = new Trip();
-        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
-            ->setDestinationarea('BCP2');
-        $cruise->addTrip($trip1)->addTrip($trip2);
-        $tripinvestigator1 = new Tripinvestigators();
-        $tripinvestigator2 = new Tripinvestigators();
-        $tripinvestigator3 = new Tripinvestigators();
-        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
-        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
-        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
-        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
-            ->addTripinvestigator($tripinvestigator3);
-        $tripStation1 = new Tripstations();
-        $tripStation2 = new Tripstations();
-        $tripStation3 = new Tripstations();
-        $tripStation1->setCode('test1');
-        $tripStation2->setCode('test2');
-        $tripStation3->setCode('test3');
-        $trip1->addTripstation($tripStation1)->addTripstation($tripStation2);
-        $trip2->addTripstation($tripStation3);
+//        $trip1 = new Trip();
+//        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+//            ->setDestinationarea('BCP');
+//        $trip2 = new Trip();
+//        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
+//            ->setDestinationarea('BCP2');
+//        $cruise->addTrip($trip1)->addTrip($trip2);
+//        $tripinvestigator1 = new Tripinvestigators();
+//        $tripinvestigator2 = new Tripinvestigators();
+//        $tripinvestigator3 = new Tripinvestigators();
+//        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
+//        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
+//        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
+//        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
+//            ->addTripinvestigator($tripinvestigator3);
+//        $tripStation1 = new Tripstations();
+//        $tripStation2 = new Tripstations();
+//        $tripStation3 = new Tripstations();
+//        $tripStation1->setCode('test1')->setDeflatitude(45)->setDeflongitude(45);
+//        $tripStation2->setCode('test2')->setDeflatitude(45)->setDeflongitude(45);
+//        $tripStation3->setCode('test3')->setDeflatitude(45)->setDeflongitude(45);
+//        $trip1->addTripstation($tripStation1)->addTripstation($tripStation2);
+//        $trip2->addTripstation($tripStation3);
 
 
 
@@ -220,9 +220,17 @@ class CruiseController extends AbstractController
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
 
         //Due to the presence of some '0' values for the principal investigator ID in the database
-        if($cruise->getPrincipalinvestigator()->getInvestigatorId()==0){
-            $cruise->setPrincipalinvestigator(null);
-        }
+//        if($cruise->getPrincipalinvestigator()->getInvestigatorId()==0){
+//            $cruise->setPrincipalinvestigator(null);
+//        }
+
+//        foreach ($cruise->getTrips() as $trip){
+//            foreach($trip->getTripstations() as $tripstation){
+//                dump($tripstation->getCode());
+//            }
+//
+//        }
+//        die();
 
         $originalTrips = new ArrayCollection();
 
@@ -232,8 +240,12 @@ class CruiseController extends AbstractController
                     $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
                 }
             }
+
+
             $originalTrips->add($trip);
         }
+
+
 
 
         $form = $this ->createForm(CruiseType::class, $cruise);
