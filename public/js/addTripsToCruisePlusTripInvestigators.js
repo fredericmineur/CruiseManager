@@ -55,6 +55,8 @@ function cloneTrip(contextElement){
         cloneTrip(clonedTripElement);
         deleteTrip(clonedTripElement);
 
+        changeAttributesForCardCollapse(clonedTripElement);
+
 
         //add date picker to the newly cloned trip
         $('.js-datepicker').datepicker({
@@ -274,6 +276,23 @@ function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
     $("#"+tripinvestigatorFullNameID).easyAutocomplete(options);
 }
 
+
+function changeAttributesForCardCollapse(contextElement){
+    $('.block-trip', contextElement).each(function(){
+        // console.log('block');
+        const idBlockTrip = $(this).attr('id');
+        $(this).find('#heading-investigator').attr('href', '#collapse-investigator-' + idBlockTrip);
+        $(this).find('#collapse-investigator').attr('id', 'collapse-investigator-' + idBlockTrip);
+        $(this).find('#heading-station').attr('href', '#collapse-station-' + idBlockTrip);
+        $(this).find('#collapse-station').attr('id', 'collapse-station-' + idBlockTrip);
+
+        // console.log($(this).find('#collapse-investigator'));
+    });
+
+
+    // $("#collapse-investigator").attr("id", "collapse-inv");
+}
+
 // Function to initiate the whole module
 let addTripsAndInvestigators = (function () {
 
@@ -315,7 +334,9 @@ let addTripsAndInvestigators = (function () {
             addTripStationHandler(elementTrip);
             deleteTripStations(elementTrip);
 
-            console.log(counter);
+            changeAttributesForCardCollapse(elementTrip);
+
+            // console.log(counter);
 
         });
 
@@ -333,7 +354,9 @@ let addTripsAndInvestigators = (function () {
         addTripStationHandler(window.document);
         deleteTripStations(window.document);
 
-        console.log(counter);
+        changeAttributesForCardCollapse(window.document);
+
+        // console.log(counter);
 
 
         // NB The counter is in the following structure : { countTrip: 3, block_cruise_trips_0: 2, block_cruise_trips_1: 3, block_cruise_trips_2: 4 }
