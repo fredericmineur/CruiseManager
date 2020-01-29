@@ -81,6 +81,9 @@ class TripStationsType extends AbstractType
 //            ->add('stationnr')
 //            ->add('tripnr')
         ;
+
+        $builder->get('stationnr')
+            ->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -217,12 +217,15 @@ function addAutocompleteForStation(indexTrip, indexTStations){
                 $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
                 var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
                 $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
+                var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id;
+                $('#' + tripstationStationnrID).val(longForSelectedItemValue);
             }
         },
 
         requestDelay: 400
 
     };
+
     $('#' + tripstationCodeID).easyAutocomplete(options);
 
 }
