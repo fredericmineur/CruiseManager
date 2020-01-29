@@ -8,7 +8,20 @@
 
 namespace App\Controller;
 
-class ImisController
-{
+use App\Service\ImisService;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+class ImisController extends AbstractController
+{
+    /**
+     * @Route("/imispersons/{searchparameter}", name="searchimispersons")
+     */
+    public function index(ImisService $imisService, $searchparameter): JsonResponse
+    {
+        $data = $imisService->getPersons($searchparameter);
+        $response = JsonResponse::fromJsonString($data);
+        return $response;
+    }
 }
