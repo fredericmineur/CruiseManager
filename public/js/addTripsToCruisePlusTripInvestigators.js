@@ -57,6 +57,8 @@ function cloneTrip(contextElement){
 
         changeAttributesForCardCollapse(clonedTripElement);
 
+        displayCounterValues(clonedTripElement);
+
 
         //add date picker to the newly cloned trip
         $('.js-datepicker').datepicker({
@@ -95,7 +97,7 @@ function updateCounterTrips(){
         // console.log (this);
         let idBlockTrip = this['id'];
         window.counter[idBlockTrip] = {};
-        console.log('idBlockTrip = ' + idBlockTrip);
+        // console.log('idBlockTrip = ' + idBlockTrip);
         // idBlockTrip = idBlockTrip.replace('block_', '');
         const countTripInvestigatorForObj = $('.block-tripinvestigator[id^='+idBlockTrip+']').length;
         window.counter[idBlockTrip]['investigators']=countTripInvestigatorForObj;
@@ -107,7 +109,9 @@ function updateCounterTrips(){
 
 function addTripStationHandler(contextElement){
     $('.add-tripstation', contextElement).click(function(e){
-        const idBlockTrip  = e.target.parentElement.parentElement.attributes['id']['nodeValue'];
+
+        // const idBlockTrip = $(e.target).parents()[3]['id'];// e .g block_cruise_trips_0
+        const idBlockTrip = $(e.target).parents()[3]['id'];// e .g block_cruise_trips_0
         const idTrip = (idBlockTrip).replace('block_cruise_trips_', ''); //e.g. 0
         const indexTStations = window.counter[idBlockTrip]['stations'];
 
@@ -124,6 +128,7 @@ function addTripStationHandler(contextElement){
 
         deleteTripStations(elementTripStation);
         addAutocompleteForStation(idTrip, indexTStations);
+        displayCounterValues(contextElement);
 
 
     });
@@ -134,6 +139,7 @@ function deleteTripStations(contextElement) {
     $('button#remove-trip-station[data-action="delete"]', contextElement).click(function(){
         const target = this.dataset.target;
         $(target).parent('fieldset').remove();
+        displayCounterValues(contextElement);
     })
 }
 
@@ -147,8 +153,8 @@ function  addTripInvestigatorsHandler(contextElement){
         // (all cases, whatever contextElement put as parameter, corresponding to a trip).
         // e.g. <div id="block_cruise_trips_0" class="form-group">....</div>
 
+        const idBlockTrip = $(e.target).parents()[3]['id'];// e .g block_cruise_trips_0
 
-        const idBlockTrip = e.target.parentElement.parentElement.attributes['id']['nodeValue']; // e .g block_cruise_trips_0
         const idTrip = (idBlockTrip).replace('block_cruise_trips_', ''); //e.g. 0
         const indexTInvestigators = window.counter[idBlockTrip]['investigators'];
         // console.log('index');console.log(idBlockTrip);console.log(window.counter);console.log(indexInvestigators);console.log(idTrip);
@@ -171,7 +177,9 @@ function  addTripInvestigatorsHandler(contextElement){
         deleteTripinvestigators(elementTripinvestigator);
         addAutocompleteForInvestigator(idTrip, indexTInvestigators);
 
-        console.log(counter);
+        displayCounterValues(contextElement);
+
+        // console.log(counter);
 
     })
 }
@@ -180,7 +188,10 @@ function deleteTripinvestigators(contextElement){
     $('button#remove-trip-investigator[data-action="delete"]', contextElement).click(function(){
         const target = this.dataset.target;
         $(target).parent('fieldset').remove();
+
+        displayCounterValues(contextElement);
     })
+
 }
 
 // see http://easyautocomplete.com/example/ajax-post
@@ -293,6 +304,28 @@ function changeAttributesForCardCollapse(contextElement){
     // $("#collapse-investigator").attr("id", "collapse-inv");
 }
 
+// ??///  TO REDO
+// http://devmidas/cruises/1976/edit
+
+function displayCounterValues(contextElement) {
+    $("span.counter").each(function(){
+        //select the bootstrap card to which correspond the counter
+    var card = $(this).parents()[3];
+    var count =0;
+    if($(card).find('.block-tripinvestigator').length >0) {
+        count = $(card).find('.block-tripinvestigator').length;
+    }
+    if($(card).find('.block-tripstation').length >0) {
+        count = $(card).find('.block-tripstation').length;
+    }
+
+    $(this).text(count);
+
+    })
+
+        //https://www.w3schools.com/jquery/html_text.asp
+}
+
 // Function to initiate the whole module
 let addTripsAndInvestigators = (function () {
 
@@ -336,6 +369,8 @@ let addTripsAndInvestigators = (function () {
 
             changeAttributesForCardCollapse(elementTrip);
 
+            displayCounterValues(elementTrip);
+
             // console.log(counter);
 
         });
@@ -355,6 +390,8 @@ let addTripsAndInvestigators = (function () {
         deleteTripStations(window.document);
 
         changeAttributesForCardCollapse(window.document);
+
+        displayCounterValues(window.document);
 
         // console.log(counter);
 
