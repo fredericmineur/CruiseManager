@@ -42,7 +42,7 @@ class ImisService
         } else {
             $response = $this->httpClient->request('GET',
                 'http://www.vliz.be/imis?module=project&show=json',
-                array('query' => ['Field'=>$searchParameter])
+                array('query' => ['Title'=>$searchParameter])
             );
 
         }

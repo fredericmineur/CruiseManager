@@ -45,7 +45,7 @@
     <script>
         // function addAutocompleteForCampaign(){
 
-            var options = {
+            var optionsTitle = {
                 url: function(phrase){
                     return "/imisprojects/"
                     + phrase;
@@ -66,6 +66,7 @@
                     return data;
                 },
                 list: {
+                    maxNumberOfElements: 10,
                     onChooseEvent: function () {
                         var selectedItemValue = $('#campaign_campaign').getSelectedItemData().ProID;
                         $('#campaign_imisprojectnr').val(selectedItemValue);
@@ -75,7 +76,9 @@
                 requestDelay: 400
             };
 
-            $("#campaign_campaign").easyAutocomplete(options);
+
+
+            $("#campaign_campaign").easyAutocomplete(optionsTitle);
 
         // }
 

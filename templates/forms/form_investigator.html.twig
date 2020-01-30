@@ -72,6 +72,7 @@
             return data;
         },
         list: {
+            maxNumberOfElements: 30,
             onChooseEvent: function () {
                 var surnameSelectedItemValue = $('#investigators_fullName').getSelectedItemData().Surname;
                 $('#investigators_surname').val(surnameSelectedItemValue);
