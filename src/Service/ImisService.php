@@ -19,15 +19,30 @@ class ImisService
         $this->httpClient = $httpClient;
     }
 
-    public function getPersons($searchparameter)//: Array
+    public function getPersons($searchParameter)//: Array
     {
-        if ($searchparameter === null || $searchparameter === ''){
+        if ($searchParameter === null || $searchParameter === ''){
             $response = $this->httpClient->request('GET',
                 'http://www.vliz.be/imis?module=person&show=json');
         } else {
             $response = $this->httpClient->request('GET',
                 'http://www.vliz.be/imis?module=person&show=json',
-                array('query' => ['Field'=>$searchparameter])
+                array('query' => ['Field'=>$searchParameter])
+            );
+
+        }
+        return $response->getContent();
+    }
+
+    public function getProjects($searchParameter)
+    {
+        if ($searchParameter === null || $searchParameter === ''){
+            $response = $this->httpClient->request('GET',
+                'http://www.vliz.be/imis?module=project&show=json');
+        } else {
+            $response = $this->httpClient->request('GET',
+                'http://www.vliz.be/imis?module=project&show=json',
+                array('query' => ['Field'=>$searchParameter])
             );
 
         }

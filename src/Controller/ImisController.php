@@ -16,11 +16,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ImisController extends AbstractController
 {
     /**
-     * @Route("/imispersons/{searchparameter}", name="searchimispersons")
+     * @Route("/imispersons/{searchParameter}", name="searchimispersons")
      */
-    public function index(ImisService $imisService, $searchparameter): JsonResponse
+    public function getImisPersons(ImisService $imisService, $searchParameter): JsonResponse
     {
-        $data = $imisService->getPersons($searchparameter);
+        $data = $imisService->getPersons($searchParameter);
+        $response = JsonResponse::fromJsonString($data);
+        return $response;
+    }
+
+    /**
+     * @Route("/imisprojects/{searchParameter}", name="searchImisProjects")
+     */
+    public function getImisProjects(ImisService $imisService, $searchParameter): JsonResponse
+    {
+        $data = $imisService->getProjects($searchParameter);
         $response = JsonResponse::fromJsonString($data);
         return $response;
     }

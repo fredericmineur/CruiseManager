@@ -36,16 +36,10 @@ class InvestigatorsType extends AbstractType
                 TextType::class,[
                     'label' => 'IMIS number',
                     'attr' => [
-                        'placeholder' => 'e.g. 12345'
+                        'placeholder' => 'Generated'
                     ]]
             )
-//            ->add('passengertype',
-//                TextType::class,[
-//                    'label' => 'Passenger type',
-//                    'attr' => [
-//                        'placeholder' => 'e.g. Scientist'
-//                    ]
-//                ])
+
 
             ->add('passengertype',
                 ChoiceType::class,[
@@ -62,6 +56,15 @@ class InvestigatorsType extends AbstractType
                 ]
 
                 ])
+
+            ->add('fullName',
+                TextType::class,[
+                    'label' => 'Full name (for IMIS search)',
+                    'attr' => [
+                        'placeholder' => 'Type and search...'
+                    ]
+                ]
+                )
 
 
 //            ->add('shortname',

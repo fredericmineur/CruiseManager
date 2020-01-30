@@ -230,8 +230,8 @@ function addAutocompleteForStation(indexTrip, indexTStations){
                 $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
                 var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
                 $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
-                var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id;
-                $('#' + tripstationStationnrID).val(longForSelectedItemValue);
+                var stationIdForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id;
+                $('#' + tripstationStationnrID).val(stationIdForSelectedItemValue);
             }
         },
 

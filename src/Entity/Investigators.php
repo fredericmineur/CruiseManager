@@ -107,6 +107,30 @@ class Investigators
      */
     private $tripinvestigators;
 
+    /**
+     * @var string|null
+     *
+     */
+    private $fullName;
+
+    /**
+     * @return string|null
+     */
+    public function getFullName(): ?string
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * @param string|null $fullName
+     */
+    public function setFullName(?string $fullName): void
+    {
+        $this->fullName = $fullName;
+    }
+
+
+
     public function __construct()
     {
         $this->cruises = new ArrayCollection();
