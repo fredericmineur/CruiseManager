@@ -16,6 +16,12 @@
          .card{
              margin-bottom: 30px;
          }
+         .card-header .fa {
+             transition: .3s transform ease-in-out;
+         }
+         .card-header .collapsed .fa {
+             transform: rotate(90deg);
+         }
      </style>
 
 
@@ -23,8 +29,8 @@
  {% endblock %}
 
 {% block body %}
-    <div class="container">
 
+    <div class="container">
         <div class="card">
             <div class="card-header">
                 <h3>Trip  {{ trip.startdate | date('d/m/Y')}} - {{ trip.enddate | date('d/m/Y')}}</h3>
@@ -39,15 +45,9 @@
                     {% endfor %}
                 </p>
             </div>
-
-
         </div>
 
-
         {{form_start(formTrip)}}
-
-
-
         <div class="row">
             <div class="col">
                 {{ form_row(formTrip.startdate) }}
@@ -61,97 +61,26 @@
         </div>
 
 
-
-    <div class="card" style="background-color: #95c9ec">
-        <div class="card-header">
-            <div class="row">
-                <div class="col-4">
-                    Surname
-                </div>
-                <div class="col-4">
-                    First name
-                </div>
-
-            </div>
-        </div>
-        <div class="card-body">
             {{ form_widget(formTrip.tripinvestigators) }}
-        </div>
 
-
-    </div>
-
-
-
-
-        <div class="row">
-            <div class="col">
-                <div class="card" style="width: 500px !important; background-color: #f3a29a" >
-                    <div class="card-header">
-                        <p>Stations</p>
-                        <input type="hidden" id="widgets-counter-stations" value="0">
-                    </div>
-                    <div class="card-body">
-                        {{ form_widget(formTrip.tripstations) }}
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <button type="submit" class="btn btn-warning">Submit modifications</button>
-                <a href="{{ path('cruise_edit', {'cruiseId' : trip.cruiseid.cruiseid })}}" class="btn btn-outline-primary">Back to cruise form</a>
-            </div>
-        </div>
-
-
+            {{ form_widget(formTrip.tripstations) }}
 
 
         {{form_end(formTrip)}}
-
-
 
     </div>
 {% endblock %}
 
 
-
-
-
-{# Here we force the form to not display label 0, 1,... 0only widget in row...#}
-{#{% block _trip_tripinvestigators_entry_row %}#}
-{#    {{ form_widget(form) }}#}
-{#{% endblock %}#}
-
 {% block javascripts %}
     <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+    <script src="/js/addTripinvestigatorsStationToTrip.js"></script>
 
     <script>
-        var optionsFirstNames = {
-            data: {{ firstNamesTripInvJson | raw }},
-            list: {
-                match: {
-                    enabled: true
-                }
-            }
-        };
-
-        var optionsSurnames = {
-            data: {{ surnamesTripInvJson | raw }},
-            list: {
-                match: {
-                    enabled: true
-                }
-            }
-        }
-
-        //statements also reinstated when creating a new trip investigator
-        $(".autocomplete-first-name").easyAutocomplete(optionsFirstNames);
-        $(".autocomplete-surname").easyAutocomplete(optionsSurnames);
-
+        $(document).ready(function () {
+            addTripInvestigatorsStationsToTrip.init();
+        });
     </script>
-
-    <script src="/js/addTripinvestigatorsToTrip.js"></script>
-    <script src="/js/addStationToTrip.js"></script>
-
 
 
 {% endblock %}

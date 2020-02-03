@@ -41,7 +41,8 @@
                     <td><span style="display:none">{{ trip.startdate|date('Y/m/d')}}</span>{{ trip.startdate|date('d/m/Y')}}
                         {% if trip.startdate is not null and trip.enddate is not null %}
                             {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}
-                            [{{ diffDays.days + 1 }}]
+                            {% set displayDiffDay = '[' + ()diffDays.days + 1) + ']' %}
+                            {{displayDiffDay}}
                             {#                            {% if diffDays.days > 0 %} (multi-day) {% else %} (single day) {% endif %}#}
                         {% endif %}
                         <a href="{{path('trip_details', {'tripId': trip.tripid})}}"><i class="fa fa-info-circle"></i></a>

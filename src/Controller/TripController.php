@@ -30,100 +30,56 @@ class TripController extends AbstractController
         ]);
     }
 
-    //MANY TO MANY WITH A SUPPLEMENTARY FIELD IN THE INTERMEDIARY TABLE
-    //https://openclassrooms.com/forum/sujet/symfony-manytomany-avec-un-champs-supplementaire
-    //https://github.com/capdigital/manytomanyattribute
-
     /**
      * @Route("/trips/{tripId}/edit", name="trip_edit")
      */
-    public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
-    {
+public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
+{
         $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
         $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
-//        dump($this->generateJsonInvestigators());
+//            $trip1 = new Trip();
+//        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
+//            ->setDestinationarea('BCP');
+////        $trip2 = new Trip();
+////        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
+////            ->setDestinationarea('BCP2');
+////        $cruise->addTrip($trip1)->addTrip($trip2);
+//        $tripinvestigator1 = new Tripinvestigators();
+//        $tripinvestigator2 = new Tripinvestigators();
+//        $tripinvestigator3 = new Tripinvestigators();
+//        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
+//        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
+//        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
+//        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
+//            ->addTripinvestigator($tripinvestigator3);
+//        $tripStation1 = new Tripstations();
+//        $tripStation2 = new Tripstations();
+//        $tripStation3 = new Tripstations();
+//        $tripStation1->setCode('test1')->setDeflatitude(45)->setDeflongitude(45);
+//        $tripStation2->setCode('test2')->setDeflatitude(45)->setDeflongitude(45);
+//        $tripStation3->setCode('test3')->setDeflatitude(45)->setDeflongitude(45);
+//        $trip1->addTripstation($tripStation1)->addTripstation($tripStation2)
+//        ->addTripstation($tripStation3);
 
+//        dd($trip);
 
-        $originalTripinvestigators = new ArrayCollection();
-
-        foreach ($trip->getTripinvestigators() as $tripinvestigator) {
-            $originalTripinvestigators->add($tripinvestigator);
-        }
-
-//        $originalTripstations = new ArrayCollection();
-
-
-        $form= $this->createForm(TripType::class, $trip);
-        $form->handleRequest($request);
-
-//        dd($this->container);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-//            dd($form->get('stations')->getData());
-            foreach ($form->get('stations')->getData() as $st)
-            {
-                if($st !=null && !$trip->getStations()->contains($st))
-                {
-                    $newTripstation = new Tripstations();
-                    $newTripstation->setTripnr($trip);
-                    $newTripstation->setStationnr($st);
-                    $newTripstation->setCode($st->getCode());
-                    $newTripstation->setDeflatitude($st->getLatitude());
-                    $newTripstation->setDeflongitude($st->getLongitude());
-//                    $newTripstation->setServerdate(new \DateTime());
-                    $trip->addTripstation($newTripstation);
-                }
-            }
-
-
-            foreach ($trip->getStations() as $st)
-            {
-                if(!$form->get('stations')->getData()->contains($st))
-                {
-                    $oldTripstation= $this->getDoctrine()->getRepository(Tripstations::class)->findOneBy(['tripnr'=>$trip, 'stationnr' => $st])   ;
-                    $trip->removeTripstation($oldTripstation);
-                }
-            }
-
-//            dd($trip->getTripstations());
-
-
-            foreach ($originalTripinvestigators as $tripinvestigator) {
-                if (false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
-                    $manager->remove($tripinvestigator);
-                }
-
-            }
-
-            foreach ($trip->getTripinvestigators() as $tripinvestigator)
-            {
-                $tripinvestigator = CruiseController::completeTripInvestigatorFields($manager, $tripinvestigator);
-//                dd($tripinvestigator);
-                $manager->persist($tripinvestigator);
-            }
-
-//            $cruise = $trip->getCruiseid();
-            $manager->persist($trip);
-            $manager -> flush();
-            return $this->redirectToRoute('trip_details', [
-                'tripId' => $trip->getTripid()
-            ]);
-        }
-
-
+        $form = $this->createForm(TripType::class, $trip);
+        $form ->handleRequest($request);
+//        if($form->isSubmitted() && $form->isValid()) {
+//            $manager->persist($trip);
+//        }
+//        return $this->redirectToRoute('trip_details', [
+//            'tripId' => $trip->getTripid()
+//        ]);
 
         return $this->render('forms/form_trip.html.twig', [
-            'trip' => $trip,
-            'formTrip' => $form->createView(),
-//            'listfirstnames' => $this->generateJsonInvestigators()[0]
-//            'firstNamesTripInvJson' => $this->container->get('App\Controller\CruiseController')->generateJsonDistinctFirstNamesTripInvestigators($manager),
-//            'surnamesTripInvJson' => $this->container->get('App\Controller\CruiseController')->generateDistinctSurnamesTripInvestigators($manager)
-            'firstNamesTripInvJson' => CruiseController::generateJsonDistinctFirstNamesTripInvestigators($manager),
-            'surnamesTripInvJson' => CruiseController::generateDistinctSurnamesTripInvestigators($manager)
-
-
+            'trip' =>$trip,
+            'formTrip' => $form->createView()
         ]);
-    }
+
+}
+
+
 
 
     /**
@@ -151,4 +107,121 @@ class TripController extends AbstractController
 
         return new JsonResponse($jsonTrips, 200, [], true);
     }
+
+    /**
+     * @Route("/api/gettripsdiffstations", name="get_trips_diff_stations")
+     */
+    public function getTripsDiffStations(SerializerInterface $serializer, TripRepository $tripRepository)
+    {
+        $trips = $tripRepository->getTripsDiffTripStationStation();
+        $jsonTrips = $serializer->serialize($trips, 'json');
+        return new JsonResponse($jsonTrips, 200, [], true);
+    }
+
+    /**
+     * @Route("/api/gettripsdiffinvestigators", name="get_trips_diff_investigators")
+     */
+    public function getTripsDiffInvestigators (SerializerInterface $serializer, TripRepository $tripRepository)
+    {
+        $trips = $tripRepository->getTripsDiffTripInvestigatorsInvestigators();
+        $jsonTrips = $serializer->serialize($trips, 'json');
+        return new JsonResponse($jsonTrips, 200, [], true);
+    }
 }
+
+//
+////MANY TO MANY WITH A SUPPLEMENTARY FIELD IN THE INTERMEDIARY TABLE
+////https://openclassrooms.com/forum/sujet/symfony-manytomany-avec-un-champs-supplementaire
+////https://github.com/capdigital/manytomanyattribute
+//// NB bad approach as tripinvestigators is the exposed entity
+//
+///**
+// * @Route("/trips/{tripId}/edit", name="trip_edit")
+// */
+//public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
+//{
+//    $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
+//    $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
+////        dump($this->generateJsonInvestigators());
+//
+//
+//    $originalTripinvestigators = new ArrayCollection();
+//
+//    foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+//        $originalTripinvestigators->add($tripinvestigator);
+//    }
+//
+////        $originalTripstations = new ArrayCollection();
+//
+//
+//    $form= $this->createForm(TripType::class, $trip);
+//    $form->handleRequest($request);
+//
+////        dd($this->container);
+//
+//    if ($form->isSubmitted() && $form->isValid()) {
+////            dd($form->get('stations')->getData());
+//        foreach ($form->get('stations')->getData() as $st)
+//        {
+//            if($st !=null && !$trip->getStations()->contains($st))
+//            {
+//                $newTripstation = new Tripstations();
+//                $newTripstation->setTripnr($trip);
+//                $newTripstation->setStationnr($st);
+//                $newTripstation->setCode($st->getCode());
+//                $newTripstation->setDeflatitude($st->getLatitude());
+//                $newTripstation->setDeflongitude($st->getLongitude());
+////                    $newTripstation->setServerdate(new \DateTime());
+//                $trip->addTripstation($newTripstation);
+//            }
+//        }
+//
+//
+//        foreach ($trip->getStations() as $st)
+//        {
+//            if(!$form->get('stations')->getData()->contains($st))
+//            {
+//                $oldTripstation= $this->getDoctrine()->getRepository(Tripstations::class)->findOneBy(['tripnr'=>$trip, 'stationnr' => $st])   ;
+//                $trip->removeTripstation($oldTripstation);
+//            }
+//        }
+//
+////            dd($trip->getTripstations());
+//
+//
+//        foreach ($originalTripinvestigators as $tripinvestigator) {
+//            if (false === $trip->getTripinvestigators()->contains($tripinvestigator)) {
+//                $manager->remove($tripinvestigator);
+//            }
+//
+//        }
+//
+//        foreach ($trip->getTripinvestigators() as $tripinvestigator)
+//        {
+//            $tripinvestigator = CruiseController::completeTripInvestigatorFields($manager, $tripinvestigator);
+////                dd($tripinvestigator);
+//            $manager->persist($tripinvestigator);
+//        }
+//
+////            $cruise = $trip->getCruiseid();
+//        $manager->persist($trip);
+//        $manager -> flush();
+//        return $this->redirectToRoute('trip_details', [
+//            'tripId' => $trip->getTripid()
+//        ]);
+//    }
+//
+//
+//
+//    return $this->render('forms/form_trip.html.twig', [
+//        'trip' => $trip,
+//        'formTrip' => $form->createView(),
+////            'listfirstnames' => $this->generateJsonInvestigators()[0]
+////            'firstNamesTripInvJson' => $this->container->get('App\Controller\CruiseController')->generateJsonDistinctFirstNamesTripInvestigators($manager),
+////            'surnamesTripInvJson' => $this->container->get('App\Controller\CruiseController')->generateDistinctSurnamesTripInvestigators($manager)
+//        'firstNamesTripInvJson' => CruiseController::generateJsonDistinctFirstNamesTripInvestigators($manager),
+//        'surnamesTripInvJson' => CruiseController::generateDistinctSurnamesTripInvestigators($manager)
+//
+//
+//    ]);
+//}

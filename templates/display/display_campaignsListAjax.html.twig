@@ -9,9 +9,19 @@
 {% endblock %}
 
 {% block body %}
+    <div class="container my-2">
+        <div class="row">
+            <div class="col-4">
+                <h3>List of campaigns</h3>
+            </div>
+            <div class="col-8">
+                <a href="{{ path('campaign_create') }}" class="btn btn-success">NEW CAMPAIGN</a>
+            </div>
+        </div>
+    </div>
 
-    <div class="container">
-        <h3>List of campaigns</h3><a href="{{ path('campaign_create') }}" class="btn btn-success">Add a campaign</a>
+    <div class="container my-2">
+
         <table class="table-hover table-bordered display" id="myDataTable" width="100%">
             <thead>
             {% set headerRow = "
@@ -78,8 +88,19 @@
                         {
                             "targets": 0,
                             "render": function(data, type, row) {
-                                campaignOutput = '<a href="' + Routing.generate('campaign_details', {campaignId: row.campaignid}) +    '" title="Open Campaign">'
-                                    + data + '</a>';
+                                campaignOutput = data + '&nbsp&nbsp<a href="'
+                                    + Routing.generate('campaign_details', {campaignId: row.campaignid})
+                                    + '" title="Info campaign"><i  class="fa fa-info-circle "></i></a>'
+                                    + '&nbsp&nbsp<a href="'
+                                    + Routing.generate('campaign_edit', {campaignId: row.campaignid})
+                                    + '" title="Edit campaign"><i  class="fa fa-edit"></i></a>'
+                                    + '&nbsp&nbsp<a href="'
+                                    + Routing.generate('remove_campaign_warning',{'campaignId': row.campaignid})
+                                    + '" title="Remove campaign"><i style="color:red" class="fa fa-trash"></i></a>';
+
+
+                                    // '<a href="' + Routing.generate('campaign_details', {campaignId: row.campaignid}) +    '" title="Open Campaign">'
+                                    // + data + '</a>';
                                 return campaignOutput;
                             }
                         },
@@ -88,12 +109,10 @@
                                 var cruisesOutput = '';
                                 if(Array.isArray(data) && data.length) {
                                     for (var i =0; i < data.length; i++) {
-                                        cruisesOutput += '[<a href="' + Routing.generate('cruise_details', {cruiseId: data[i]['cruiseid']}) + '" title="Open Cruise">'
+                                        cruisesOutput += '<a href="' + Routing.generate('cruise_details', {cruiseId: data[i]['cruiseid']}) + '" title="Open Cruise">'
                                             // + '<i class="fa fa-map-marker" aria-hidden="true"></i>'
-                                            + data[i]['plancode'] + '</a>]'
-                                        if ((i+1) % 8 == 0) {
-                                            cruisesOutput += '<br/>'
-                                        }
+                                            + data[i]['plancode'] + '</a>&nbsp'
+
                                     }
                                     return cruisesOutput;
                                 }

@@ -1,37 +1,106 @@
-{% block _trip_tripinvestigators_entry_widget %}
+{% block _trip_tripinvestigators_widget %}
 
-
-    <div class="form-group" id="block_{{ id }}">
-
-
-        <div class="row">
-
-            <div class="col">
-                {{ form_widget(form.surname) }}
+    <div class="card" style="background-color: #95c9ec">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-3">INVESTIGATORS (<span id="{{ id }}-counter" class="counter"></span>)</div>
+                <div class="col-3">Surname</div>
+                <div class="col-3">First name</div>
+                <div class="col-3">
+                    <p data-toggle="collapse" href="#collapse-investigator" aria-expanded="true" aria-controls="collapse-investigator" id="heading-investigator" class="d-block">
+                        <i class="fa fa-chevron-down pull-right" ></i>
+                    </p>
+                </div>
             </div>
-            <div class="col">
-                {{ form_widget(form.firstname) }}
-            </div>
+        </div>
 
-            <div class="col">
-                <button type="button" class="btn btn-danger" id="remove-tripinvestigator"
-                        data-action="delete" data-target="#block_{{ id }}" >
-                    <i class="fa fa-trash"></i>
-                </button>
+        <div id="collapse-investigator" class="collapse show" aria-labelledby="heading-investigator">
+            <div class="card-body">
+                {{ form_widget(form) }}
+            </div>
+            <div class="form-group">
+                <button type="button" id="add-tripinvestigator" class="btn btn-success" data-id="{{ id }}">Add investigator</button>
             </div>
         </div>
     </div>
 
+{% endblock %}
 
 
+
+{% block _trip_tripinvestigators_entry_widget %}
+    <div class="form-group block-tripinvestigator" id="block_{{ id }}">
+        {#        {% dump(id) %}#}
+        <div class="row">
+            <div class="col-3">
+                {{ form_widget(form.fullname) }}
+                {{ form_widget(form.investigatornr) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.surname) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.firstname) }}
+            </div>
+            <div class="col-3">
+                <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete" data-id="{{ id }}"
+                        data-target="#block_{{ id }}">
+                    X
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block _trip_tripstations_widget %}
+    <div class="card" style="background-color: #f3a29a">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-3">STATIONS (<span id="{{ id }}-counter" class="counter"></span>)</div>
+                <div class="col-3">Latitude</div>
+                <div class="col-3">Longitude</div>
+                <div class="col-3">
+                    <p data-toggle="collapse" href="#collapse-station" aria-expanded="true" aria-controls="collapse-station" id="heading-station" class="d-block">
+                        <i class="fa fa-chevron-down pull-right" ></i>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="collapse-station" class="collapse show" aria-labelledby="heading-station">
+            <div class="card-body">
+                {{ form_widget(form) }}
+            </div>
+            <div class="form-group">
+                <button type="button" id="add-tripstation" class="btn btn-success" data-id="{{ id }}">Add station</button>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
-{% block _trip_tripinvestigators_widget %}
-    {{ form_widget(form) }}
-    <input type="hidden" id="widgets-counter-tripinvestigator" value="0">
-    <div class="form-group">
-        <button type="button" id="add-tripinvestigator" class="btn btn-success">Add investigator</button>
+{% block _trip_tripstations_entry_widget %}
+
+    <div class="form-group block-tripstation" id="block_{{ id }}">
+        <div class="row">
+            <div class="col-3">
+                {{ form_widget(form.code) }}
+                {{ form_widget(form.stationnr) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.deflatitude) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.deflongitude) }}
+            </div>
+            <div class="col-1">
+                <button type="button" id="remove-trip-station" class="btn btn-danger" data-action="delete" data-id="{{ id }}"
+                        data-target="#block_{{ id }}">
+                    X
+                </button>
+            </div>
+{#            <div class="col-2"><button>Create Station</button></div>#}
+        </div>
     </div>
 
 {% endblock %}

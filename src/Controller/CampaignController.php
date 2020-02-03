@@ -120,7 +120,7 @@ class CampaignController extends AbstractController
     }
 
     /**
-     * @Route("/campaign/edit/{campaignId}", name="campaign_edit")
+     * @Route("/campaign/edit/{campaignId}", name="campaign_edit",options={"expose"=true})
      */
     public function editCampaign($campaignId, Request $request, EntityManagerInterface $manager)
     {
@@ -162,7 +162,7 @@ class CampaignController extends AbstractController
     }
 
     /**
-     * @Route("/campaign/remove_campaign_warning/{campaignId}", name="remove_campaign_warning")
+     * @Route("/campaign/remove_campaign_warning/{campaignId}", name="remove_campaign_warning",options={"expose"=true})
      */
     public function warnRemoveCampaign (EntityManagerInterface $manager, $campaignId){
         $campaign = $manager->getRepository(Campaign::class)

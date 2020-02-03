@@ -345,7 +345,7 @@ let addTripsAndInvestigators = (function () {
             var elementTrip = $(tmpl);
             $('#cruise_trips').append(elementTrip);
 
-            //Starting the tripinvestigator for the trip
+            //Starting the tripinvestigators and tripstations for the trip
             counter['block_cruise_trips_'+ index] = {};
             counter['block_cruise_trips_'+ index] ['investigators']= 0;
             counter['block_cruise_trips_'+ index] ['stations']= 0;
@@ -396,7 +396,7 @@ let addTripsAndInvestigators = (function () {
         // console.log(counter);
 
 
-        // NB The counter is in the following structure : { countTrip: 3, block_cruise_trips_0: 2, block_cruise_trips_1: 3, block_cruise_trips_2: 4 }
+        // NB The counter is in the following structure : { countTrip: 3, block_cruise_trips_0: {...}, block_cruise_trips_1: {....}, block_cruise_trips_2: {....} }
         for (var property in counter) {
             if (property.substring(0, 19)==='block_cruise_trips_'){
                 var indexTrip = property.substring(19);
