@@ -56,9 +56,9 @@ class CruiseType extends AbstractType
                 TextType::class,
                 [
                     'label' => 'Plan Code',
-                    'attr' => [
-                        'placeholder' => 'xx-xxx'
-                    ],
+//                    'attr' => [
+//                        'placeholder' => 'xx-xxx'
+//                    ],
                     'required' => false
                 ]
             )

@@ -169,7 +169,7 @@ class CruiseController extends AbstractController
 //        $trip1->addTripstation($tripStation1)->addTripstation($tripStation2);
 //        $trip2->addTripstation($tripStation3);
 
-
+        $newplancode = $manager->getRepository(Cruise::class)->GetNewPlancode();
 
 
         $form = $this->createForm(CruiseType::class, $cruise);
@@ -206,7 +206,8 @@ class CruiseController extends AbstractController
 
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
-            'mode' => 'new'
+            'mode' => 'new',
+            'newplancode' =>$newplancode
         ]);
     }
 

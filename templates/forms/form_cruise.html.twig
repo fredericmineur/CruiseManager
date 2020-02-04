@@ -54,7 +54,11 @@
                         {{ form_label(formCruise.plancode) }}
                     </div>
                     <div class="card-body">
-                        {{ form_widget(formCruise.plancode) }}
+                        {% if mode=='new' and newplancode is defined and newplancode is not empty %}
+                            {{ form_widget(formCruise.plancode,{'attr': {'placeholder': newplancode}}) }}
+                        {% else %}
+                            {{ form_widget(formCruise.plancode,{'attr': {'placeholder': 'xx-xxx'}}) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>

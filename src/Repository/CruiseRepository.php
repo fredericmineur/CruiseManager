@@ -67,6 +67,16 @@ class CruiseRepository extends ServiceEntityRepository
         return $query->getArrayResult();
     }
 
+    public function GetNewPlancode(){
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = 'SELECT left(MAX(plancode),2) + \'-\' + cast(cast(right(MAX(trim(plancode)),3) as integer)+10 as nvarchar(max)) as maxplancode
+                FROM Cruise';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+    }
+
 
     public function GetAllCruisesForTable(EntityManagerInterface $em){
 
