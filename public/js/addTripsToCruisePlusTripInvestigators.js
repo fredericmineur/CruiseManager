@@ -276,6 +276,7 @@ function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
 
         list: {
             onChooseEvent: function() {
+
                 $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
                 $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
                 $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);

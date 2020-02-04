@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                STATION "{{ station.code }}"
+            </div>
+            <div class="card-body">
+                <p>Latitude: {{ station.latitude }}</p>
+                <p>Longitude: {{ station.longitude }}</p>
+                <p>Trips:</p>
+                <p>
+                    {% for tripstation in station.tripstations %}
+                        {{ tripstation.tripnr.startdate | date('d/m/Y')}}|
+                    {% endfor %}
+                </p>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -61,10 +61,11 @@ class InvestigatorController extends AbstractController
 
 
     /**
-     * @Route("/investigators/create_investigator", name="create_investigator")
+     * @Route("/investigators/new/{surname}-{firstname}", name="create_investigator", defaults={"surname"=null, "firstname"=null}, options={"expose"=true})
      */
-    public function createPI (EntityManagerInterface $manager, Request $request){
+    public function createInvestigator (EntityManagerInterface $manager, Request $request, $surname, $firstname){
         $investigator = new Investigators();
+        $investigator->setSurname($surname)->setFirstname($firstname);
         $form = $this->createForm(InvestigatorsType::class, $investigator);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -84,7 +85,7 @@ class InvestigatorController extends AbstractController
     /**
      * @Route("/investigators/display/{investigatorId}", name="investigator_details", options={"expose"=true})
      */
-    public function displayPI(EntityManagerInterface $manager, $investigatorId){
+    public function displayInvestigator (EntityManagerInterface $manager, $investigatorId){
         $investigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $investigatorId]);
 
@@ -161,7 +162,7 @@ class InvestigatorController extends AbstractController
     }
 
     /**
-     * @Route("/investigators/getInvestigatorNames/{query}", name="get_investigator_names")
+     * @Route("/investigators/getInvestigatorNames/{query}", name="get_investigator_names", options={"expose"=true})
      */
     public function  getInvestigatorNames ($query, InvestigatorsRepository $investigatorsRepository,
         SerializerInterface $serializer)

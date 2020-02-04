@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ImisController extends AbstractController
 {
     /**
-     * @Route("/imispersons/{searchParameter}", name="searchimispersons")
+     * @Route("/imispersons/{searchParameter}", name="searchimispersons", options={"expose"=true})
      */
     public function getImisPersons(ImisService $imisService, $searchParameter): JsonResponse
     {
@@ -26,7 +26,7 @@ class ImisController extends AbstractController
     }
 
     /**
-     * @Route("/imisprojects/{searchParameter}", name="searchImisProjects")
+     * @Route("/imisprojects/{searchParameter}", name="searchImisProjects", options={"expose"=true})
      */
     public function getImisProjects(ImisService $imisService, $searchParameter): JsonResponse
     {

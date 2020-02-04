@@ -28,6 +28,12 @@ function highlightTripInvestigatorNoInvestigator(contextElement){
             $('input#' + idTripInvestigatorBlock + '_surname').css('background-color', '#95c9ec');
             $('input#' + idTripInvestigatorBlock + '_firstname').css('background-color', '#95c9ec');
             $('input#' + idTripInvestigatorBlock + '_fullname').css('background-color', '#95c9ec');
+        } else {
+            const surname = $('input#' + idTripInvestigatorBlock + '_surname').val();
+            const firstname = $('input#' + idTripInvestigatorBlock + '_firstname').val();
+            const buttonHtml = '<div class="col-2"><a href="' + Routing.generate("create_investigator", {surname: surname, firstname: firstname})
+                +'" class="btn btn-primary"  target="_blank">Create investigator</a></div>';
+            $(this).children().append(buttonHtml);
         }
     });
 }
@@ -35,23 +41,37 @@ function highlightTripInvestigatorNoInvestigator(contextElement){
 function highlightTripStationNoStation(contextElement){
     $('.block-tripstation').each(function () {
         const idTripStationBlock = $(this).attr('id').replace('block_', '');
-        console.log($(this));
+        // console.log($(this));
         if($('#' + idTripStationBlock + '_stationnr').val()) {
             $('input#' + idTripStationBlock + '_code').css('background-color', '#f3a29a');
             $('input#' + idTripStationBlock + '_deflatitude').css('background-color', '#f3a29a');
             $('input#' + idTripStationBlock + '_deflongitude').css('background-color', '#f3a29a');
-            // let
-            // $(this).children().append('');
+
+        } else {
+            const code = $('input#' + idTripStationBlock + '_code').val();
+            const lat = $('input#' + idTripStationBlock + '_deflatitude').val();
+            const long = $('input#' + idTripStationBlock + '_deflongitude').val();
+            const buttonHtml = '<div class="col-2"><a href="'+ Routing.generate("create_station", {lat: lat, long: long, code: code})
+                +'" class="btn btn-primary"  target="_blank">Create Station</a></div>';
+            $(this).children().append(buttonHtml);
         }
     });
 }
 
 function addAutocompleteForInvestigator (indexTInvestigator) {
 
+    var tripinvestigatorFullNameID ='trip_tripinvestigators_'+ indexTInvestigator+'_fullname';
+    var tripinvestigatorSurnameID='trip_tripinvestigators_' + indexTInvestigator+'_surname';
+    var tripinvestigatorFirstnameID='trip_tripinvestigators_' + indexTInvestigator+'_firstname';
+    var tripinvestigatornrID='trip_tripinvestigators_'+ indexTInvestigator+'_investigatornr';
+    console.log('autocomplete');
+    console.log(tripinvestigatorFullNameID);
+
 
     var options = {
         url: function (phrase) {
-            return "/investigators/getInvestigatorNames/"+phrase
+            return Routing.generate("get_investigator_names", {searchParameter : phrase});
+            // return "/investigators/getInvestigatorNames/"+phrase;
         },
         getValue: function (element) {
             return element.fullname;
@@ -63,7 +83,21 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
                 dataType: "json"
             }
         },
-    }
+        preparePostData: function(data) {
+            data.phrase = $("#" + tripinvestigatorFullNameID).val();
+            return data;
+        },
+        list: {
+            onChooseEvent: function() {
+                $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
+                $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
+                $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+            }
+        },
+        requestDelay: 400
+    };
+    console.log('start autocomplete');
+    $("#"+tripinvestigatorFullNameID).easyAutocomplete(options);
 }
 
 
@@ -79,6 +113,8 @@ let addTripInvestigatorsStationsToTrip = (function () {
             $('#trip_tripinvestigators').append(elementTripinvestigator);
             window.counter.countTripInvestigators = index + 1;
             handleDeleteTripInvestigatorButtons(elementTripinvestigator);
+            addAutocompleteForInvestigator(index);
+
         });
         $('#add-tripstation').click(function(){
             const index = counter.countTripStations;
@@ -93,6 +129,11 @@ let addTripInvestigatorsStationsToTrip = (function () {
         handleDeleteTripStationButtons(window.document);
         highlightTripInvestigatorNoInvestigator(window.document);
         highlightTripStationNoStation(window.document);
+
+        $('input[id$=fullname]').each(function(){
+            const indexTripinvestigator = $(this).attr('id').replace('trip_tripinvestigators_', '').replace('_fullname', '');
+            // addAutocompleteForInvestigator(indexTripinvestigator);
+        })
 
 
     }
