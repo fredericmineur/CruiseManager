@@ -127,6 +127,15 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
         $jsonTrips = $serializer->serialize($trips, 'json');
         return new JsonResponse($jsonTrips, 200, [], true);
     }
+
+    /**
+     * @Route("/trips/diffinvestigators", name="list_trips_diffinvestigators")
+     */
+    public function listTripsDiffinvestigators ()
+    {
+        
+    }
+
 }
 
 //

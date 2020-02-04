@@ -47,14 +47,21 @@
 
 {% block javascripts %}
 <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+<script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
 
 <script>
-    // function addAutocompleteForCampaign(){
+
+    // return Routing.generate("searchimispersons", {'searchParameter' : phrase})
+    // return "/imispersons/"
+    //     + phrase;
+
 
     var options = {
         url: function(phrase){
-            return "/imispersons/"
-                + phrase;
+            return Routing.generate("searchimispersons", {searchParameter : phrase});
+
         },
         getValue: function (element) {
             return element.FullPers;

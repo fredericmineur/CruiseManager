@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                {% if mode == 'edit' %}Edit Station
+                {% elseif mode == 'create' %}Create station {% endif %}
+            </div>
+            <div class="card-body">
+                {{ form_start (formStation) }}
+                <div class="row">
+                    <div class="col-4">
+                        {{ form_row(formStation) }}
+                    </div>
+                    <div class="col-4">
+                        {{ form_row(formStation) }}
+                    </div>
+                    <div class="col-4">
+                        {{ form_row(formStation) }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    {% if mode == 'edit' %}
+                        Confirm edit{% elseif mode == 'create' %}
+                        Submit new campaign {% endif %}
+                </button>
+                {{ form_end(formStation) }}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

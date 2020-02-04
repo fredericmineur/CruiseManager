@@ -36,7 +36,7 @@ class InvestigatorsType extends AbstractType
                 TextType::class,[
                     'label' => 'IMIS number',
                     'attr' => [
-                        'placeholder' => 'Generated'
+                        'placeholder' => 'To be generated'
                     ]]
             )
 
