@@ -53,15 +53,15 @@ class StationController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/stations/createWithParams/{lat}-{long}-{code}", name="create_station_params")
-     */
-    public function createStationParams (Request $request, EntityManagerInterface $manager, $lat, $long, $code)
-    {
-        $station = new Stations();
-        $station->setLatitude($lat)->setLongitude($long)->setCode($code);
-        dd($station);
-    }
+//    /**
+//     * @Route("/stations/createWithParams/{lat}-{long}-{code}", name="create_station_params")
+//     */
+//    public function createStationParams (Request $request, EntityManagerInterface $manager, $lat, $long, $code)
+//    {
+//        $station = new Stations();
+//        $station->setLatitude($lat)->setLongitude($long)->setCode($code);
+//        dd($station);
+//    }
 
 
 

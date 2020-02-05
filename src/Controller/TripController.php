@@ -133,7 +133,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
      */
     public function listTripsDiffinvestigators ()
     {
-        
+
     }
 
 }

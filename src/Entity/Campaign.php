@@ -74,6 +74,27 @@ class Campaign
      */
     private $samples;
 
+//    /**
+//     * @var string|null
+//     */
+//    private $imisPlusName;
+
+//    /**
+//     * @return string|null
+//     */
+//    public function getImisPlusName(): ?string
+//    {
+//        return $this->imisPlusName;
+//    }
+//
+//    /**
+//     * @param string|null $imisPlusName
+//     */
+//    public function setImisPlusName(?string $imisPlusName): void
+//    {
+//        $this->imisPlusName = $imisPlusName;
+//    }
+
     /**
      * Constructor
      */

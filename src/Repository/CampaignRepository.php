@@ -63,6 +63,25 @@ class CampaignRepository extends ServiceEntityRepository
         return $query->getArrayResult();
     }
 
+    public function searchCampaignName ($value) {
+        return $this->createQueryBuilder('c')
+            ->select('c.campaignid as campaignid', 'c.campaign as name', 'c.imisprojectnr as imis')
+            ->andWhere('c.campaign LIKE :query')
+            ->setParameter('query', '%'.$value.'%')
+            ->orderBy('c.campaign', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function searchCampaignImis ($value) {
+        return $this->createQueryBuilder('c')
+            ->select('c.campaignid as campaignid', 'c.campaign as name', 'c.imisprojectnr as imis')
+            ->andWhere('c.imisprojectnr = :query')
+            ->setParameter('query', $value)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campaign;
 use App\Entity\Cruise;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -18,21 +19,42 @@ class CampaignType extends AbstractType
     {
         $builder
             ->add('campaign',
-                TextType::class,
-                $this->getConfiguration('Name of the campaign', 'Campaign')
-                )
+                TextType::class, [
+                    'label' => 'Name of the campaign',
+                    'attr' => [
+                        'placeholder' => 'Campaign'
+                    ]
+                ])
             ->add('memo',
-                TextareaType::class,
-                $this->getConfiguration('Memo', 'Memo')
+                TextareaType::class, [
+                    'label' => 'Memo',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'Memo'
+                    ]
+                ]
             )
             ->add('imisprojectnr',
-                TextType::class,
-                $this->getConfiguration('IMIS project number', 'IMIS project number')
+                TextType::class, [
+                    'label' => 'IMIS project number',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'IMIS project number'
+                    ]
+                ]
             )
-//            ->add('cruise',
-//                CollectionType::class, [
-//                    'entry_type' => CruiseType::class
-//                ])
+
+//            ->add('imisPlusName',
+//                TextType::class, [
+//                    'required' => false,
+//                    'attr' => [
+//                        'placeholder' => 'type and search'
+//                    ]
+//                ]
+//                )
+            ->add('campaignid',
+                HiddenType::class)
+
         ;
     }
 
@@ -43,13 +65,4 @@ class CampaignType extends AbstractType
         ]);
     }
 
-    public function getConfiguration($label, $placeholder)
-    {
-        return [
-            'label' => $label,
-            'attr' => [
-                'placeholder' => $placeholder
-            ]
-        ];
-    }
 }

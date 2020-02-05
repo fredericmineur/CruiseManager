@@ -62,32 +62,44 @@ class CruiseType extends AbstractType
                     'required' => false
                 ]
             )
-
-
-
             ->add('campaign', CollectionType::class,
-                           [
-                               'allow_add'=>true,
-                               'allow_delete'=>true,
-                               'by_reference'=>false,
-                               'entry_type' => EntityType::class,
-                               'entry_options' => [
-                                   'label' => 'Campaign (IMIS + name)',
-                               'class' => Campaign::class,
-                               'required' => false,
+                [
+                    'entry_type' => CampaignType::class,
+                    'allow_add' => true,
+                    'prototype' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                    'label' => 'Campaign(s)',
+                    'entry_options' => [
+                        'label' => false
+                    ]
+                ])
 
-                               'choice_label' => function($campaign) {
-                                   return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
-                               },
-                               'query_builder' => function(EntityRepository $er) {
-                                   return $er->createQueryBuilder('i')
-           //                            ->orderBy('i.campaign', 'ASC')
-                                       ->orderBy('i.campaign', 'ASC')
-                                       ;
-                               }
-                               ]
 
-                           ])
+
+//            ->add('campaign', CollectionType::class,
+//                           [
+//                               'label' => 'Campaign(s)',
+//                               'allow_add'=>true,
+//                               'allow_delete'=>true,
+//                               'by_reference'=>false,
+//                               'entry_type' => EntityType::class,
+//                               'entry_options' => [
+//                                   'label' => 'Campaign (IMIS + name)',
+//                               'class' => Campaign::class,
+//                               'required' => false,
+//
+//                               'choice_label' => function($campaign) {
+//                                   return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
+//                               },
+//                               'query_builder' => function(EntityRepository $er) {
+//                                   return $er->createQueryBuilder('i')
+//                                       ->orderBy('i.campaign', 'ASC')
+//                                       ;
+//                               }
+//                               ]
+//
+//                           ])
 
 
 
@@ -183,48 +195,4 @@ class CruiseType extends AbstractType
 
 //https://stackoverflow.com/questions/45169833/symfony-fill-choicetype-with-an-array
 
-//           ->add('campaign',
-//                CollectionType::class,
-//                [
-//
-//                    'entry_type'=> ChoiceType::class,
-////                    'allow_add'=> true,
-////
-////                    'allow_delete'=> true,
-//                    'by_reference'=>false,
-////
-////                    'required' => false,
-//                    'entry_options' => [
-////                        'choices' => $options['arrayCampaigns']
-//                        'choices'  => [
-//                            'Nashville' => 'nashville',
-//                            'Paris'     => 'paris',
-//                            'Berlin'    => 'berlin',
-//                            'London'    => 'london',
-//                        ],
-//                    ]
-//
-//                ]
-//            )
-//            dd($options['arrayCampaigns'])
-
-//            ->add('campaign',
-//                EntityType::class,
-//                [
-//                    'label' => 'Campaign',
-//                    'class' => Campaign::class,
-//                    'required' => false,
-//                    'attr'=> [
-//                        'placeholder' => 'xxxxxx'
-//                    ],
-//                    'choice_label' => function($campaign) {
-//                        return utf8_encode( $campaign->getImisprojectnr().' '.$campaign->getCampaign());
-//                    },
-//                    'query_builder' => function(EntityRepository $er) {
-//                        return $er->createQueryBuilder('i')
-////                            ->orderBy('i.campaign', 'ASC')
-//                            ->orderBy('i.imisprojectnr', 'ASC');
-//                    }
-//                ]
-//            )
 

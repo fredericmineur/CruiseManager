@@ -183,6 +183,26 @@ class CampaignController extends AbstractController
         return $this->redirectToRoute('campaigns_index');
     }
 
+    /**
+     * @Route("/api/campaignsNames/{search}", name="api_campaign_names_search")
+     */
+    public function getCampaignNames (SerializerInterface $serializer, EntityManagerInterface $manager, CampaignRepository $campaignRepository, $search)
+    {
+        $campaigns = $campaignRepository->searchCampaignName($search);
+        $jsonCampaigns = $serializer->serialize($campaigns, 'json');
+        return new JsonResponse($jsonCampaigns, 200, [], true);
+    }
+
+    /**
+     * @Route("/api/campaignsImis/{search}", name="api_campaign_imis_search")
+     */
+    public function getCampaignImis (SerializerInterface $serializer, EntityManagerInterface $manager, CampaignRepository $campaignRepository, $search)
+    {
+        $campaigns = $campaignRepository->searchCampaignImis($search);
+        $jsonCampaigns = $serializer->serialize($campaigns, 'json');
+        return new JsonResponse($jsonCampaigns, 200, [], true);
+    }
+
 }
 
 
