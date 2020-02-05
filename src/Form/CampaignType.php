@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campaign;
 use App\Entity\Cruise;
+use App\Form\DataTransformer\CampaignToNumberTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -15,6 +16,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignType extends AbstractType
 {
+
+    private $transformer;
+
+    /**
+     * CampaignType constructor.
+     * @param $transfomer
+     */
+    public function __construct(CampaignToNumberTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -56,6 +70,9 @@ class CampaignType extends AbstractType
                 HiddenType::class)
 
         ;
+
+        $builder->get('campaignid')
+            ->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

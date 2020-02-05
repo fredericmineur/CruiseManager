@@ -117,6 +117,12 @@ let addCampaigns = (function () {
 
 
         handleDeleteButtonsCampaigns(window.document);
+        $('.block_cruise_campaign').each(function(){
+            // console.log($(this).attr('id'));
+            const blockID = $(this).attr('id');
+            addAutocompleteCampaignName(blockID);
+            addAutocompleteCampaignImis(blockID);
+        });
         updateCounterCampaigns();
 
 
