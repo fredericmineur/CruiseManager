@@ -17,16 +17,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CampaignType extends AbstractType
 {
 
-    private $transformer;
-
-    /**
-     * CampaignType constructor.
-     * @param $transfomer
-     */
-    public function __construct(CampaignToNumberTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
+//    private $transformer;
+//
+//    /**
+//     * CampaignType constructor.
+//     * @param $transfomer
+//     */
+//    public function __construct(CampaignToNumberTransformer $transformer)
+//    {
+//        $this->transformer = $transformer;
+//    }
 
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -48,31 +48,28 @@ class CampaignType extends AbstractType
                     ]
                 ]
             )
-            ->add('imisprojectnr',
-                TextType::class, [
-                    'label' => 'IMIS project number',
-                    'required' => false,
-                    'attr' => [
-                        'placeholder' => 'IMIS project number'
-                    ]
-                ]
-            )
-
-//            ->add('imisPlusName',
+//            ->add('imisprojectnr',
 //                TextType::class, [
+//                    'label' => 'IMIS project number',
 //                    'required' => false,
 //                    'attr' => [
-//                        'placeholder' => 'type and search'
+//                        'placeholder' => 'IMIS project number'
 //                    ]
 //                ]
-//                )
-            ->add('campaignid',
-                HiddenType::class)
+//            )
+
+            ->add('imisprojectnr',
+                HiddenType::class
+            )
+
+
+//            ->add('campaignid',
+//                HiddenType::class)
 
         ;
 
-        $builder->get('campaignid')
-            ->addModelTransformer($this->transformer);
+//        $builder->get('campaignid')
+//            ->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

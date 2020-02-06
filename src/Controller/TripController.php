@@ -133,7 +133,20 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
      */
     public function listTripsDiffinvestigators ()
     {
+        //TO DO
+    }
 
+
+
+    /**
+     * @Route("/api/list_trip_destinations", name="list_trip_destinations")
+     */
+    public function listTripDestinations(SerializerInterface $serializer, TripRepository $tripRepository)
+    {
+        $destinations= $tripRepository->getListDestinationArea();
+//        dd($destinations);
+        $jsonDestinations = $serializer->serialize($destinations, 'json');
+        return new JsonResponse($jsonDestinations, 200, [], true);
     }
 
 }

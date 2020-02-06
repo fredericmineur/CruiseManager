@@ -19,6 +19,7 @@
                 </div>
                 <div class="col-4">
                     {{ form_row(formCampaign.imisprojectnr) }}
+                    <p>IMIS project number: <span class="imis-display"></span></p>
                 </div>
             </div>
 
@@ -42,6 +43,8 @@
 
 {% block javascripts %}
     <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+
+
     <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
@@ -66,6 +69,7 @@
 
                 preparePostData: function(data) {
                     data.phrase = $('#campaign_campaign').val();
+                    $('span.imis-display').text('');
                     return data;
                 },
                 list: {
@@ -73,6 +77,7 @@
                     onChooseEvent: function () {
                         var selectedItemValue = $('#campaign_campaign').getSelectedItemData().ProID;
                         $('#campaign_imisprojectnr').val(selectedItemValue);
+                        $('span.imis-display').text(selectedItemValue);
                     }
                 },
 
@@ -83,7 +88,7 @@
 
             $("#campaign_campaign").easyAutocomplete(optionsTitle);
 
-        // }
+
 
     </script>
 

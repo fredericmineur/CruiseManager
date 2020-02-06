@@ -39,8 +39,8 @@ class CruiseRepository extends ServiceEntityRepository
             ELSE 1
            END
           ) as numberOfTrips
-          , CONVERT(varchar, MIN(Trip.Startdate), 103) as startdate
-          , CONVERT(varchar, MAX(Trip.Enddate) , 103) as enddate
+          , CONVERT(varchar, MIN(Trip.Startdate), 23) as startdate
+          , CONVERT(varchar, MAX(Trip.Enddate) , 23) as enddate
           FROM Cruise 
           LEFT JOIN Trip  ON Cruise.CruiseID =Trip.CruiseID
           LEFT JOIN Investigators  on Investigators.InvestigatorID =Cruise.[PrincipalInvestigator]

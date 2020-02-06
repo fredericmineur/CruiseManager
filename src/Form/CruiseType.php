@@ -62,44 +62,45 @@ class CruiseType extends AbstractType
                     'required' => false
                 ]
             )
-            ->add('campaign', CollectionType::class,
-                [
-                    'entry_type' => CampaignType::class,
-                    'allow_add' => true,
-                    'prototype' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label' => 'Campaign(s)',
-                    'entry_options' => [
-                        'label' => false
-                    ]
-                ])
-
-
-
 //            ->add('campaign', CollectionType::class,
-//                           [
-//                               'label' => 'Campaign(s)',
-//                               'allow_add'=>true,
-//                               'allow_delete'=>true,
-//                               'by_reference'=>false,
-//                               'entry_type' => EntityType::class,
-//                               'entry_options' => [
+//                [
+//                    'entry_type' => CampaignType::class,
+//                    'allow_add' => true,
+//                    'prototype' => true,
+//                    'allow_delete' => true,
+//                    'by_reference' => false,
+//                    'label' => 'Campaign(s)',
+//                    'entry_options' => [
+//                        'label' => false
+//                    ]
+//                ])
+
+
+
+            ->add('campaign', CollectionType::class,
+                           [
+                               'label' => 'Campaign(s)',
+                               'allow_add'=>true,
+                               'allow_delete'=>true,
+                               'by_reference'=>false,
+                               'entry_type' => EntityType::class,
+                               'entry_options' => [
 //                                   'label' => 'Campaign (IMIS + name)',
-//                               'class' => Campaign::class,
-//                               'required' => false,
-//
-//                               'choice_label' => function($campaign) {
-//                                   return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
-//                               },
-//                               'query_builder' => function(EntityRepository $er) {
-//                                   return $er->createQueryBuilder('i')
-//                                       ->orderBy('i.campaign', 'ASC')
-//                                       ;
-//                               }
-//                               ]
-//
-//                           ])
+                               'label' => false,
+                               'class' => Campaign::class,
+                               'required' => false,
+
+                               'choice_label' => function($campaign) {
+                                   return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
+                               },
+                               'query_builder' => function(EntityRepository $er) {
+                                   return $er->createQueryBuilder('i')
+                                       ->orderBy('i.campaign', 'ASC')
+                                       ;
+                               }
+                               ]
+
+                           ])
 
 
 
@@ -155,6 +156,7 @@ class CruiseType extends AbstractType
                  ]
             )
         ;
+//        $builder->addModelTransformer()
 
 }
 
