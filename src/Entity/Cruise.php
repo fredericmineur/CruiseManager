@@ -24,7 +24,7 @@ class Cruise
      */
     public function __construct()
     {
-        $this->campaign = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->campaign = new ArrayCollection();
         $this->trips = new ArrayCollection();
     }
 
@@ -91,7 +91,7 @@ class Cruise
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Campaign", mappedBy="cruise" )
+     * @ORM\ManyToMany(targetEntity="Campaign", mappedBy="cruise" , cascade={"persist"})
      * Groups("get_cruises_for_table")
      */
     private $campaign;

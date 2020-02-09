@@ -45,6 +45,14 @@ class Campaign
     private $memo;
 
     /**
+     * @param int $campaignid
+     */
+    public function setCampaignid(int $campaignid): void
+    {
+        $this->campaignid = $campaignid;
+    }
+
+    /**
      * @var int|null
      * @ORM\Column(name="ImisProjectnr", type="integer", nullable=true)
      * @Assert\Regex(pattern="/^[0-9]{1,6}$/", message="IMIS number only contains digit")

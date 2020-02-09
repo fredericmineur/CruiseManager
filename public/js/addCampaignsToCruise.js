@@ -2,8 +2,7 @@
 function handleDeleteButtonsCampaigns(contextElement){
     $('button#remove-campaign[data-action="delete"]', contextElement).click(function(){
         const target = this.dataset.target;
-        console.log(target);
-        $(target).parent('fieldset').remove();
+        $(target).remove();
     })
 }
 
@@ -11,86 +10,12 @@ function updateCounterCampaigns(){
     const count = $('#cruise_campaign div.form-group').length;
     // $('#widgets-counter-campaigns').val(count);
     window.counterCampaigns.count = count;
-
 }
 
-//block campaign e.g. cruise_campaign_11
+//block campaignname e.g. cruise_campaig_11
 function addAutocompleteCampaignName (blocKCampaign) {
-    const campaignNameID = blocKCampaign + '_campaign';
-    const campaignImisID = blocKCampaign + '_imisprojectnr';
-    const campaignIdID = blocKCampaign + '_campaignid';
-
-    var options = {
-        url: function(phrase){
-            return "/api/campaignsNames/" + phrase;
-        },
-        getValue: function (element) {
-            return element.name;
-        },
-        ajaxSettings: {
-            dataType: "json",
-            method: "POST",
-            data: {
-                dataType: "json"
-            }
-        },
-        preparePostData: function(data) {
-            data.phrase = $("#"+ campaignNameID).val();
-            return data;
-        },
-        list: {
-            onChooseEvent: function () {
-                console.log('selecting');
-                var imisForSelected = $('#' + campaignNameID).getSelectedItemData().imis;
-                $('#' + campaignImisID).val(imisForSelected);
-                var idForSelected = $('#' + campaignNameID).getSelectedItemData().campaignid;
-                $('#' + campaignIdID).val(idForSelected);
-            }
-        },
-
-        requestDelay: 400
-    };
-    $('#' + campaignNameID).easyAutocomplete(options);
+    $('#' + blocKCampaign).select2();
 }
-
-function addAutocompleteCampaignImis (blockCampaign) {
-    const campaignNameID = blockCampaign + '_campaign';
-    const campaignImisID = blockCampaign + '_imisprojectnr';
-    const campaignIdID = blockCampaign + '_campaignid';
-
-    var options = {
-        url: function(phrase){
-            return "/api/campaignsImis/" + phrase;
-        },
-        getValue: function (element) {
-            return element.imis;
-        },
-        ajaxSettings: {
-            dataType: "json",
-            method: "POST",
-            data: {
-                dataType: "json"
-            }
-        },
-        preparePostData: function(data) {
-            data.phrase = $("#"+ campaignImisID).val();
-            return data;
-        },
-        list: {
-            onChooseEvent: function () {
-                console.log('selecting');
-                var nameForSelected = $('#' + campaignImisID).getSelectedItemData().name;
-                $('#' + campaignNameID).val(nameForSelected);
-                var idForSelected = $('#' + campaignImisID).getSelectedItemData().campaignid;
-                $('#' + campaignIdID).val(idForSelected);
-            }
-        },
-
-        requestDelay: 400
-    };
-    $('#' + campaignImisID).easyAutocomplete(options);
-}
-
 
 let addCampaigns = (function () {
 
@@ -112,28 +37,19 @@ let addCampaigns = (function () {
             const blockID = 'cruise_campaign_' + index;
             handleDeleteButtonsCampaigns(campaignElement);
             addAutocompleteCampaignName(blockID);
-            addAutocompleteCampaignImis(blockID);
+            // addAutocompleteCampaignImis(blockID);
         });
-
 
         handleDeleteButtonsCampaigns(window.document);
-        $('.block_cruise_campaign').each(function(){
-            // console.log($(this).attr('id'));
-            const blockID = $(this).attr('id');
-            addAutocompleteCampaignName(blockID);
-            addAutocompleteCampaignImis(blockID);
+
+        $("#cruise_campaign").find("select").each(function(){
+            addAutocompleteCampaignName($(this).attr('id'));
         });
+
         updateCounterCampaigns();
-
-
-    }
+    };
 
     return initObjectCA;
-
-
-
-
-
 
 })();
 

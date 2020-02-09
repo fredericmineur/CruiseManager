@@ -189,7 +189,8 @@ class CampaignController extends AbstractController
     public function getCampaignNames (SerializerInterface $serializer, EntityManagerInterface $manager, CampaignRepository $campaignRepository, $search)
     {
         $campaigns = $campaignRepository->searchCampaignName($search);
-        $jsonCampaigns = $serializer->serialize($campaigns, 'json');
+        $campaignsresult=array('results'=>$campaigns);
+        $jsonCampaigns = $serializer->serialize($campaignsresult, 'json');
         return new JsonResponse($jsonCampaigns, 200, [], true);
     }
 
