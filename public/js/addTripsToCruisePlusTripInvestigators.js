@@ -327,6 +327,23 @@ function displayCounterValues(contextElement) {
         //https://www.w3schools.com/jquery/html_text.asp
 }
 
+
+function addAutoCompleteDestinations(indexTrip) {
+    var options = {
+        url: "/api/list_trip_destinations",
+        getValue: "destinationlist",
+        list: {
+            maxNumberOfElements: 10,
+            match: {
+                enabled: true
+            }
+        }
+    }
+
+    $('#cruise_trips_' + indexTrip + '_destinationarea').easyAutocomplete(options);
+}
+
+
 // Function to initiate the whole module
 let addTripsAndInvestigators = (function () {
 
@@ -345,6 +362,8 @@ let addTripsAndInvestigators = (function () {
             //Injection of the new code
             var elementTrip = $(tmpl);
             $('#cruise_trips').append(elementTrip);
+
+            addAutoCompleteDestinations(index)
 
             //Starting the tripinvestigators and tripstations for the trip
             counter['block_cruise_trips_'+ index] = {};
@@ -401,6 +420,8 @@ let addTripsAndInvestigators = (function () {
         for (var property in counter) {
             if (property.substring(0, 19)==='block_cruise_trips_'){
                 var indexTrip = property.substring(19);
+                addAutoCompleteDestinations(indexTrip);
+
                 var numberOfinvestigators = counter[property]['investigators'];
                 for (i = 0; i < numberOfinvestigators; i++) {
                     addAutocompleteForInvestigator(indexTrip, i)

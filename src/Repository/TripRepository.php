@@ -111,6 +111,19 @@ SELECT Trip.TripID,
         return $stmt->fetchAll();
     }
 
+    public function getListDestinationArea() {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT DISTINCT TRIM(destinationarea) as destinationlist
+            FROM trip WHERE NULLIF (destinationarea, \'\') is not null 
+            ORDER BY destinationlist ASC
+        ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 
 
 
