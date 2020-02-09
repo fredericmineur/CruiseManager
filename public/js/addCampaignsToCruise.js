@@ -2,8 +2,7 @@
 function handleDeleteButtonsCampaigns(contextElement){
     $('button#remove-campaign[data-action="delete"]', contextElement).click(function(){
         const target = this.dataset.target;
-        console.log(target);
-        $(target).parent('fieldset').remove();
+        $(target).remove();
     })
 }
 
