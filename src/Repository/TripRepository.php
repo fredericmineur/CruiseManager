@@ -20,7 +20,28 @@ class TripRepository extends ServiceEntityRepository
         parent::__construct($registry, Trip::class);
     }
 
-    public function getAllTripsForTable () :array
+
+    public function getAllTripsForTable ()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+        SELECT Trip.TripID, TRIM(Trip.destinationarea) as destination, 
+        CONVERT(varchar, trip.Startdate, 23) + \'  [\'  
+        + CONVERT(varchar, DATEDIFF(day, trip.Startdate, trip.Enddate) +1     ) +\']\'
+        as startdateAndNumberOfDays,
+        CONVERT(varchar, trip.Enddate, 23) as enddate,
+        TRIM(cruise.plancode) as plancode, TRIM(cruise.ship) as ship, TRIM(trip.status) as status, cruise.cruiseID 
+        FROM Trip
+        LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
+        ORDER BY trip.Startdate DESC
+         ';
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public function getAllTripsForTableWithStation () :array
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
@@ -54,17 +75,17 @@ SELECT Trip.TripID,
     }
 
     public function getTripsWithStations() {
-       {
-           $qb = $this->createQueryBuilder('trip')
-             ->leftJoin('trip.tripstations', 'tripstat')
-               ->addSelect('tripstat')
-               ->leftJoin('tripstat.stationnr', 'station')
-               ->addSelect('station')
-           ;
-           $query = $qb->getQuery();
-           return $query->getArrayResult();
+        {
+            $qb = $this->createQueryBuilder('trip')
+                ->leftJoin('trip.tripstations', 'tripstat')
+                ->addSelect('tripstat')
+                ->leftJoin('tripstat.stationnr', 'station')
+                ->addSelect('station')
+            ;
+            $query = $qb->getQuery();
+            return $query->getArrayResult();
 
-       }
+        }
     }
 
     public function getTripsDiffTripStationStation() {
@@ -72,15 +93,18 @@ SELECT Trip.TripID,
         $sql = '
             SELECT MAX(Trip.TripID) as TripID, 
             MAX(Trip.CruiseID) as CruiseId,
-            CONVERT(varchar, MAX(Trip.Startdate), 103) as StartDate,
-            CONVERT(varchar, MAX(Trip.Enddate), 103) as EndDate,
-            SUM(CASE WHEN TRIPSTATIONS.ID IS NULL THEN 0 ELSE 1 END) as NbTripStat,
-            SUM(CASE WHEN TRIPSTATIONS.StationNR IS NULL THEN 0 ELSE 1 END) as NbStat
+            MAX(Cruise.Plancode) as plancode,
+            CONVERT(varchar, MAX(Trip.Startdate), 23) as StartDate,
+            CONVERT(varchar, MAX(Trip.Enddate), 23) as EndDate,
+            SUM(CASE WHEN TripStations.ID IS NULL THEN 0 ELSE 1 END) as NbTripStations,
+            SUM(CASE WHEN TripStations.StationNR IS NULL THEN 0 ELSE 1 END) as NbStations,
+            (SUM(CASE WHEN TripStations.ID IS NULL THEN 0 ELSE 1 END) - SUM(CASE WHEN TripStations.StationNR IS NULL THEN 0 ELSE 1 END)) as NonRegist
             FROM Trip
-            LEFT JOIN TRIPSTATIONS ON TRIPSTATIONS.TripNr = Trip.TripID
-            FULL OUTER JOIN Stations ON TRIPSTATIONS.StationNR = Stations.NR
+            LEFT JOIN TRIPSTATIONS ON TripStations.TripNr = Trip.TripID
+            FULL OUTER JOIN Stations ON Tripstations.StationNR = Stations.NR
+            LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
             GROUP BY Trip.TripID 
-            HAVING (SUM(CASE WHEN TRIPSTATIONS.ID IS NULL THEN 0 ELSE 1 END) - SUM(CASE WHEN TRIPSTATIONS.StationNR IS NULL THEN 0 ELSE 1 END)) > 0
+            HAVING (SUM(CASE WHEN TRIPSTATIONS.ID IS NULL THEN 0 ELSE 1 END) - SUM(CASE WHEN tripstations.StationNR IS NULL THEN 0 ELSE 1 END)) > 0
             ORDER BY Trip.TripID DESC
         ';
 
@@ -94,13 +118,16 @@ SELECT Trip.TripID,
         $sql = '
             SELECT MAX(Trip.TripID) as TripID, 
             MAX(Trip.CruiseID) as CruiseId,
-            CONVERT(varchar, MAX(Trip.Startdate), 103) as StartDate,
-            CONVERT(varchar, MAX(Trip.Enddate), 103) as EndDate,
+            MAX(Cruise.Plancode) as plancode,
+            CONVERT(varchar, MAX(Trip.Startdate), 23) as StartDate,
+            CONVERT(varchar, MAX(Trip.Enddate), 23) as EndDate,
             SUM(CASE WHEN TripInvestigators.ID IS NULL THEN 0 ELSE 1 END) as NbTripInvestigators,
-            SUM(CASE WHEN TripInvestigators.InvestigatorNR IS NULL THEN 0 ELSE 1 END) as NbInvestigators
+            SUM(CASE WHEN TripInvestigators.InvestigatorNR IS NULL THEN 0 ELSE 1 END) as NbInvestigators,
+            (SUM(CASE WHEN TripInvestigators.ID IS NULL THEN 0 ELSE 1 END) - SUM(CASE WHEN TripInvestigators.InvestigatorNR IS NULL THEN 0 ELSE 1 END)) as NonRegist
             FROM Trip
             LEFT JOIN TripInvestigators ON TripInvestigators.TripNr = Trip.TripID
             FULL OUTER JOIN Investigators ON TripInvestigators.InvestigatorNR = Investigators.InvestigatorID
+            LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
             GROUP BY Trip.TripID 
             HAVING (SUM(CASE WHEN TripInvestigators.ID IS NULL THEN 0 ELSE 1 END) - SUM(CASE WHEN TripInvestigators.InvestigatorNR IS NULL THEN 0 ELSE 1 END)) > 0
             ORDER BY Trip.TripID DESC

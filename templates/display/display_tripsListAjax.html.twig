@@ -3,10 +3,10 @@
 {% block title %}Trips{% endblock %}
 
 {% block stylesheets %}
-{#    <link rel="stylesheet" href="/css/jquery.dataTables.min.css">#}
-{#    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>#}
+    {#    <link rel="stylesheet" href="/css/jquery.dataTables.min.css">#}
+    {#    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>#}
 
-{#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
+    {#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
     <link rel="stylesheet" href="/css/datatables.min.css">
     <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
 
@@ -14,34 +14,114 @@
 
 {% block body %}
 
+    {#    <div class="container">#}
+    {#        <h2>Dynamic Tabs</h2>#}
+    {#        <ul class="nav nav-tabs">#}
+    {#            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>#}
+    {#            <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>#}
+    {#            <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>#}
+    {#            <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>#}
+    {#        </ul>#}
+
+    {#        <div class="tab-content">#}
+    {#            <div id="home" class="tab-pane fade in active">#}
+    {#                <h3>HOME</h3>#}
+    {#                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>#}
+    {#            </div>#}
+    {#            <div id="menu1" class="tab-pane fade">#}
+    {#                <h3>Menu 1</h3>#}
+    {#                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>#}
+    {#            </div>#}
+    {#            <div id="menu2" class="tab-pane fade">#}
+    {#                <h3>Menu 2</h3>#}
+    {#                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>#}
+    {#            </div>#}
+    {#            <div id="menu3" class="tab-pane fade">#}
+    {#                <h3>Menu 3</h3>#}
+    {#                <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+
+
     <div class="container">
-        <h1>Trips</h1>
+        <h1>TRIPS</h1>
+        <ul class="nav nav-pills">
+            <li class="active">
+                <a data-toggle="tab" href="#trips-all" class="btn btn-primary mx-2">All trips</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#trips-for-investigator" class="btn btn-primary mx-2">For investigators</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#trips-for-station" class="btn btn-primary mx-2">For stations</a>
+            </li>
 
-        <table class="table-hover table-bordered display" id="myDataTable" width="100%">
-            <thead>
-            {% set headerRow =
-                "<tr>
-                <th>Start Date [Nb days]</th>
+        </ul>
+        <div class="tab-content clearfix">
+            <div class="tab-pane active" id="trips-all">
+                <h1>ALL</h1>
+                <table class="table-hover table-bordered display" id="TableAllTrips" width="100%">
+                    <thead>
+                    {% set headerRow =
+                        "<tr>
+                                <th>Start Date [Nb days]</th>
+                                <th>Cruise Plancode</th>
+                                <th>Status</th>
+                                <th>Destination</th>
+                                <th>Ship</th>
+                            </tr>"
+                    %}
+                    {{ headerRow | raw }}
+                    </thead>
+                    <tfoot> {{ headerRow | raw }}</tfoot>
+                </table>
 
-                <th>Destination</th>
+            </div>
+            <div class="tab-pane" id="trips-for-investigator">
+                <h1>Trips to amend (investigators to create)</h1>
+                <table class="table-hover table-bordered display" id="TableTripsInvestigators" width="100%">
+                    <thead>
+                    {% set headerRow =
+                        "<tr>
+                                    <th>Start Date</th>
+                                    <th>Cruise Plancode</th>
+                                    <th>Number investigators</th>
+                                    <th>Non registered<br>investigators</th>
+                                    <th>Edit</th>
+                                </tr>"
+                    %}
+                    {{ headerRow | raw }}
+                    </thead>
+                    <tfoot> {{ headerRow | raw }}</tfoot>
+                </table>
 
-                <th>Cruise Plancode</th>
-                <th>Stations count</th>
-                <th>Status</th>
-                <th>Ship</th>
 
-            </tr>"
-            %}
-            {{ headerRow | raw }}
+            </div>
+            <div class="tab-pane" id="trips-for-station">
+                <h1>Trips to amend (stations to create)</h1>
+                <table class="table-hover table-bordered display" id="TableTripsStations" width="100%">
+                    <thead>
+                    {% set headerRow =
+                        "<tr>
+                                    <th>Start Date</th>
+                                    <th>Cruise Plancode</th>
+                                    <th>Number stations</th>
+                                    <th>Non registered<br>stations</th>
+                                    <th>Edit</th>
+                                </tr>"
+                    %}
+                    {{ headerRow | raw }}
+                    </thead>
+                    <tfoot> {{ headerRow | raw }}</tfoot>
+                </table>
 
-            </thead>
 
-            <tfoot> {{ headerRow | raw }}</tfoot>
+            </div>
+        </div>
 
-
-        </table>
     </div>
-
 
 {% endblock %}
 
@@ -50,103 +130,13 @@
     {#    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>#}
     <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script type="text/javascript" src="/js/dataTablesForTrip.js"></script>
 
     <script type="text/javascript">
         $(document).ready( function () {
-            //allow sorting date
-            // $.fn.dataTable.moment("D/M/YYYY");
-
-            //Add another header below the first
-            $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
-
-            //Transform the second header row to have the search input fields
-            $('#myDataTable thead tr:odd th').each( function () {
-                $(this).html('<input type="text" placeholder="Search" />');
-            });
-
-            //Create the table
-            var table =
-                $('#myDataTable').DataTable({
-                    "ajax": {
-                        "url": "api/gettrips",
-                        "dataSrc" : ""
-                    },
-
-                    "order": [[0, "desc"]],
-                    "columns" : [
-                        {"data" : "startdateAndNumberOfDays"},
-                        {"data" : "destination"},
-                        {"data" : "plandcode"},
-                        {"data" : "stationTotalMidas"},
-                        {"data" : "status"},
-                        {"data" : "ship"}
-
-                    ],
-                    "columnDefs": [
-                        {
-                            "targets": -1,
-                            "visible": false
-                        },
-                        // {
-                        //     "targets": 1,
-                        //     "render": function(data, type, row) {
-                        //         if(data !== null && data !== ''){
-                        //             var imisnrOutput = data + '&nbsp&nbsp<a href="http://www.vliz.be/en/imis?module=person&persid=' + data  + '" target= "blank" title="OpenImisLink">' +
-                        //                 '<i class = "fa fa-link"></i></a>';
-                        //             return imisnrOutput;
-                        //         } else {return '';}
-                        //
-                        //     }
-                        // },
-                        // {
-                        //     "targets" : 0,
-                        //     "render": function(data, type, row) {
-                        //         var investigatorOutput = data
-                        //             + '&nbsp <a href="'
-                        //             + Routing.generate('investigator_details', {investigatorId: row.investigatorid}) + '"><i class="fa fa-info-circle"></i></a>'
-                        //             + '&nbsp <a href="' + Routing.generate('edit_investigator', {investigatorId: row.investigatorid})
-                        //             + '"><i class="fa fa-edit"></i></a>'
-                        //             + '&nbsp <a href="' + Routing.generate('remove_investigator_warning', {investigatorId: row.investigatorid})
-                        //             + '"><i class="fa fa-trash"></i></a>'
-                        //         ;
-                        //         // + '&nbsp <a href="' + Routing.generate('edit_investigator', {investigatorId: row.investigatorid})
-                        //         // + '"><i class="fa fa-edit"></i></a>';
-                        //         return investigatorOutput;
-                        //     }
-                        // }
-
-
-                    ]
-                });
-
-
-
-            //Hide the generic search field
-            $('#myDataTable_filter').hide();
-
-
-            // Apply the search on every column
-            table.columns().every( function () {
-                var that = this;
-
-                $( 'input', this.header() ).on( 'keyup change clear', function () {
-                    if ( that.search() !== this.value ) {
-                        that
-                            .search( this.value )
-                            .draw();
-                    }
-                } );
-            } );
-
-
-
-            //prevent that clicking on the search field sort the column
-            //https://stackoverflow.com/questions/31677257/datatables-only-allow-sorting-with-buttons
-
-            $('#myDataTable thead input').on('click', function(e){
-                e.stopPropagation();
-            });
-
+            fillTableAllTrips.init();
+            fillTableInvestigators.init();
+            fillTableStations.init();
         } );
     </script>
 

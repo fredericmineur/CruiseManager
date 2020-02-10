@@ -19,7 +19,7 @@ class TripController extends AbstractController
 {
 
     /**
-     * @Route("/trips/{tripId}", name="trip_details")
+     * @Route("/trips/{tripId}", name="trip_details", options={"expose"=true})
      */
     public function tripDetails(EntityManagerInterface $manager, $tripId){
         $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=>$tripId]);
@@ -31,7 +31,7 @@ class TripController extends AbstractController
     }
 
     /**
-     * @Route("/trips/{tripId}/edit", name="trip_edit")
+     * @Route("/trips/{tripId}/edit", name="trip_edit", options={"expose"=true})
      */
 public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
 {
@@ -97,7 +97,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     }
 
     /**
-     * @Route("/api/gettrips", name="get_trips")
+     * @Route("/api/gettrips", name="api_get_trips", options={"expose"=true})
      */
     public function getTripsForTable(SerializerInterface $serializer, TripRepository $tripRepository, EntityManagerInterface $em)
     {
@@ -109,7 +109,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     }
 
     /**
-     * @Route("/api/gettripsdiffstations", name="get_trips_diff_stations")
+     * @Route("/api/gettripsdiffstations", name="api_get_trips_diff_stations", options={"expose"=true})
      */
     public function getTripsDiffStations(SerializerInterface $serializer, TripRepository $tripRepository)
     {
@@ -119,7 +119,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     }
 
     /**
-     * @Route("/api/gettripsdiffinvestigators", name="get_trips_diff_investigators")
+     * @Route("/api/gettripsdiffinvestigators", name="api_get_trips_diff_investigators", options={"expose"=true})
      */
     public function getTripsDiffInvestigators (SerializerInterface $serializer, TripRepository $tripRepository)
     {

@@ -31,8 +31,9 @@ function highlightTripInvestigatorNoInvestigator(contextElement){
         } else {
             const surname = $('input#' + idTripInvestigatorBlock + '_surname').val();
             const firstname = $('input#' + idTripInvestigatorBlock + '_firstname').val();
+
             const buttonHtml = '<div class="col-2"><a href="' + Routing.generate("create_investigator", {surname: surname, firstname: firstname})
-                +'" class="btn btn-primary"  target="_blank">Create investigator</a></div>';
+                +'" class="btn btn-primary create-investigator" id="' + idTripInvestigatorBlock + '"  target="_blank">Create investigator</a></div>';
             $(this).children().append(buttonHtml);
         }
     });
@@ -64,14 +65,21 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
     var tripinvestigatorSurnameID='trip_tripinvestigators_' + indexTInvestigator+'_surname';
     var tripinvestigatorFirstnameID='trip_tripinvestigators_' + indexTInvestigator+'_firstname';
     var tripinvestigatornrID='trip_tripinvestigators_'+ indexTInvestigator+'_investigatornr';
-    console.log('autocomplete');
-    console.log(tripinvestigatorFullNameID);
+    console.log(indexTInvestigator);
+
+
+   var buttonCreate = $('#block_trip_tripinvestigators_' + indexTInvestigator).find('a');
+    // if(buttonCreate.length>0){
+    //     console.log('true');
+    // }
+    // console.log(buttonCreate);
 
 
     var options = {
         url: function (phrase) {
-            return Routing.generate("get_investigator_names", {searchParameter : phrase});
+            // return Routing.generate("get_investigator_names", {searchParameter : phrase});
             // return "/investigators/getInvestigatorNames/"+phrase;
+            return Routing.generate("get_investigator_names") + '/' + phrase;
         },
         getValue: function (element) {
             return element.fullname;
@@ -92,11 +100,15 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
                 $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
                 $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
                 $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+                if(buttonCreate.length>0){
+                    $(buttonCreate).remove();
+                }
+
             }
         },
         requestDelay: 400
     };
-    console.log('start autocomplete');
+
     $("#"+tripinvestigatorFullNameID).easyAutocomplete(options);
 }
 
@@ -132,7 +144,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
 
         $('input[id$=fullname]').each(function(){
             const indexTripinvestigator = $(this).attr('id').replace('trip_tripinvestigators_', '').replace('_fullname', '');
-            // addAutocompleteForInvestigator(indexTripinvestigator);
+            addAutocompleteForInvestigator(indexTripinvestigator);
         })
 
 
