@@ -17,7 +17,7 @@ class StationController extends AbstractController
 {
 
     /**
-     * @Route("/api/getStations/{value}", name="get_stations")
+     * @Route("/api/getStations/{value}", name="get_stations", options={"expose"=true})
      */
     public function getStations (SerializerInterface $serializer, StationRepository $stationRepository, $value)
     {

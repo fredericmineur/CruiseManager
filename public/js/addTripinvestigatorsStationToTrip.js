@@ -65,14 +65,9 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
     var tripinvestigatorSurnameID='trip_tripinvestigators_' + indexTInvestigator+'_surname';
     var tripinvestigatorFirstnameID='trip_tripinvestigators_' + indexTInvestigator+'_firstname';
     var tripinvestigatornrID='trip_tripinvestigators_'+ indexTInvestigator+'_investigatornr';
-    console.log(indexTInvestigator);
 
-
+    //locate the create investigator button for the row
    var buttonCreate = $('#block_trip_tripinvestigators_' + indexTInvestigator).find('a');
-    // if(buttonCreate.length>0){
-    //     console.log('true');
-    // }
-    // console.log(buttonCreate);
 
 
     var options = {
@@ -113,6 +108,48 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
 }
 
 
+function addAutocompleteForStation (indexTStations)
+{
+    var tripstationCodeID = 'trip_tripstations_' + indexTStations + '_code';
+    var tripstationLatitudeID = 'trip_tripstations_' + indexTStations + '_deflatitude';
+    var tripstationLongitudeID = 'trip_tripstations_' + indexTStations + '_deflongitude';
+    var tripstationStationnrID = 'trip_tripstations_' + indexTStations + '_stationnr';
+
+    var options = {
+        url: function (phrase){
+            // return "/api/getStations/" + phrase;
+            return Routing.generate("get_stations") + '/' + phrase;
+        },
+        getValue: function (element) {
+            return element.stationCode;
+        },
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+        preparePostData: function (data) {
+            data.phrase = $('#' + tripstationCodeID).val();
+            return data;
+        },
+        list: {
+            onChooseEvent: function () {
+                var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
+                $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
+                var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
+                $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
+                var stationIdForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id;
+                $('#' + tripstationStationnrID).val(stationIdForSelectedItemValue);
+            }
+        },
+        requestDelay: 400
+    };
+    $('#' + tripstationCodeID).easyAutocomplete(options);
+}
+
+
 
 let addTripInvestigatorsStationsToTrip = (function () {
     let initObjectTI = {};
@@ -127,6 +164,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
             handleDeleteTripInvestigatorButtons(elementTripinvestigator);
             addAutocompleteForInvestigator(index);
 
+
         });
         $('#add-tripstation').click(function(){
             const index = counter.countTripStations;
@@ -135,6 +173,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
             $('#trip_tripstations').append(elementTripstation);
             window.counter.countTripStations = index + 1;
             handleDeleteTripStationButtons(elementTripstation);
+            addAutocompleteForStation(index);
         });
         updateCounter();
         handleDeleteTripInvestigatorButtons(window.document);
@@ -145,7 +184,12 @@ let addTripInvestigatorsStationsToTrip = (function () {
         $('input[id$=fullname]').each(function(){
             const indexTripinvestigator = $(this).attr('id').replace('trip_tripinvestigators_', '').replace('_fullname', '');
             addAutocompleteForInvestigator(indexTripinvestigator);
-        })
+        });
+
+        $('input[id$=code]').each(function(){
+            const indexTripstation = $(this).attr('id').replace('trip_tripstations_', '').replace('_code','');
+            addAutocompleteForStation(indexTripstation);
+        });
 
 
     }
