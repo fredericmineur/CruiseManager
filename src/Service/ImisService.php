@@ -49,5 +49,26 @@ class ImisService
         return $response->getContent();
     }
 
+//    public function getPersonsForFull($index)//: Array
+//    {
+//
+//
+//        $response = $this->httpClient->request('GET',
+//            'http://www.vliz.be/imis?module=person&show=json',
+//            ['query' => ['start' => $index]]);
+////        dump($response);
+//
+//
+//        return $response->getContent();
+//    }
+
+    public function getProjectByImisId($imisId)
+    {
+        $response = $this->httpClient->request('GET',
+            'http://www.vliz.be/imis?module=project&show=json',
+            ['query' => ['proid'=>$imisId]]);
+        return $response->getContent();
+    }
+
 
 }

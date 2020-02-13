@@ -3,7 +3,30 @@
 {% block body %}
 
 {#   {{dump(app.flashes)}}#}
-    <div class="container">
+
+    {% if  mode == 'edit'  %}
+    <div class="container my-2">
+        <div class="card">
+            <div class="card-header">
+                Campaign (IMIS database: {{ imisJson["projectrec"]["ProID"] }})
+            </div>
+            <div class="card-body">
+                {% if imisJson %}
+{#                    {{ dump(imisJson["projectrec"]) }}#}
+                    <p>Standard title: "{{ imisJson["projectrec"]["StandardTitle"] }}"</p>
+                    <p>Original title: "{{ imisJson["projectrec"]["OrigTitle"] }}"</p>
+                    <p>Acronym: "{{ imisJson["projectrec"]["Acronym"] }}"</p>
+
+                {% else %} Campaign not in IMIS {% endif %}
+
+            </div>
+        </div>
+
+
+    </div>
+    {% endif %}
+
+    <div class="container my-2">
         <div class="card">
             <div class="card-header">
                 {% if mode == 'edit' %} Edit campaign
@@ -19,7 +42,7 @@
                 </div>
                 <div class="col-4">
                     {{ form_row(formCampaign.imisprojectnr) }}
-                    <p>IMIS project number: <span class="imis-display"></span></p>
+
                 </div>
             </div>
 
@@ -51,10 +74,13 @@
     <script>
         // function addAutocompleteForCampaign(){
 
+        $(document).ready(function () {
+
+            /////AUTO COMPLETE FIELD TITLE
             var optionsTitle = {
                 url: function(phrase){
-                    return Routing.generate("searchImisProjects", {searchParameter: phrase});
-
+                    // return Routing.generate("searchImisProjects", {searchParameter: phrase});
+                    return Routing.generate("searchImisProjects") + "/" + phrase;
                 },
                 getValue: function (element) {
                     return element.StandardTitle;
@@ -69,7 +95,6 @@
 
                 preparePostData: function(data) {
                     data.phrase = $('#campaign_campaign').val();
-                    $('span.imis-display').text('');
                     return data;
                 },
                 list: {
@@ -77,16 +102,51 @@
                     onChooseEvent: function () {
                         var selectedItemValue = $('#campaign_campaign').getSelectedItemData().ProID;
                         $('#campaign_imisprojectnr').val(selectedItemValue);
-                        $('span.imis-display').text(selectedItemValue);
                     }
                 },
 
                 requestDelay: 400
             };
 
+            ////AUTOCOMPLETE FOR IMIS
+            var optionsImis = {
+                url: function(phrase) {
+                    // console.log( Routing.generate("findImisProject") + "/" + phrase)
+                    return Routing.generate("findImisProject") + "/" + phrase;
+                },
+                getValue: function (element) {
+                    console.log(element.projectrec);
+                    return element.projectrec.ProID;
+                },
+                // listLocation: "projectrec",
+                // getValue: "ProID",
+
+                ajaxSettings: {
+                    dataType: "json",
+                    method: "POST",
+                    data: {
+                        dataType: "json"
+                    }
+                },
+                preparePostData: function(data) {
+                    data.phrase = $('#campaign_imisprojectnr').val();
+                    return data;
+                },
+                list: {
+                    onChooseEvent : function () {
+                        var selectedItemValue = $('#campaign_imisprojectnr').getSelectedItemData().projectrec.StandardTitle;
+                        $('#campaign_campaign').val(selectedItemValue);
+                    }
+                },
+                requestDelay: 400
+            };
 
 
             $("#campaign_campaign").easyAutocomplete(optionsTitle);
+            $("#campaign_imisprojectnr").easyAutocomplete(optionsImis);
+        })
+
+
 
 
 

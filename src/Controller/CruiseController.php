@@ -68,7 +68,7 @@ class CruiseController extends AbstractController
 
 //Postman on localhost: 7.04s, 42.36s, 18.56s, 6.98s, 32.06s
     /**
-     * @Route("/api/getcruises", name="get_cruises")
+     * @Route("/api/getcruises", name="get_cruises", options={"expose"=true})
      * @return JsonResponse
      */
 
@@ -213,7 +213,7 @@ class CruiseController extends AbstractController
 
 
     /**
-     * @Route("/cruises/{cruiseId}/edit", name="cruise_edit")
+     * @Route("/cruises/{cruiseId}/edit", name="cruise_edit", options={"expose"=true})
      */
     public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId)
     {

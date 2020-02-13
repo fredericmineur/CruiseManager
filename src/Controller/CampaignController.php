@@ -13,6 +13,7 @@ use App\Form\CruiseTrialType;
 use App\Form\CruiseType;
 use App\Form\TripType;
 use App\Repository\CampaignRepository;
+use App\Service\ImisService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -122,12 +123,19 @@ class CampaignController extends AbstractController
     /**
      * @Route("/campaign/edit/{campaignId}", name="campaign_edit",options={"expose"=true})
      */
-    public function editCampaign($campaignId, Request $request, EntityManagerInterface $manager)
+    public function editCampaign($campaignId, Request $request, EntityManagerInterface $manager, ImisService $imisService)
     {
         $repoCampaigns = $this->getDoctrine()->getRepository(Campaign::class);
         $campaign = $repoCampaigns->findOneBy(['campaignid'=> $campaignId]);
         $form = $this->createForm(CampaignType::class, $campaign);
         $form->handleRequest($request);
+        $imisJson = null;
+        if ($campaign->getImisprojectnr()){
+            $imisJson = $imisService->getProjectByImisId($campaign->getImisprojectnr());
+        }
+
+
+
         if($form->isSubmitted() && $form->isValid()){
             $manager->persist($campaign);
             $manager->flush();
@@ -142,7 +150,11 @@ class CampaignController extends AbstractController
 
         return $this->render('forms/form_campaign.html.twig', [
             'formCampaign' => $form->createView(),
-            'mode' => 'edit'
+            'mode' => 'edit',
+//            'imisJson'=> gettype(json_decode($imisJson, true)),
+//            'imisJson'=> gettype($imisJson)
+            'imisJson'=> json_decode($imisJson, true)
+
         ]);
     }
 

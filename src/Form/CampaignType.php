@@ -48,19 +48,19 @@ class CampaignType extends AbstractType
                     ]
                 ]
             )
-//            ->add('imisprojectnr',
-//                TextType::class, [
-//                    'label' => 'IMIS project number',
-//                    'required' => false,
-//                    'attr' => [
-//                        'placeholder' => 'IMIS project number'
-//                    ]
-//                ]
-//            )
-
             ->add('imisprojectnr',
-                HiddenType::class
+                TextType::class, [
+                    'label' => 'IMIS project number',
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'IMIS project number'
+                    ]
+                ]
             )
+
+//            ->add('imisprojectnr',
+//                HiddenType::class
+//            )
 
 
 //            ->add('campaignid',

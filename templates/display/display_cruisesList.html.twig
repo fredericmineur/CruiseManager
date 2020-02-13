@@ -10,12 +10,20 @@
 
 
 {% block body %}
+    <div class="container my-2">
+        <div class="row">
+            <div class="col-4">
+                <h3>List of cruises</h3>
+            </div>
+            <div class="col-8">
+                <a href="{{ path('cruise_create') }}" class="btn btn-success">Add a new cruise</a>
+            </div>
+        </div>
+    </div>
 
 
-    <div class="container">
+    <div class="container my-2">
 
-        <h1>Cruises</h1>
-{#    <div class="table-responsive">#}
     <table class="table-hover table-bordered display" id="myDataTable" width="100%">
         <thead>
         {% set headerRow = "
@@ -59,7 +67,6 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-
             //allow sorting date
             // $.fn.dataTable.moment("D/M/YYYY");
 
@@ -72,10 +79,17 @@
             });
 
             //Create the table
+            //https://stackoverflow.com/questions/39407881/pagination-at-top-and-bottom-with-datatables
             var table =
                 $('#myDataTable').DataTable( {
+                    "pageLength": 50,
+                    dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
                     "ajax": {
-                        "url": "api/getcruises",
+                        // "url": "api/getcruises",
+                        "url": Routing.generate('get_cruises'),
                         "dataSrc" : "data"
                     },
                     "order": [[ 0, "desc" ]],
@@ -110,9 +124,20 @@
                         },
                         {
                             "targets": 0,
+                            // "render": function (data, type, row) {
+                            //     cruiseOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId: row.CruiseID}) + '" title="Open Cruise">'
+                            //                  + data + '</a>';
+                            //     return cruiseOutput;
+                            // }
                             "render": function (data, type, row) {
-                                cruiseOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId: row.CruiseID}) + '" title="Open Cruise">'
-                                             + data + '</a>';
+                                cruiseOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId: row.CruiseID}) + '" title="Info">'
+                                    +'<span style="font-size: 20px; color: #576263"><i class="fa fa-info-circle" ></i></span></a>&nbsp' + data
+                                    +'&nbsp <a href="'
+                                    + Routing.generate('cruise_edit', {cruiseId: row.CruiseID})
+                                    + '" title="Edit">'
+                                    +'<span style="font-size: 20px; color: #576263"><i class = "fa fa-edit"></i></span></a>';
+
+                                    // + '<a href="' + Routing.generate('')
                                 return cruiseOutput;
                             }
                         },
