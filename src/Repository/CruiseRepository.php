@@ -33,6 +33,7 @@ class CruiseRepository extends ServiceEntityRepository
           SELECT Cruise.CruiseID
           , MAX([Plancode]) as plancode
           , MAX(Investigators.Firstname + \'  \'  + Investigators.Surname) as PrincipalInvestigator
+          ,MAX(Investigators.InvestigatorID) as PrincipalInvestigatorID
           , SUM(
           CASE
             WHEN (Trip.TripID IS NULL) Then 0

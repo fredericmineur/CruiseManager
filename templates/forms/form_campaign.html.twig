@@ -108,42 +108,44 @@
                 requestDelay: 400
             };
 
-            ////AUTOCOMPLETE FOR IMIS
-            var optionsImis = {
-                url: function(phrase) {
-                    // console.log( Routing.generate("findImisProject") + "/" + phrase)
-                    return Routing.generate("findImisProject") + "/" + phrase;
-                },
-                getValue: function (element) {
-                    console.log(element.projectrec);
-                    return element.projectrec.ProID;
-                },
-                // listLocation: "projectrec",
-                // getValue: "ProID",
+            //AUTOCOMPLETE FOR IMIS (BY ID)
+            // var optionsImis = {
+            //     url: function(phrase) {
+            //         console.log( Routing.generate("findImisProject", {imisId: phrase})) ;
+            //         return Routing.generate("findImisProject", {imisId: phrase}) ;
+            //     },
+            //     getValue: function (element) {
+            //         console.log(element.projectrec);
+            //         return element.projectrec.ProID;
+            //     },
+            //     // listLocation: "projectrec",
+            //     // getValue: "ProID",
+            //
+            //     ajaxSettings: {
+            //         dataType: "json",
+            //         method: "POST",
+            //         data: {
+            //             dataType: "json"
+            //         }
+            //     },
+            //     preparePostData: function(data) {
+            //         data.phrase = $('#campaign_imisprojectnr').val();
+            //         return data;
+            //     },
+            //     list: {
+            //         onChooseEvent : function () {
+            //             var selectedItemValue = $('#campaign_imisprojectnr').getSelectedItemData().projectrec.StandardTitle;
+            //             $('#campaign_campaign').val(selectedItemValue);
+            //         }
+            //     },
+            //     requestDelay: 400
+            // };
 
-                ajaxSettings: {
-                    dataType: "json",
-                    method: "POST",
-                    data: {
-                        dataType: "json"
-                    }
-                },
-                preparePostData: function(data) {
-                    data.phrase = $('#campaign_imisprojectnr').val();
-                    return data;
-                },
-                list: {
-                    onChooseEvent : function () {
-                        var selectedItemValue = $('#campaign_imisprojectnr').getSelectedItemData().projectrec.StandardTitle;
-                        $('#campaign_campaign').val(selectedItemValue);
-                    }
-                },
-                requestDelay: 400
-            };
+
 
 
             $("#campaign_campaign").easyAutocomplete(optionsTitle);
-            $("#campaign_imisprojectnr").easyAutocomplete(optionsImis);
+            // $("#campaign_imisprojectnr").easyAutocomplete(optionsImis);
         })
 
 

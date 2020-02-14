@@ -5,6 +5,7 @@ namespace App\Entity;
 use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Stations
@@ -20,6 +21,7 @@ class Stations
      * @ORM\Column(name="NR", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("read:all_stations")
      */
     private $nr;
 
@@ -27,6 +29,7 @@ class Stations
      * @var float|null
      *
      * @ORM\Column(name="Latitude", type="float", precision=53, scale=0, nullable=true)
+     * @Groups("read:all_stations")
      */
     private $latitude;
 
@@ -34,6 +37,7 @@ class Stations
      * @var float|null
      *
      * @ORM\Column(name="Longitude", type="float", precision=53, scale=0, nullable=true)
+     * @Groups("read:all_stations")
      */
     private $longitude;
 
@@ -55,6 +59,7 @@ class Stations
      * @var string|null
      *
      * @ORM\Column(name="Code", type="string", length=10, nullable=true, options={"fixed"=true})
+     * @Groups("read:all_stations")
      */
     private $code;
 
@@ -62,6 +67,7 @@ class Stations
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="stationnr")
+     * @Groups("read:all_stations")
      */
     private $tripstations;
 

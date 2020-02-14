@@ -114,10 +114,8 @@
             //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
             addTripsAndInvestigators.init();
             addCampaigns.init();
+            $('#cruise_principalinvestigator').select2();
 
-            //$('.js-example-basic-single').select2();
-            {% if mode=='edit' %}
-            {% endif %}
         });
     </script>
 

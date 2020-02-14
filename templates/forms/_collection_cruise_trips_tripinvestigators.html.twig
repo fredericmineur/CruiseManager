@@ -60,7 +60,7 @@
 
 {% block _cruise_trips_entry_tripstations_widget %}
 
-    <div class="card" style="background-color: #f3a29a">
+    <div class="card bg-secondary" >
         <div class="card-header">
             <div class="row">
                 <div class="col-3">STATIONS (<span id="{{ id }}" class="counter">0</span>)</div>
@@ -79,7 +79,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripstation-to{{ id }}" class="btn btn-success add-tripstation" data-id="{{ id }}">Add station</button>
+                <button type="button" id="add-tripstation-to{{ id }}" class="btn btn-light ml-4 mb-3 add-tripstation" data-id="{{ id }}">Add station</button>
             </div>
         </div>
 
@@ -126,7 +126,7 @@
 {#    {% dump(form.children) %}#}
 
     {#    {% if form.children %}#}
-    <div class="card" style="background-color: #95c9ec">
+    <div class="card bg-light" >
         <div class="card-header">
             <div class="row">
 
@@ -148,7 +148,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-success add-tripinvestigator" data-id="{{ id }}">Add investigator</button>
+                <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-secondary ml-4 mb-3 add-tripinvestigator" data-id="{{ id }}">Add investigator</button>
             </div>
         </div>
 

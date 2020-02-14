@@ -12,6 +12,7 @@ use App\Service\ImisService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ImisController extends AbstractController
 {
@@ -64,15 +65,21 @@ class ImisController extends AbstractController
 //    }
 
     /**
-     * @Route("imisprojectById/{imisId}", name="findImisProject", options={"expose"=true})
+     * @Route("/imisprojectById/{imisId}", name="findImisProject", options={"expose"=true})
      */
-    public static function findImisProject (ImisService $imisService, $imisId)
+    public static function findImisProject (SerializerInterface $serializer, ImisService $imisService, $imisId)
 
     {
 
+        //FOR USING IN AUTOCOMPLETE (form campaign)....find a way to wrap the JSON in square brackets?
+
         $data = $imisService->getProjectByImisId($imisId);
-        $response = JsonResponse::fromJsonString($data);
+
+        $response = JsonResponse::fromJsonString($data );
         return $response;
+
+
+
     }
 
 }

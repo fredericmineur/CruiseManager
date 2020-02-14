@@ -5,6 +5,7 @@ namespace App\Entity;
 use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Tripstations
@@ -20,6 +21,7 @@ class Tripstations
      * @ORM\Column(name="ID", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups("read:all_stations")
      */
     private $id;
 
@@ -131,6 +133,7 @@ class Tripstations
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNr", referencedColumnName="TripID")
      * })
+     * @Groups("read:all_stations")
      */
     private $tripnr;
 
@@ -141,26 +144,26 @@ class Tripstations
      */
     private $tripactions;
 
-    /**
-     * @var string
-     */
-    private $codeLatLong;
-
-    /**
-     * @return string
-     */
-    public function getCodeLatLong(): string
-    {
-        return $this->codeLatLong;
-    }
-
-    /**
-     * @param string $codeLatLong
-     */
-    public function setCodeLatLong(string $codeLatLong): void
-    {
-        $this->codeLatLong = $codeLatLong;
-    }
+//    /**
+//     * @var string
+//     */
+//    private $codeLatLong;
+//
+//    /**
+//     * @return string
+//     */
+//    public function getCodeLatLong(): string
+//    {
+//        return $this->codeLatLong;
+//    }
+//
+//    /**
+//     * @param string $codeLatLong
+//     */
+//    public function setCodeLatLong(string $codeLatLong): void
+//    {
+//        $this->codeLatLong = $codeLatLong;
+//    }
 
     public function __construct()
     {

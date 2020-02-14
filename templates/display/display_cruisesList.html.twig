@@ -103,7 +103,8 @@
                         { "data": "enddate" },
                         { "data": "PrincipalInvestigator" },
                         { "data": "numberOfTrips" },
-                        { "data": "CruiseID" }
+                        { "data": "CruiseID" },
+                        { "data" : "PrincipalInvestigatorID"}
                     ],
                     "columnDefs": [
                         {
@@ -114,9 +115,10 @@
                                 if (Array.isArray(data) && data.length) {
                                     // console.log(data);
                                     for (var i = 0; i < data.length; i++) {
-                                        campaignOutput += '<a href="' + Routing.generate(campaignRouteName, {campaignId: data[i]['campaignid']}) + '" title="Open Campaign">' +
-                                            '<i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;'
-                                            + data[i]['campaign'] + '</a><br/>';
+                                        campaignOutput +=  '<a href="' + Routing.generate(campaignRouteName, {campaignId: data[i]['campaignid']}) + '" title="Open Campaign">'
+                                            // + '<span style="font-size: 20px;"><i class="fa fa-info-circle" aria-hidden="true"></i></span>&nbsp;'
+                                           + '&#8226&nbsp' + data[i]['campaign']
+                                            +  '</a><br/>';
                                     }
                                     return campaignOutput ;
                                 }
@@ -124,24 +126,30 @@
                         },
                         {
                             "targets": 0,
-                            // "render": function (data, type, row) {
-                            //     cruiseOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId: row.CruiseID}) + '" title="Open Cruise">'
-                            //                  + data + '</a>';
-                            //     return cruiseOutput;
-                            // }
                             "render": function (data, type, row) {
-                                cruiseOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId: row.CruiseID}) + '" title="Info">'
-                                    +'<span style="font-size: 20px; color: #576263"><i class="fa fa-info-circle" ></i></span></a>&nbsp' + data
+                                cruiseOutput = data + '&nbsp<a href="' + Routing.generate('cruise_details', {cruiseId: row.CruiseID}) + '" title="Info">'
+                                    +'<span style="font-size: 20px;"><i class="fa fa-info-circle" ></i></span></a>&nbsp'
                                     +'&nbsp <a href="'
                                     + Routing.generate('cruise_edit', {cruiseId: row.CruiseID})
                                     + '" title="Edit">'
-                                    +'<span style="font-size: 20px; color: #576263"><i class = "fa fa-edit"></i></span></a>';
+                                    +'<span style="font-size: 23px; "><i class = "fa fa-edit"></i></span></a>';
 
                                     // + '<a href="' + Routing.generate('')
                                 return cruiseOutput;
                             }
                         },
-
+                        {
+                            "targets": 4,
+                            "render": function (data, type, row) {
+                                investigatorOutput = '<a href="' + Routing.generate('investigator_details', {investigatorId: row.PrincipalInvestigatorID})
+                                    + '">' + data + '</a>';
+                                return investigatorOutput;
+                            }
+                        },
+                        {
+                            "targets": -2,
+                            "visible": false
+                        },
                         {
                             "targets": -1,
                            "visible": false

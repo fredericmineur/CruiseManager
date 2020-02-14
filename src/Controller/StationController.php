@@ -27,6 +27,55 @@ class StationController extends AbstractController
         return new JsonResponse($jsonStationCodes, 200, [], true);
     }
 
+
+    /**
+     * @Route("/api/getStationsGeoJSON", name="get_stations_GeoJSON", options={"expose"=true})
+     */
+    public function getAllStationsGeoJson (SerializerInterface $serializer, StationRepository $stationRepository){
+
+        //https://medium.com/@sumit.arora/what-is-geojson-geojson-basics-visualize-geojson-open-geojson-using-qgis-open-geojson-3432039e336d
+        //https://stackoverflow.com/questions/31885031/formatting-json-to-geojson-via-php
+
+        $stations  = $stationRepository->findAll();
+        $features = array();
+
+        foreach ($stations as $key => $station){
+            $features[] = array(
+                'type' => 'Feature',
+                'properties' => array (
+                    'stationId' => $station->getNr(),
+                    'code' => $station->getCode()
+                ),
+                'geometry' => array(
+                    'type' => 'Point',
+                    'coordinates' => array(
+                        $station->getLatitude(),
+                        $station->getLongitude()
+                    )
+                )
+            );
+        }
+        $newArrayStations = array('type' => 'FeatureCollection', 'features' => $features);
+        $jsonStations = $serializer->serialize($newArrayStations, 'json');
+        return new JsonResponse($jsonStations, 200, [], true);
+
+    }
+
+    /**
+     * @Route("api/getAllStations", name="api_get_all_stations", options={"expose"=true})
+     */
+    public function getAllStations (SerializerInterface $serializer, StationRepository $stationRepository)
+    {
+        $stations = $stationRepository->findAll();
+//        foreach ($stations as $station){
+////            dd($station->getTripstations());
+//        }
+//        dd($stations);
+        $jsonStations = $serializer->serialize($stations, 'json', ['groups'=>'read:all_stations']);
+        return new JsonResponse($jsonStations, 200, [], true);
+    }
+
+
     /**
      * @Route("/stations/new/{lat}-{long}-{code}", name="create_station", defaults={"lat"=null, "long"=null, "code"=null}, options={"expose"=true} )
      */
@@ -75,6 +124,16 @@ class StationController extends AbstractController
             'station' => $station
         ]);
     }
+
+    /**
+     * @Route("/stations/displayAll", name="display_all_stations")
+     */
+    public function displayAllStations (StationRepository $stationRepository)
+    {
+        return $this->render('display/display_stations.html.twig');
+    }
+
+
 
 
 }

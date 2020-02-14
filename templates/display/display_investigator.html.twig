@@ -33,7 +33,7 @@
         <div><h3>Cruises as principal investigator</h3></div>
         <div class="row">
             {% for cruise in cruisesPI %}
-                <div class="card" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
+                <div class="card border-dark" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
                     <div class="card-header">
                         <p>Cruise {{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></p>
                             <p>Campaign(s): <br>
@@ -67,7 +67,7 @@
         </div>
             <div class="row">
                 {% for cruise in cruisesAsInvestigator %}
-                    <div class="card" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
+                    <div class="card border-dark" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
                         <div class="card-header">
                             <p>Cruise {{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></p>
                             <p>Campaign(s): <br>

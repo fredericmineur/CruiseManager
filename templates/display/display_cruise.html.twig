@@ -4,7 +4,7 @@
 
     <div class="container my-4">
 
-        <div class="card">
+        <div class="card border-dark">
             <div class="card-header">
                 <div style="float: left; display: inline-block">
                     <h3>Cruise <strong>{{ cruise.plancode }}</strong><span
@@ -66,7 +66,7 @@
         {% for trip in cruise.trips %}
             <div class="row">
                 <div class="col-12 my-1">
-                    <div class="card">
+                    <div class="card border-dark">
                         <div style="display:flex;flex:1 1 auto;">
                             <div class="card-header">
                                 <p>Start: {{ trip.startdate|date('Y-m-d') }}</p>
@@ -75,13 +75,16 @@
                             </div>
                             <div class="card-body">
                                 <h5>Trip investigators</h5>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th>First name</th>
-                                        <th>Surname</th>
-                                        <th>ID</th>
-                                    </tr>
+                                <table class="table">
 
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>First name</th>
+                                            <th>Surname</th>
+                                            <th>ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                     {% for tripinvestigator in trip.tripinvestigators %}
                                         <tr>
                                             <td>{{ tripinvestigator.firstname }}</td>
@@ -89,25 +92,34 @@
                                             <td>{% if tripinvestigator.investigatornr is not null %}yes{% endif %}</td>
                                         </tr>
                                     {% endfor %}
+                                    </tbody>
+
+
 
                                 </table>
                             </div><div class="card-body">
                                 <h5>Trip Stations</h5>
-                                <table class="table table-bordered">
-                                    <tr>
-                                        <th>Code</th>
-                                        <th>Latitude</th>
-                                        <th>Longitude</th>
-                                        <th>ID</th>
-                                    </tr>
+                                <table class="table">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Code</th>
+                                            <th>Latitude</th>
+                                            <th>Longitude</th>
+                                            <th>ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                     {% for tripstation in trip.tripstations %}
-                                    <tr>
-                                        <td>{{tripstation.code}}</td>
-                                        <td>{{tripstation.deflatitude | number_format(3)}}</td>
-                                        <td>{{tripstation.deflongitude | number_format(3)}}</td>
-                                        <td>{% if tripstation.stationnr is not null %}yes{% endif %}</td>
-                                    </tr>
+                                        <tr>
+                                            <td>{{tripstation.code}}</td>
+                                            <td>{{tripstation.deflatitude | number_format(3)}}</td>
+                                            <td>{{tripstation.deflongitude | number_format(3)}}</td>
+                                            <td>{% if tripstation.stationnr is not null %}yes{% endif %}</td>
+                                        </tr>
                                     {% endfor %}
+                                    </tbody>
+
+
 
                                 </table>
                             </div>
