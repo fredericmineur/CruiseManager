@@ -11,9 +11,20 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container-fluid">
+    <div class="container my-2">
         <div class="row">
             <div class="col-4">
+                <h3>Stations</h3>
+            </div>
+            <div class="col-8">
+                <a href="{{ path('create_station') }}" class="btn btn-success">Add a new station</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container my-2">
+        <div class="row">
+            <div class="col-8">
                 <table class="table-hover table-bordered display" id="myDataTable" width="100%">
                     <thead>
                     {% set headerRow = "
@@ -30,8 +41,8 @@
 
                 </table>
             </div>
-            <div class="col-8">
-                <div id="map-stations" style=" width: 700px; height: 500px;"></div>
+            <div class="col-4">
+                <div id="map-stations" style=" width: 300px; height: 500px;"></div>
             </div>
         </div>
     </div>
@@ -55,9 +66,66 @@
         $(document).ready(function () {
             /////DATATABLES
 
-            $('#myDataTable').DataTable({
+            //Add another header below the first
+            $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
 
-            })
+            //Transform the second header row to have the search input fields
+            $('#myDataTable thead tr:odd th').each( function () {
+                $(this).html('<input type="text" placeholder="Search" />');
+            });
+
+            $('#myDataTable').DataTable({
+                "pageLength":100,
+                dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+
+                "ajax": {
+                    "url": "/api/getAllStations",
+                    dataSrc:''
+
+                },
+                "columns": [
+                    {"data" : "code"},
+                    {"data" : "latitude"},
+                    {"data" : "longitude"},
+                    {"data" : "nr"},
+                    {"data" : "tripstations"}
+                ],
+                "columnDefs" :[
+                    {
+                        "targets" : 0,
+                        "render" : function (data, type, row) {
+                            var stationOutput = '<a href="' + Routing.generate ('display_station', {stationId: row.nr} ) + '">' + data + '</a>';
+                            return stationOutput;
+                        }
+                    },
+                    {
+                        "targets" : -1,
+                        "visible" : false,
+                    },
+                    {
+                        "targets" : -2,
+                        "visible" : false
+                    }
+                ]
+            });
+
+            //Hide the generic search field
+            $('#myDataTable_filter').hide();
+
+            // Apply the search on every column
+            table.columns().every( function () {
+                var that = this;
+
+                $( 'input', this.header() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
 
 
 

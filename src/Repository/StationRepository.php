@@ -45,6 +45,10 @@ class StationRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
+    public function findAllStationsFourDigits () {
+
+    }
+
 
 
     // /**

@@ -4,15 +4,18 @@
 
     <div class="container">
 
-            <div class="card">
+            <div class="card border-dark my-2">
                 <div class="card-header">
-                    <h4>Investigator</h4> <a href="{{ path('investigators_index') }}" class="btn btn-dark">Investigators list</a>
+                    <h4 style="display: inline-block" class="mr-5">Investigator</h4> <a href="{{ path('investigators_index') }}" class="btn btn-dark">Investigators list</a>
 
 
                 </div>
                 <div class="card-body">
                     <p>{{ investigator.surname }}, {{ investigator.firstname }}</p>
-                    <p>IMIS number: {{ investigator.imisnr }}</p>
+                    <p>IMIS:&nbsp;
+                        {% if investigator.imisnr is not null %}
+                        <a href="https://www.vliz.be/en/imis?module=person&persid={{ investigator.imisnr }}" target="_blank" title="IMIS info new tab">{{ investigator.imisnr }}
+                            <i class="fa fa-link" ></i></a></p> {% else %} none {% endif %}
                     <p>Passenger type: {{ investigator.passengertype }}</p>
                 </div>
                 <div class="card-footer">
@@ -44,7 +47,7 @@
                     <div class="card-body">
                         <p>Trips:<br>
                             {% for trip in cruise.trips %}
-                                &nbsp;&nbsp;&nbsp;&nbsp;{{ trip.startdate |date('d/m/Y') }}--{{ trip.enddate |date('d/m/Y') }}<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;{{ trip.startdate |date('Y-m-d') }} to {{ trip.enddate |date('Y-m-d') }}<br>
                             {% endfor %}
                         </p>
                     </div>

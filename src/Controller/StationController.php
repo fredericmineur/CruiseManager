@@ -115,7 +115,7 @@ class StationController extends AbstractController
 
 
     /**
-     * @Route("/stations/display/{stationId}", name="display_station")
+     * @Route("/stations/display/{stationId}", name="display_station" , options={"expose"=true})
      */
     public function displayStation (StationRepository $stationRepository, $stationId)
     {

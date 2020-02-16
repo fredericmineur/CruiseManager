@@ -141,8 +141,13 @@
                         {
                             "targets": 4,
                             "render": function (data, type, row) {
-                                investigatorOutput = '<a href="' + Routing.generate('investigator_details', {investigatorId: row.PrincipalInvestigatorID})
-                                    + '">' + data + '</a>';
+                                var investigatorOutput;
+                                if(data==null){
+                                    investigatorOutput ='';
+                                } else {
+                                    investigatorOutput = '<a href="' + Routing.generate('investigator_details', {investigatorId: row.PrincipalInvestigatorID})
+                                        + '">' + data + '</a>';
+                                }
                                 return investigatorOutput;
                             }
                         },
