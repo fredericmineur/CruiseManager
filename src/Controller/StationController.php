@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Cruise;
 use App\Entity\Stations;
+use App\Entity\Trip;
+use App\Entity\Tripstations;
 use App\Form\StationType;
 use App\Repository\StationRepository;
 
@@ -79,7 +82,7 @@ class StationController extends AbstractController
     /**
      * @Route("/stations/new/{lat}-{long}-{code}", name="create_station", defaults={"lat"=null, "long"=null, "code"=null}, options={"expose"=true} )
      */
-    public function createStation(Request $request, EntityManagerInterface $manager, $lat, $long, $code)
+    public function createStation(Request $request, EntityManagerInterface $manager, $lat, $long, $code, $stationId)
     {
         $station = new Stations();
         if($lat && $long && $code) {
@@ -102,6 +105,29 @@ class StationController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/stations/edit/{stationId}", name="edit_station")
+     */
+    public function editStation(Request $request, EntityManagerInterface $manager, $stationId){
+        $station = $this->getDoctrine()->getRepository(Stations::class)
+            ->findOneBy(['nr' => $stationId]);
+        $form = $this->createForm(StationType::class, $station);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($station);
+            $manager->flush();
+
+            return $this->redirectToRoute('display_station' , [
+                'station' => $station
+            ]);
+        }
+        return $this->render('forms/form_station.html.twig', [
+            'formStation' => $form->createView(),
+            'mode' => 'edit'
+        ]);
+
+    }
+
 //    /**
 //     * @Route("/stations/createWithParams/{lat}-{long}-{code}", name="create_station_params")
 //     */
@@ -117,11 +143,17 @@ class StationController extends AbstractController
     /**
      * @Route("/stations/display/{stationId}", name="display_station" , options={"expose"=true})
      */
-    public function displayStation (StationRepository $stationRepository, $stationId)
+    public function displayStation (StationRepository $stationRepository, EntityManagerInterface $manager, $stationId)
     {
         $station = $stationRepository->findOneBy(['nr' => $stationId]);
+        $trips = $manager->getRepository(Trip::class)->stationTrips($stationId);
+        $cruises = $manager->getRepository(Cruise::class)->stationCruise($stationId);
+//        dd($cruises);
+
         return $this->render('display/display_station.html.twig',[
-            'station' => $station
+            'station' => $station,
+            'trips' => $trips,
+            'cruises' => $cruises
         ]);
     }
 
@@ -131,6 +163,26 @@ class StationController extends AbstractController
     public function displayAllStations (StationRepository $stationRepository)
     {
         return $this->render('display/display_stations.html.twig');
+    }
+
+    /**
+     * @Route("/stations/remove_station_warning/{stationId}", name="remove_station_warning")
+     */
+    public function warningRemoveStation (EntityManagerInterface $manager, $stationId){
+        $station = $manager->getRepository(Stations::class)->findOneBy(['nr' => $stationId]);
+        return $this->render('remove/remove_station.html.twig', [
+            'station' => $station
+        ]);
+    }
+
+    /**
+     * @Route("/stations/remove_station/{stationId}", name="remove_station")
+     */
+    public function removeStation(EntityManagerInterface $manager, $stationId) {
+        $station = $manager->getRepository(Stations::class)
+            ->findOneBy(['nr' => $stationId]);
+        $manager->remove($station);
+        return $this->redirectToRoute('display_all_stations');
     }
 
 

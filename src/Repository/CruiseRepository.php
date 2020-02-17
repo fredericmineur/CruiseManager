@@ -109,4 +109,16 @@ class CruiseRepository extends ServiceEntityRepository
 
     }
 
+
+    public function stationCruise($stationId){
+        return $this->createQueryBuilder('cruise')
+            ->join('cruise.trips', 'cruise_trips')
+            ->join('cruise_trips.tripstations', 'trip_tripstations')
+            ->andWhere('trip_tripstations.stationnr = :stationid')
+            ->setParameter('stationid', $stationId)
+            ->orderBy('cruise_trips.startdate', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
 }

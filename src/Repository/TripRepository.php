@@ -152,6 +152,17 @@ SELECT Trip.TripID,
     }
 
 
+    public function stationTrips ($stationId) {
+        return $this->createQueryBuilder('trip')
+            ->join('trip.tripstations', 'trip_tripstations')
+            ->andWhere('trip_tripstations.stationnr = :stationid')
+            ->setParameter('stationid', $stationId)
+            ->orderBy('trip.startdate', 'ASC')
+            ->getQuery()
+            ->execute();
+    }
+
+
 
 
     // /**

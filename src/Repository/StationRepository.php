@@ -30,8 +30,7 @@ class StationRepository extends ServiceEntityRepository
     }
 
     public function listStationCodesWithConcat($value)
-    {
-        $conn = $this->getEntityManager()->getConnection();
+    {$conn = $this->getEntityManager()->getConnection();
         $sql = '
             SELECT 
             TRIM(s.code) as stationCode, s.NR as id, s.latitude as Lat, s.Longitude as Long,
@@ -49,6 +48,10 @@ class StationRepository extends ServiceEntityRepository
 
     }
 
+
+    public function findTripforStation () {
+        return $this->createQueryBuilder();
+    }
 
 
     // /**

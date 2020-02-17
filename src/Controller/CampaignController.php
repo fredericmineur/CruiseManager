@@ -185,7 +185,7 @@ class CampaignController extends AbstractController
     }
 
     /**
-     * @Route("/campaign/remove_campaign/{campaignId}", name="remove_campaigm")
+     * @Route("/campaign/remove_campaign/{campaignId}", name="remove_campaign")
      */
     public function removeCampaign(EntityManagerInterface $manager, $campaignId ){
         $campaign = $manager->getRepository(Campaign::class)
