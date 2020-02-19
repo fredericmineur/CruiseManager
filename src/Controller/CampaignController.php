@@ -132,7 +132,9 @@ class CampaignController extends AbstractController
         $imisJson = null;
         if ($campaign->getImisprojectnr()){
             $imisJson = $imisService->getProjectByImisId($campaign->getImisprojectnr());
+            $imisJson = json_decode($imisJson, true);
         }
+
 
 
 
@@ -153,7 +155,7 @@ class CampaignController extends AbstractController
             'mode' => 'edit',
 //            'imisJson'=> gettype(json_decode($imisJson, true)),
 //            'imisJson'=> gettype($imisJson)
-            'imisJson'=> json_decode($imisJson, true)
+            'imisJson'=> $imisJson
 
         ]);
     }

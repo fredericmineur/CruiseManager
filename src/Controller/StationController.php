@@ -47,7 +47,9 @@ class StationController extends AbstractController
                 'type' => 'Feature',
                 'properties' => array (
                     'stationId' => $station->getNr(),
-                    'code' => $station->getCode()
+                    'code' => $station->getCode(),
+                    'latitude_rounded' => round($station->getLatitude(), 4),
+                    'longitude_rounded' => round($station->getLongitude(), 4)
                 ),
                 'geometry' => array(
                     'type' => 'Point',
@@ -95,7 +97,7 @@ class StationController extends AbstractController
     /**
      * @Route("/stations/new/{lat}-{long}-{code}", name="create_station", defaults={"lat"=null, "long"=null, "code"=null}, options={"expose"=true} )
      */
-    public function createStation(Request $request, EntityManagerInterface $manager, $lat, $long, $code, $stationId)
+    public function createStation(Request $request, EntityManagerInterface $manager, $lat, $long, $code)
     {
         $station = new Stations();
         if($lat && $long && $code) {
@@ -108,7 +110,7 @@ class StationController extends AbstractController
             $manager->flush();
 
             return $this->redirectToRoute('display_station' , [
-                'station' => $station
+                'stationId' => $station->getNr()
             ]);
         }
 

@@ -53,6 +53,7 @@ class TripinvestigatorsType extends AbstractType
                 [
                     'label'=>'Investigator',
                     'invalid_message' => 'That is not a valid investigator',
+                    'required' => false,
                     'attr' => [
                         'placeholder' => 'Type and chose...'
                     ]

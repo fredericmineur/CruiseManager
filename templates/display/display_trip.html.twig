@@ -28,18 +28,20 @@
                 </p>
                 <p>Start and end points: {{ trip.startpoint }}-{{ trip.endpoint }}</p>
                 <p>Ship: {{ trip.ship }}</p>
-                <p>Stations:
-                    {{ dump(trip.stations) }}
-                    {% if trip.stations is empty %} None {% else %}
-{#                {% for tripstation in trip.tripstations %}"{{ tripstation.stationnr.code}}" {% endfor %}#}
+                <p>Trip stations:</p>
+                {% for tripstation in trip.tripstations %} <p style="line-height: 40%">&nbsp;&nbsp;&nbsp;&nbsp;&#8226;{{ tripstation.stationnr.code}}
+                </p>{% endfor %}
+
+
+                <p>trip investigators:</p>
+                    {% for tripinvestigator in trip.tripinvestigators %} <p style="line-height: 40%">&nbsp;&nbsp;&nbsp;&nbsp;&#8226;{{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}
+                    {% if tripinvestigator.investigatornr is null or tripinvestigator.investigatornr is empty%}
+                        &nbsp;(not in investigators)</p>
+
                     {% endif %}
-                </p>
-                <p>Investigators:
-                    {% for tripinvestigator in trip.tripinvestigators %} {{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}
-                    {% if tripinvestigator.investigatornr is not null %}[*]{% endif %}
                     {% endfor %}
 
-                </p>
+
             </div>
         </div>
     </div>

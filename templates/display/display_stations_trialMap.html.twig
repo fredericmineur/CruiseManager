@@ -84,86 +84,41 @@
                 //     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
 
                 "ajax": {
-                    // "url": "/api/getAllStations",
-                    "url": "/api/getAllStationsTrim",
-                    dataSrc:''
+                    "url": "/api/getStationsGeoJSON",
+                    dataSrc:'features'
 
                 },
                 "columns": [
-                    // {"data" : "code"},
-                    // {"data" : "latitude"},
-                    // {"data" : "longitude"},
-                    // {"data" : "nr"},
-                    // {"data" : "tripstations"}
-                    {"data" : "Code"},
-                    {"data" : "Lat"},
-                    {"data" : "Long"},
-                    {"data" : "NR"},
+                    {"data" : "properties.code"},
+                    {"data" : "properties.latitude_rounded"},
+                    {"data" : "properties.longitude_rounded"},
+                    {"data" : "properties.stationId"},
                 ],
                 "columnDefs" :[
                     {
                         "targets" : 0,
                         "render" : function (data, type, row) {
-                            var stationOutput = '<a href="' + Routing.generate ('display_station', {stationId: row.NR} ) + '">' + data + '</a>';
+                            var stationOutput = '<a href="' + Routing.generate ('display_station', {stationId: row.properties.stationId} ) + '" data-value="'+ data +'">' + data + '</a>';
                             return stationOutput;
                         },
-                        "width" : "80px"
+                        "createdCell" : function (cell, cellData, rowData, rowIndex, colIndex) {
+                            $(cell).on('mouseenter', function(e){
+                                // hovered_id = $(e.target).data('value');
+                                hovered_id = $(e.target.firstChild).data('value');
+                                console.log(hovered_id);
+                            });
+                        },
+                        "width" : "70px"
                     },
                     {
                         "targets" : -1,
                         "visible" : false,
                     },
                     {"targets": 1, "width" : "50px"}, {"targets": 2, "width" : "50px"}
-                    // {
-                    //     "targets" : -2,
-                    //     "visible" : false
-                    // }
                 ]
             });
 
-            // //Hide the generic search field
-            // $('#myDataTable_filter').hide();
-            //
-            // // Apply the search on every column
-            // table.columns().every( function () {
-            //     var that = this;
-            //
-            //     $( 'input', this.header() ).on( 'keyup change clear', function () {
-            //         if ( that.search() !== this.value ) {
-            //             that
-            //                 .search( this.value )
-            //                 .draw();
-            //         }
-            //     } );
-            // } );
 
-
-
-
-
-
-
-            //////MAP
-            // var stationPoints;
-            // // $.getJSON('/api/getStationsGeoJSON').done(function (response) {
-            // //     stationPoints =response;
-            // // })
-            // //
-            // $.getJSON('/api/getStationsGeoJSON', function(data) {
-            //     stationPoints = data;
-            // });
-            //
-            // // var stationPoints = $.ajax({
-            // //     url: "/api/getStationsGeoJSON",
-            // //     dataType: "json",
-            // //     success: console.log ("Stations data successfully loaded."),
-            // //     error: function (xhr) {
-            // //         alert(xhr.statusText)
-            // //     }
-            // // });
-
-
-            // console.log(stationPoints);
 
             var mapStations = L.map('map-stations').setView([51.4, 3], 9);
 
@@ -194,21 +149,24 @@
                     var stations = L.geoJson(data, {
                         pointToLayer: function(feature, latlng) {
                             return new L.CircleMarker(latlng, {
-                                radius: 2,
-                                color: '#FF0000'
+                                radius: 1,
+                                color: '#FFA500'
                             });
                         },
                         onEachFeature: function (feature, layer) {
                             layer.bindPopup(feature.properties.code);
                         }
                     });
-                    // stations.bindPopup(function (layer) {
-                    //     console.log(layer.feature.properties);
-                    //     return layer
-                    // });
+
                     stations.addTo(mapStations);
                 }
             })
+
+
+
+            // $("#map-stations").on('mouseenter', function(e){
+            //     console.log('map');
+            // })
 
 
 

@@ -65,12 +65,15 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
 
         $form = $this->createForm(TripType::class, $trip);
         $form ->handleRequest($request);
-//        if($form->isSubmitted() && $form->isValid()) {
-//            $manager->persist($trip);
-//        }
-//        return $this->redirectToRoute('trip_details', [
-//            'tripId' => $trip->getTripid()
-//        ]);
+        if($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($trip);
+            $manager->flush();
+
+            return $this->redirectToRoute('trip_details', [
+                'tripId' => $trip->getTripid()
+            ]);
+        }
+
 
         return $this->render('forms/form_trip.html.twig', [
             'trip' =>$trip,

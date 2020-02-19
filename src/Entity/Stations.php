@@ -6,6 +6,7 @@ use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Stations
@@ -60,6 +61,8 @@ class Stations
      *
      * @ORM\Column(name="Code", type="string", length=10, nullable=true, options={"fixed"=true})
      * @Groups("read:all_stations")
+     * @Assert\Length(min = 3, max=10, minMessage="Code must be at least {{ limit }} characters long",
+     *     maxMessage="code cannot be longer than {{ limit }} characters")
      */
     private $code;
 

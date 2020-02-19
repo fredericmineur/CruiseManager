@@ -4,7 +4,7 @@
 
 {#   {{dump(app.flashes)}}#}
 
-    {% if  mode == 'edit'  %}
+    {% if  mode == 'edit' and imisJson is not null  %}
     <div class="container my-2">
         <div class="card">
             <div class="card-header">
