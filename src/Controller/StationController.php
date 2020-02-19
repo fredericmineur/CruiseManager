@@ -52,8 +52,8 @@ class StationController extends AbstractController
                 'geometry' => array(
                     'type' => 'Point',
                     'coordinates' => array(
-                        $station->getLatitude(),
-                        $station->getLongitude()
+                        $station->getLongitude(),
+                        $station->getLatitude()
                     )
                 )
             );
@@ -74,6 +74,19 @@ class StationController extends AbstractController
 ////            dd($station->getTripstations());
 //        }
 //        dd($stations);
+        $jsonStations = $serializer->serialize($stations, 'json', ['groups'=>'read:all_stations']);
+        return new JsonResponse($jsonStations, 200, [], true);
+    }
+
+
+    /**
+     * This a lighter version of the station list (it doesn't contain tripstations, coordinates rounded to 4 digits)
+     * @Route("/api/getAllStationsTrim", name = "api_get_all_stations_trim", options={"expose"=true})
+     */
+    public function getAllStationsTrim (SerializerInterface $serializer, StationRepository $stationRepository)
+    {
+
+        $stations = $stationRepository->findAllStationsFourDigitsNoTrips();
         $jsonStations = $serializer->serialize($stations, 'json', ['groups'=>'read:all_stations']);
         return new JsonResponse($jsonStations, 200, [], true);
     }
@@ -183,6 +196,13 @@ class StationController extends AbstractController
             ->findOneBy(['nr' => $stationId]);
         $manager->remove($station);
         return $this->redirectToRoute('display_all_stations');
+    }
+
+    /**
+     * @Route("/stations/map", name="stations_map")
+     */
+    public function stationsMap(){
+        return $this->render('display/display_stations_trialMap.html.twig');
     }
 
 

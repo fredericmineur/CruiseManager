@@ -44,7 +44,13 @@ class StationRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
-    public function findAllStationsFourDigits () {
+    public function findAllStationsFourDigitsNoTrips () {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = ' SELECT NR, ROUND(Latitude, 4) as Lat, ROUND(Longitude, 4) as Long, Code FROM STATIONS
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
 
     }
 

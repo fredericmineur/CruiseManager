@@ -21,7 +21,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="container my-2">
         <div class="row">
             <div class="col-5">
@@ -34,7 +34,7 @@
                             <th>Longitude</th>
                         </tr>"
 
-                %}
+                    %}
                     {{ headerRow | raw }}
                     </thead>
                     <tfoot>{{ headerRow | raw }}</tfoot>
@@ -43,10 +43,10 @@
             </div>
 
 
-        <div class="col-7">
+            <div class="col-7">
 
                 <div id="map-stations" style=" width: 600px; height: 500px;"></div>
-        </div>
+            </div>
         </div>
     </div>
 
@@ -67,6 +67,15 @@
 
     <script>
         $(document).ready(function () {
+            /////DATATABLES
+
+            // //Add another header below the first
+            // $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
+            //
+            // //Transform the second header row to have the search input fields
+            // $('#myDataTable thead tr:odd th').each( function () {
+            //     $(this).html('<input type="text" placeholder="Search" />');
+            // });
 
             $('#myDataTable').DataTable({
                 "pageLength":100,
@@ -112,7 +121,49 @@
                 ]
             });
 
+            // //Hide the generic search field
+            // $('#myDataTable_filter').hide();
+            //
+            // // Apply the search on every column
+            // table.columns().every( function () {
+            //     var that = this;
+            //
+            //     $( 'input', this.header() ).on( 'keyup change clear', function () {
+            //         if ( that.search() !== this.value ) {
+            //             that
+            //                 .search( this.value )
+            //                 .draw();
+            //         }
+            //     } );
+            // } );
 
+
+
+
+
+
+
+            //////MAP
+            // var stationPoints;
+            // // $.getJSON('/api/getStationsGeoJSON').done(function (response) {
+            // //     stationPoints =response;
+            // // })
+            // //
+            // $.getJSON('/api/getStationsGeoJSON', function(data) {
+            //     stationPoints = data;
+            // });
+            //
+            // // var stationPoints = $.ajax({
+            // //     url: "/api/getStationsGeoJSON",
+            // //     dataType: "json",
+            // //     success: console.log ("Stations data successfully loaded."),
+            // //     error: function (xhr) {
+            // //         alert(xhr.statusText)
+            // //     }
+            // // });
+
+
+            // console.log(stationPoints);
 
             var mapStations = L.map('map-stations').setView([51.4, 3], 9);
 
@@ -122,7 +173,19 @@
                 id: 'mapbox/streets-v11',
                 accessToken: 'pk.eyJ1IjoiZm1pbmV1ciIsImEiOiJjamwzdDhocW0xN2RnM3ZxeWR5dzVmOHF4In0.6WX6hN8ge0BOad0MRZyEtw'
             }).addTo(mapStations);
-
+            //
+            // var stationPoints = new L.geoJson();
+            // stationPoints.addTo(mapStations);
+            //
+            // $.ajax({
+            //     dataType: "json",
+            //     url: "/api/getStationsGeoJSON",
+            //     success: function(data) {
+            //         $(data.features).each(function(key, data) {
+            //             stationPoints.addData(data);
+            //         });
+            //     }
+            // }).error(function() {});
 
             $.ajax({
                 dataType: "json",
@@ -139,7 +202,10 @@
                             layer.bindPopup(feature.properties.code);
                         }
                     });
-
+                    // stations.bindPopup(function (layer) {
+                    //     console.log(layer.feature.properties);
+                    //     return layer
+                    // });
                     stations.addTo(mapStations);
                 }
             })
