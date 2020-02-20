@@ -22,7 +22,11 @@
 
                     <a href="{{ path('edit_investigator', {'investigatorId': investigator.investigatorid}) }}"><i class="fa fa-edit fa-2x"></i></a>
 
+                    {% if investigator.tripinvestigators is empty and cruisePI is empty %}
+
                     <a href="{{ path('remove_investigator_warning', {'investigatorId': investigator.investigatorid}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
+
+                    {% endif %}
 
                 </div>
             </div>

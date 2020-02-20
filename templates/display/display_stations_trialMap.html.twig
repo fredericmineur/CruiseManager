@@ -67,21 +67,16 @@
 
     <script>
         $(document).ready(function () {
-            /////DATATABLES
+            var hovered_id, layer, stations;
 
-            // //Add another header below the first
-            // $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
-            //
-            // //Transform the second header row to have the search input fields
-            // $('#myDataTable thead tr:odd th').each( function () {
-            //     $(this).html('<input type="text" placeholder="Search" />');
-            // });
-
-            $('#myDataTable').DataTable({
-                "pageLength":100,
+            var tableStations = $('#myDataTable').DataTable({
+                // "pageLength":100,
+                // "fixedHeader": true,
                 // dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                 //     "<'row'<'col-sm-12'tr>>" +
                 //     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                responsive: true,
+                paging: false,
 
                 "ajax": {
                     "url": "/api/getStationsGeoJSON",
@@ -103,9 +98,25 @@
                         },
                         "createdCell" : function (cell, cellData, rowData, rowIndex, colIndex) {
                             $(cell).on('mouseenter', function(e){
-                                // hovered_id = $(e.target).data('value');
+
                                 hovered_id = $(e.target.firstChild).data('value');
-                                console.log(hovered_id);
+                                // console.log(hovered_id);
+                                layer = stations.getLayer(hovered_id);
+                                console.log(layer);
+                                layer.setStyle({
+                                    color: 'red',
+                                    radius: 10,
+                                    fillColor: 'red',
+                                    fillOpacity: 1
+                                });
+                            }).on('mouseout', function(e) {
+                                // stations.resetStyle(layer);
+                                layer.setStyle({
+                                    radius: 1,
+                                    color: '#FFA500',
+                                    fillColor: '#FFA500',
+                                    fillOpacity: 0.2
+                                });
                             });
                         },
                         "width" : "70px"
@@ -117,10 +128,11 @@
                     {"targets": 1, "width" : "50px"}, {"targets": 2, "width" : "50px"}
                 ]
             });
+            new $.fn.dataTable.FixedHeader( tableStations );
 
 
 
-            var mapStations = L.map('map-stations').setView([51.4, 3], 9);
+            var mapStations = L.map('map-stations').setView([51.4, 3], 8);
 
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -128,39 +140,51 @@
                 id: 'mapbox/streets-v11',
                 accessToken: 'pk.eyJ1IjoiZm1pbmV1ciIsImEiOiJjamwzdDhocW0xN2RnM3ZxeWR5dzVmOHF4In0.6WX6hN8ge0BOad0MRZyEtw'
             }).addTo(mapStations);
-            //
-            // var stationPoints = new L.geoJson();
-            // stationPoints.addTo(mapStations);
-            //
-            // $.ajax({
-            //     dataType: "json",
-            //     url: "/api/getStationsGeoJSON",
-            //     success: function(data) {
-            //         $(data.features).each(function(key, data) {
-            //             stationPoints.addData(data);
-            //         });
-            //     }
-            // }).error(function() {});
+
 
             $.ajax({
                 dataType: "json",
                 url: "/api/getStationsGeoJSON",
                 success: function(data) {
-                    var stations = L.geoJson(data, {
-                        pointToLayer: function(feature, latlng) {
-                            return new L.CircleMarker(latlng, {
-                                radius: 1,
-                                color: '#FFA500'
-                            });
-                        },
-                        onEachFeature: function (feature, layer) {
-                            layer.bindPopup(feature.properties.code);
-                        }
+                    stations = L.geoJson(data, {
+                        pointToLayer: pointToLayerNormalStyle,
+                        onEachFeature: onEachFeature
                     });
 
                     stations.addTo(mapStations);
                 }
             })
+
+            function onEachFeature (feature, layer) {
+                code = feature.properties.code;
+                layer.bindPopup(code);
+                layer._leaflet_id = code;
+                // layer.on({
+                //     mouseover: highlightFeature,
+                //     // mouseout: resetHighlight
+                // });
+            }
+
+            function pointToLayerNormalStyle(feature, latlng) {
+                return new L.CircleMarker(latlng, {
+                    radius: 1,
+                    color: '#FFA500',
+                    fillColor: '#FFA500',
+                    fillOpacity: 0.2
+                });
+            }
+
+            function pointToLayerHighlightStyle(feature, lat, lng) {
+
+            }
+
+            function highlightFeature(e){
+                var layer = e.target;
+                console.log(layer);
+                // layer.setStyle({
+                //     color: 'red'
+                // })
+            }
 
 
 
@@ -168,7 +192,13 @@
             //     console.log('map');
             // })
 
+//http://bl.ocks.org/phvaillant/f752a49119d6cac1283ad5c98c3c75eb
+            //https://nrfa.ceh.ac.uk/data/search
 
+ //https://gis.stackexchange.com/questions/228045/how-do-i-change-the-style-of-points-that-were-created-with-pointtolayer-in-leafl
+
+
+            //https://gis.stackexchange.com/questions/320811/combine-leaflet-with-datatables-to-show-attributes-based-on-map-extent
 
 
         });

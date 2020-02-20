@@ -15,7 +15,9 @@
             </div>
             <div class="card-footer">
                 <a href="{{ path('edit_station', {'stationId': station.nr}) }}"><i class="fa fa-edit fa-2x"></i></a>
+                {% if station.tripstations is empty %}
                 <a href="{{ path('remove_station_warning', {'stationId': station.nr}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
+                {% endif %}
 
             </div>
 

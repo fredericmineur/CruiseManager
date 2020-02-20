@@ -2,10 +2,19 @@
 
 {% block body %}
     <div class="container">
+
+        {% if station.tripstations is empty %}
         <h5>You are about to remove the station:</h5>
         <h3>{{ station.code }}  Lat: {{ station.latitude }}, {{ station.longitude }}</h3>
         <h5>Do you really want to proceed?</h5>
         <a href="{{ path('remove_station', {'stationId': station.nr}) }}" class="btn btn-danger">Yes, remove the station</a>
+        {% else %}
+        <h5>The following station is linked to some trips, you are not allowed to delete it.</h5>
+        <h3>{{ station.code }}  Lat: {{ station.latitude }}, {{ station.longitude }}</h3>
+        {% endif %}
+
+
+
         <a href="{{ path('edit_station', {'stationId': station.nr}) }}" class="btn btn-success">Edit</a>
         <a href="{{ path('display_all_stations') }}" class="btn btn-dark">Stations list</a>
     </div>

@@ -143,7 +143,7 @@ class InvestigatorController extends AbstractController
     public function warnRemoveInvestigator (EntityManagerInterface $manager, $investigatorId){
         $investigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $investigatorId]);
-        return $this->render('remove_investigator.html.twig',[
+        return $this->render('remove/remove_investigator.html.twig',[
             'investigator' => $investigator
         ]);
     }

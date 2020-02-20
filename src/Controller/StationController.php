@@ -47,7 +47,7 @@ class StationController extends AbstractController
                 'type' => 'Feature',
                 'properties' => array (
                     'stationId' => $station->getNr(),
-                    'code' => $station->getCode(),
+                    'code' => trim($station->getCode()),
                     'latitude_rounded' => round($station->getLatitude(), 4),
                     'longitude_rounded' => round($station->getLongitude(), 4)
                 ),
@@ -197,6 +197,7 @@ class StationController extends AbstractController
         $station = $manager->getRepository(Stations::class)
             ->findOneBy(['nr' => $stationId]);
         $manager->remove($station);
+        $manager->flush();
         return $this->redirectToRoute('display_all_stations');
     }
 
