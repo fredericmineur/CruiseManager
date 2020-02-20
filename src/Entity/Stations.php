@@ -5,14 +5,17 @@ namespace App\Entity;
 use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+//* @ORM\Table(name="Stations", uniqueConstraints={@ORM\UniqueConstraint(name="ST_codes", columns={"Code"})})
 /**
  * Stations
  *
- * @ORM\Table(name="Stations", uniqueConstraints={@ORM\UniqueConstraint(name="ST_codes", columns={"Code"})})
+ * @ORM\Table(name="Stations")
  * @ORM\Entity(repositoryClass="App\Repository\StationRepository")
+ * @UniqueEntity("code")
  */
 class Stations
 {
@@ -59,7 +62,7 @@ class Stations
     /**
      * @var string|null
      *
-     * @ORM\Column(name="Code", type="string", length=10, nullable=true, options={"fixed"=true})
+     * @ORM\Column(name="Code", type="string", length=10, unique=true, nullable=true, options={"fixed"=true})
      * @Groups("read:all_stations")
      * @Assert\Length(min = 3, max=10, minMessage="Code must be at least {{ limit }} characters long",
      *     maxMessage="code cannot be longer than {{ limit }} characters")
