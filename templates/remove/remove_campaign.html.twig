@@ -2,10 +2,21 @@
 
 {% block body %}
     <div class="container">
-        <h5>You are about to remove the campaign:</h5>
-        <h3>"{{ campaign.campaign }}"</h3>
-        <h5>Do you really want to proceed?</h5>
-        <a href="{{ path('remove_campaign', {'campaignId': campaign.campaignid}) }}" class="btn btn-danger">Yes, remove<br>the campaign</a>
+
+
+        {% if campaign.cruise is empty and campaign.samples is empty %}
+            <h5>You are about to remove the campaign:</h5>
+            <h3>"{{ campaign.campaign }}"</h3>
+            <h5>Do you really want to proceed?</h5>
+            <a href="{{ path('remove_campaign', {'campaignId': campaign.campaignid}) }}" class="btn btn-danger">Yes, remove<br>the campaign</a>
+        {% else %}
+            <h5>The following campaign is either linked to some cruises or samples: </h5>
+            <h3>"{{ campaign.campaign }}"</h3>
+            <h3>You cannot delete it at present</h3>
+        {% endif %}
+
+
+
         <a href="{{ path('campaign_edit', {'campaignId': campaign.campaignid}) }}" class="btn btn-success">Edit</a>
         <a href="{{ path('campaigns_index') }}" class="btn btn-dark">Campaign list</a>
     </div>

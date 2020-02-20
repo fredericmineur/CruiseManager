@@ -18,13 +18,15 @@
             <div class="card-body">
                 <p>Destination: {% if trip.destinationarea %}{{ trip.destinationarea }}
                 {% else %}N.A.{% endif %}</p>
-                <p>Cruise: {% if trip.cruiseid.getPlanCode %}{{ trip.cruiseid.getPlanCode }}
+                <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }}
                 {% else %}N.A.{% endif %}</p>
                 <p>Campaign(s):
+                    {% if trip.cruiseid %}
                     {% for campaign in trip.cruiseid.campaign %}
                         "{{ campaign.campaign }}"
                         {% if loop.last %}{% else %}, {% endif %}
                     {% endfor %}
+                    {% endif %}
                 </p>
                 <p>Start and end points: {{ trip.startpoint }}-{{ trip.endpoint }}</p>
                 <p>Ship: {{ trip.ship }}</p>

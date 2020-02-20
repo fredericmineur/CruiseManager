@@ -96,11 +96,9 @@
                                     + '" title="Edit campaign"><i  class="fa fa-edit"></i></a>'
                                     + '&nbsp&nbsp<a href="'
                                     + Routing.generate('remove_campaign_warning',{'campaignId': row.campaignid})
-                                    + '" title="Remove campaign"><i style="color:red" class="fa fa-trash"></i></a>';
+                                    + '" title="Remove campaign"><i style="color:red" class="fa fa-trash"></i></a>'
+                                ;
 
-
-                                    // '<a href="' + Routing.generate('campaign_details', {campaignId: row.campaignid}) +    '" title="Open Campaign">'
-                                    // + data + '</a>';
                                 return campaignOutput;
                             }
                         },

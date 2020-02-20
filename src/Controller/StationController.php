@@ -133,7 +133,7 @@ class StationController extends AbstractController
             $manager->flush();
 
             return $this->redirectToRoute('display_station' , [
-                'station' => $station
+                'stationId' => $station->getNr()
             ]);
         }
         return $this->render('forms/form_station.html.twig', [

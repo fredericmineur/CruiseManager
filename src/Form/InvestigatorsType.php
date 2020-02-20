@@ -60,6 +60,7 @@ class InvestigatorsType extends AbstractType
             ->add('fullName',
                 TextType::class,[
                     'label' => 'Full name (for IMIS search)',
+                    'required' => false,
                     'attr' => [
                         'placeholder' => 'Type and search...'
                     ]

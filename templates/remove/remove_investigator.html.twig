@@ -2,10 +2,17 @@
 
 {% block body %}
     <div class="container">
+
+        {% if investigator.tripinvestigators is empty %}
         <h5>You are about to remove the investigator:</h5>
         <h3>{{ investigator.surname }}, {{ investigator.firstname }}</h3>
         <h5>Do you really want to proceed?</h5>
         <a href="{{ path('remove_investigator', {'investigatorId': investigator.investigatorid}) }}" class="btn btn-danger">Yes, remove the investigator</a>
+        {% else %}
+        <h5>The following investigator is linked to some trips, you are not allowed to delete it</h5>
+        <h3>{{ investigator.surname }}, {{ investigator.firstname }}</h3>
+        {% endif %}
+
         <a href="{{ path('edit_investigator', {'investigatorId': investigator.investigatorid}) }}" class="btn btn-success">Edit</a>
         <a href="{{ path('investigators_index') }}" class="btn btn-dark">Investigators list</a>
     </div>
