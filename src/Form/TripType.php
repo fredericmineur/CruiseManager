@@ -259,6 +259,7 @@ class TripType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Trip::class,
+            'error_bubbling' => true
         ]);
     }
 

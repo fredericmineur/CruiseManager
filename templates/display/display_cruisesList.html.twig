@@ -132,7 +132,12 @@
                                     +'&nbsp <a href="'
                                     + Routing.generate('cruise_edit', {cruiseId: row.CruiseID})
                                     + '" title="Edit">'
-                                    +'<span style="font-size: 23px; "><i class = "fa fa-edit"></i></span></a>';
+                                    +'<span style="font-size: 23px; "><i class = "fa fa-edit"></i></span></a>'
+                                    +'&nbsp <a href="'
+                                    + Routing.generate('cruise_edit', {cruiseId: row.CruiseID}) + Routing.generate('cruise_edit', {cruiseId: row.CruiseID})
+
+
+                                ;
 
                                     // + '<a href="' + Routing.generate('')
                                 return cruiseOutput;

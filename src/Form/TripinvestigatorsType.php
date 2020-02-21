@@ -97,6 +97,7 @@ class TripinvestigatorsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tripinvestigators::class,
+            'error_bubbling' => true
         ]);
     }
 }

@@ -126,13 +126,22 @@ class CruiseController extends AbstractController
     public function removeCruise(EntityManagerInterface $manager, $cruiseId)
     {
         $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid'=>$cruiseId]);
-//        foreach ($cruise->getTrips() as $trip) {
-//            foreach ($trip->getTripinvestigators() as $tripinvestigator)
-//            {
-//                $trip->removeTripinvestigator($tripinvestigator);
-//            }
-//            $manager->persist($trip);
-//        }
+
+        foreach ($cruise->getTrips() as $trip){
+            foreach ($trip->getTripinvestigators() as $tripinvestigator){
+                $trip->removeTripinvestigator($tripinvestigator);
+            }
+            foreach ($trip->getTripstations() as $tripstation) {
+                $trip->removeTripstation($tripstation);
+            }
+            $cruise->removeTrip($trip);
+
+        }
+        foreach ($cruise->getCampaign() as $campaign){
+            $cruise->removeCampaign($campaign);
+        }
+
+
         $manager->remove($cruise);
         $manager->flush();
         return $this->redirectToRoute('cruises_index');
@@ -358,34 +367,34 @@ class CruiseController extends AbstractController
         return json_encode($arraySurnames);
     }
 
-    /**
-     * If the tripinvestigator is in the investigators table, fill the required file
-     */
-    public static function completeTripInvestigatorFields(EntityManagerInterface $manager, Tripinvestigators $tripinvestigator) :Tripinvestigators
-    {
-        $investigators = $manager->getRepository(Investigators::class)
-            ->findAll();
-        foreach ($investigators as $investigator)
-        {
-            if (($tripinvestigator->getFirstname() != null)
-                && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
-                && ($tripinvestigator->getSurname() != null)
-                && ($tripinvestigator->getSurname() == $investigator->getSurname()))
-            {
-                $tripinvestigator->setInvestigatornr($investigator)
-                    ->setImisnr($investigator->getImisnr())
-                    ->setPassengertype($investigator->getPassengertype())
-//                    ->setBirthdate($investigator->getBirthdate())
-                    ->setNationality($investigator->getNationality());
-                return $tripinvestigator;
-            }
-        }
-        $tripinvestigator-> setInvestigatornr(null)
-            ->setImisnr(null)
-            ->setPassengertype(null)
-//            ->setBirthdate(null)
-            ->setNationality(null);
-        return $tripinvestigator;
-    }
+//    /**
+//     * If the tripinvestigator is in the investigators table, fill the required json file
+//     */
+//    public static function completeTripInvestigatorFields(EntityManagerInterface $manager, Tripinvestigators $tripinvestigator) :Tripinvestigators
+//    {
+//        $investigators = $manager->getRepository(Investigators::class)
+//            ->findAll();
+//        foreach ($investigators as $investigator)
+//        {
+//            if (($tripinvestigator->getFirstname() != null)
+//                && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
+//                && ($tripinvestigator->getSurname() != null)
+//                && ($tripinvestigator->getSurname() == $investigator->getSurname()))
+//            {
+//                $tripinvestigator->setInvestigatornr($investigator)
+//                    ->setImisnr($investigator->getImisnr())
+//                    ->setPassengertype($investigator->getPassengertype())
+////                    ->setBirthdate($investigator->getBirthdate())
+//                    ->setNationality($investigator->getNationality());
+//                return $tripinvestigator;
+//            }
+//        }
+//        $tripinvestigator-> setInvestigatornr(null)
+//            ->setImisnr(null)
+//            ->setPassengertype(null)
+////            ->setBirthdate(null)
+//            ->setNationality(null);
+//        return $tripinvestigator;
+//    }
 
 }

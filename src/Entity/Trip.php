@@ -176,6 +176,7 @@ class Trip
      * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr", cascade={"persist"})
+     * @Assert\Valid
      */
     private $tripstations;
 

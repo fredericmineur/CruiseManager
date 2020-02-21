@@ -3,12 +3,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\UniqueConstraint;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// * @UniqueEntity(fields={"surname", "firstname", "tripnr"}, errorPath="firsname", message="duplicate")
 /**
  * Tripinvestigators
  * @ORM\Entity(repositoryClass="App\Repository\TripinvestigatorsRepository")
- * @ORM\Table(name="TripInvestigators", indexes={@ORM\Index(name="IDX_915DA6EE1644F87", columns={"InvestigatorNR"}), @ORM\Index(name="IDX_915DA6EE67E1FAAF", columns={"TripNr"})})
+ * @ORM\Table(name="TripInvestigators",
+ *     indexes={@ORM\Index(name="IDX_915DA6EE1644F87", columns={"InvestigatorNR"}), @ORM\Index(name="IDX_915DA6EE67E1FAAF", columns={"TripNr"})}
+ *     )
+ * @UniqueEntity(fields={"surname", "firstname", "tripnr"}, errorPath="firstname", message="duplicate")
  */
 class Tripinvestigators
 {
@@ -124,6 +130,7 @@ class Tripinvestigators
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="TripNr", referencedColumnName="TripID")
      * })
+     * @Assert\Valid
      */
     private $tripnr;
 
