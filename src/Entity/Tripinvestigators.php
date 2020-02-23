@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="TripInvestigators",
  *     indexes={@ORM\Index(name="IDX_915DA6EE1644F87", columns={"InvestigatorNR"}), @ORM\Index(name="IDX_915DA6EE67E1FAAF", columns={"TripNr"})}
  *     )
- * @UniqueEntity(fields={"surname", "firstname", "tripnr"}, errorPath="firstname", message="duplicate")
  */
 class Tripinvestigators
 {
@@ -327,6 +326,8 @@ class Tripinvestigators
 
         return $this;
     }
+
+
 
 
 }
