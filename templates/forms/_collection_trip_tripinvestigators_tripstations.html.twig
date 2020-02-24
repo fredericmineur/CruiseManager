@@ -1,6 +1,6 @@
 {% block _trip_tripinvestigators_widget %}
 
-    <div class="card" style="background-color: #95c9ec">
+    <div class="card bg-light" >
         <div class="card-header">
             <div class="row">
                 <div class="col-3">INVESTIGATORS (<span id="{{ id }}-counter" class="counter"></span>)</div>
@@ -19,7 +19,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripinvestigator" class="btn btn-success" data-id="{{ id }}">Add investigator</button>
+                <button type="button" id="add-tripinvestigator" class="btn btn-secondary ml-4 mb-3" data-id="{{ id }}">Add investigator</button>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
 
 
 {% block _trip_tripstations_widget %}
-    <div class="card" style="background-color: #f3a29a">
+    <div class="card bg-secondary" >
         <div class="card-header">
             <div class="row">
                 <div class="col-3">STATIONS (<span id="{{ id }}-counter" class="counter"></span>)</div>
@@ -72,7 +72,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripstation" class="btn btn-success" data-id="{{ id }}">Add station</button>
+                <button type="button" id="add-tripstation" class="btn btn-secondary ml-4 mb-3" data-id="{{ id }}">Add station</button>
             </div>
         </div>
     </div>

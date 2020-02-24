@@ -55,8 +55,9 @@
                     </div>
                     <div class="card-body">
                         {% if mode=='new' and newplancode is defined and newplancode is not empty %}
-                            <h5><span class="badge badge-info">This new plancode is generated automatically</span></h5>
-                            {{ form_widget(formCruise.plancode,{'attr': {'value': newplancode}}) }}
+{#                            <h5><span class="badge badge-info">This new plancode is generated automatically</span></h5>#}
+                        {%  set placeholder = 'Suggested:   '~ newplancode | trans %}
+                            {{ form_widget(formCruise.plancode,{'attr': {'placeholder': placeholder  }}) }}
                         {% else %}
                             {{ form_widget(formCruise.plancode,{'attr': {'placeholder': 'xx-xxx'}}) }}
                         {% endif %}

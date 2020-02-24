@@ -181,6 +181,7 @@ class CruiseController extends AbstractController
         $newplancode = $manager->getRepository(Cruise::class)->GetNewPlancode();
 
 
+
         $form = $this->createForm(CruiseType::class, $cruise);
         $form -> handleRequest($request);
 

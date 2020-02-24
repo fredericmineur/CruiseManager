@@ -26,7 +26,8 @@
             <tr>
                 <th>Name</th>
                 <th>Passenger type</th>
-                <th>IMIS</th>
+                <th>Activity</th>
+
 
             </tr>
             " %}
@@ -66,6 +67,9 @@
             //Create the table
             var table =
                 $('#myDataTable').DataTable({
+                    dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     "ajax": {
                         "url": "api/getinvestigators",
                         "dataSrc" : ""
@@ -84,21 +88,12 @@
 
                     ],
                     "columnDefs": [
+
+
                         {"targets": 3, "visible": false},
-                        {"targets": 2, "visible": false},
                         {"targets": 4, "visible": false},
                         {"targets": 5, "visible": false},
-                        // {
-                        //     "targets": 2,
-                        //     "render": function(data, type, row) {
-                        //         if(data !== null && data !== ''){
-                        //             var imisnrOutput = data + '&nbsp&nbsp<a href="http://www.vliz.be/en/imis?module=person&persid=' + data  + '" target= "blank" title="OpenImisLink">' +
-                        //                 '<i class = "fa fa-link"></i></a>';
-                        //             return imisnrOutput;
-                        //         } else {return '';}
-                        //
-                        //     }
-                        // },
+
                         {
                             "targets" : 0,
                             "render": function(data, type, row) {
@@ -109,11 +104,8 @@
                                     + '"><i class="fa fa-edit"></i></a>';
                                 if(row.inTripInvestigators ==null && row.PI ==null) {
                                     investigatorOutput += ('&nbsp <a href="' + Routing.generate('remove_investigator_warning', {investigatorId: row.investigatorid})
-                                        + '"><i class="fa fa-trash"></i></a>');
+                                        + '"><i style="color:red" class="fa fa-trash"></i></a>');
                                 }
-
-
-
                                 if(row.imisnr !==null && row.imisnr !== ''){
                                     investigatorOutput += ('&nbsp&nbsp<a href="http://www.vliz.be/en/imis?module=person&persid='
                                         + row.imisnr  + '" target= "blank" title="OpenImisLink"><i class = "fa fa-link"></i></a>');
@@ -122,34 +114,21 @@
                                 ;
                                 return investigatorOutput;
                             }
-                        }
+                        },
+                        {
+                            "targets": 2,
+                            "render": function(data, type, row) {
+                                var activity ='';
+                                if(row.PI !== null) {
+                                    activity += '(PI) ';
+                                }
+                                if(row.inTripInvestigators !== null) {
+                                    activity += '(Trip)';
+                                }
+                                return activity;
+                            }
+                        },
 
-
-
-                        // {
-                        //     "targets" : 0,
-                        //     "render": function(data, type, row){
-                        //         investigatorOutput = data +
-                        //     }
-                        // }
-                        // {"targets":2,
-                        //     "render":function(data, type, row) {
-                        //         var cruisesOutput = '';
-                        //         if(Array.isArray(data) && data.length) {
-                        //             for (var i =0; i < data.length; i++) {
-                        //                 cruisesOutput += '[<a href="' + Routing.generate('cruise_details', {cruiseId: data[i]['cruiseid']}) + '" title="Open Cruise">'
-                        //                     // + '<i class="fa fa-map-marker" aria-hidden="true"></i>'
-                        //                     + data[i]['plancode'] + '</a>]'
-                        //                 if ((i+1) % 8 == 0) {
-                        //                     cruisesOutput += '<br/>'
-                        //                 }
-                        //             }
-                        //             return cruisesOutput;
-                        //         }
-                        //
-                        //     }
-                        //
-                        // }
 
                     ]
                 });

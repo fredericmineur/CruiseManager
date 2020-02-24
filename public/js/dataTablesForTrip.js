@@ -27,10 +27,7 @@ let fillTableAllTrips = (function () {
                     // {"data" : "TripID"},
                 ],
                 "columnDefs": [
-                    // {
-                    //     "targets": -1,
-                    //     "visible": false
-                    // },
+
                     {
                         "targets" : 1,
                         "render": function(data, type, row) {
@@ -45,11 +42,13 @@ let fillTableAllTrips = (function () {
                     {
                         "targets" : 0,
                         "render" : function (data, type, row) {
+                            var tripOutput = '';
                             if(data !== null && data !== '') {
-                                var tripOutput = data + ' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
-                                    + '"  target="_blank"><i class="fa fa-info-circle"></i></a>';
-                                return  tripOutput;
-                            } else {return 'N.A.';}
+                                tripOutput += data;
+                            } else {tripOutput += 'N.A.';}
+                            tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
+                                + '"  target="_blank"><i class="fa fa-info-circle"></i></a>');
+                            return  tripOutput;
                         }
                     }
                 ]
