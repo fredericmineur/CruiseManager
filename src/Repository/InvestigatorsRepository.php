@@ -62,6 +62,30 @@ class InvestigatorsRepository extends ServiceEntityRepository
 
     public function getAllInvestigatorsForTablePlus (EntityManagerInterface $em)
     {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+        SELECT
+            Investigators.investigatorid, 
+            Investigators.Surname, 
+            Investigators.Firstname,
+            Investigators.Surname + \', \' + Investigators.Firstname as fullname_comma, 
+            Investigators.Passengertype,
+            Investigators.ImisNR as imisnr,
+            InvestigatorsTrips.listInvestigators AS inTripInvestigators,
+            PICruises.listPI AS PI
+            FROM Investigators
+            LEFT JOIN 
+            (SELECT DISTINCT(InvestigatorNR) as listInvestigators 
+            FROM TripInvestigators WHERE InvestigatorNR IS NOT NULL) AS InvestigatorsTrips 
+            ON InvestigatorsTrips.listInvestigators = Investigators.investigatorid
+            LEFT JOIN 
+            (SELECT DISTINCT(PrincipalInvestigator) as listPI
+            FROM Cruise WHERE PrincipalInvestigator IS NOT NULL) as PICruises
+            ON PICruises.listPI = Investigators.investigatorid
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
 
     }
 

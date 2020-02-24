@@ -53,7 +53,7 @@ class InvestigatorController extends AbstractController
      */
     public function getInvestigatorsTable (SerializerInterface $serializer, InvestigatorsRepository $investigatorsRepository, EntityManagerInterface $em)
     {
-        $investigators = $investigatorsRepository->getAllInvestigatorsForTable($em);
+        $investigators = $investigatorsRepository->getAllInvestigatorsForTablePlus($em);
         $jsonInvestigators = $serializer->serialize($investigators, 'json');
 
         return new JsonResponse($jsonInvestigators, 200, [], true);
