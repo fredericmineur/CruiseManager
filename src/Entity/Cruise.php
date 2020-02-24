@@ -74,6 +74,12 @@ class Cruise
      */
     private $plancode;
 
+
+//* @ORM\ManyToOne(targetEntity="Investigators", inversedBy="cruises")
+//* @ORM\JoinColumns({
+//*    @ORM\JoinColumn(name="Ship", referencedColumnName="ShipName")
+//* })
+
     /**
      * @var string|null
      *

@@ -62,6 +62,16 @@ class CruiseType extends AbstractType
                     'required' => false
                 ]
             )
+
+            ->add('ship',
+                ChoiceType::class, [
+                    'label' => 'Ship',
+                    'choices' => [
+                        'Simon Stevin' => 'Simon Stevin',
+                        'Zeekat' => 'Zeekat'
+                    ]
+                ])
+
             ->add('campaign', CollectionType::class,
                 [
                     'label' => 'Campaign(s)',

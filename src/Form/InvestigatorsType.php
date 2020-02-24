@@ -51,9 +51,9 @@ class InvestigatorsType extends AbstractType
 //                        'placeholder' => 'e.g. Scientist'
 //                    ]
                 'choices' => [
+                    'Scientist' => 'Scientist',
                     'Diver' => 'Diver',
                     'Passenger' => 'Passenger',
-                    'Scientist' => 'Scientist',
                     'Student' => 'Student',
                     'Volunteer' => 'Volunteer'
                 ]

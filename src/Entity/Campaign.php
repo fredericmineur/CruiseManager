@@ -31,7 +31,7 @@ class Campaign
 
     /**
      * @var string|null
-     *
+     * @Assert\Length(max=50, maxMessage="Database allows {{limit}} characters max, please truncate")
      * @ORM\Column(name="Campaign", type="string", length=50, nullable=true)
      * @Groups("get_cruises_for_table")
      */
