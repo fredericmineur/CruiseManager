@@ -60,5 +60,10 @@ class InvestigatorsRepository extends ServiceEntityRepository
 
     }
 
+    public function getAllInvestigatorsForTablePlus (EntityManagerInterface $em)
+    {
+
+    }
+
 
 }
