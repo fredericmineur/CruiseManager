@@ -113,7 +113,7 @@
     </div>
 
     <div class="container-fluid">
-        {{ form_widget(formCruise.trips) }}
+        {{ form_widget(formCruise.trips, {'alltripsproperties': alltripsproperties, 'mode': mode}) }}
     </div>
     {{ form_end(formCruise) }}
 {% endblock %}
@@ -128,11 +128,11 @@
 
     <script>
         $(document).ready(function () {
-
             //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
             addTripsAndInvestigators.init();
             addCampaigns.init();
             $('#cruise_principalinvestigator').select2();
+
 
         });
     </script>

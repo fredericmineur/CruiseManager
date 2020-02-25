@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -103,6 +104,12 @@ class TripType extends AbstractType
                 ]
 
             )
+
+            ->add('tripid', HiddenType::class)
+
+
+
+
 //            ->add('stations', CollectionType::class,[
 //                'allow_add' => true,
 //                'by_reference'=>false,

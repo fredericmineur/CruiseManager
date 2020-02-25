@@ -6,10 +6,14 @@ use App\Entity\Campaign;
 use App\Entity\Cruise;
 use App\Entity\Investigators;
 use App\Entity\Trip;
+use App\Entity\Tripactions;
+use App\Entity\Tripequipment;
 use App\Entity\Tripinvestigators;
+use App\Entity\Tripnotes;
 use App\Entity\Tripstations;
 use App\Form\CruiseType;
 use App\Repository\CruiseRepository;
+use App\Repository\TripRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -240,36 +244,47 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/{cruiseId}/edit", name="cruise_edit", options={"expose"=true})
      */
-    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId)
+    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId, TripRepository $tripRepository)
     {
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
 
-        //Due to the presence of some '0' values for the principal investigator ID in the database
-//        if($cruise->getPrincipalinvestigator()->getInvestigatorId()==0){
-//            $cruise->setPrincipalinvestigator(null);
-//        }
-
-//        foreach ($cruise->getTrips() as $trip){
-//            foreach($trip->getTripstations() as $tripstation){
-//                dump($tripstation->getCode());
-//            }
-//
-//        }
-//        die();
 
         $originalTrips = new ArrayCollection();
 
+        //Idea: link to tripid. In twig file, relate to hidden file
+        $allTripsProperties = [];
+
         foreach ($cruise->getTrips() as $trip) {
+
+            $tripActions = false;
+            $tripEquipments = false;
+            $tripNotes = false;
+            $tripid = $trip->getTripid();
+            $tripProperty = [$tripid=>[['tripActions'=>false], ['tripEquipments' => false], ['tripNotes' => false]] ];
+
             foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                 if ($tripinvestigator->getInvestigatornr()!== null) {
                     $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
                 }
             }
+            //Check for the presence of tripActions,.... (in order to prevent the possibility of deleting the trip)
+            $tripTripactions = $manager->getRepository(Tripactions::class)->findBy(['tripnr' => $tripid], []);
+            if(count($tripTripactions)>0) {$tripProperty[$tripid][0]['tripActions']= true;}
+            $tripTripequipments = $manager->getRepository(Tripequipment::class)->findBy(['tripnr' => $tripid], []);
+            if(count($tripTripequipments)>0) { $tripProperty[$tripid][1]['tripEquipments']= true; }
+            $tripTripnotes = $manager->getRepository(Tripnotes::class)->findBy(['tripnr' => $tripid],[]);
+            if(count($tripTripnotes)>0) { $tripProperty[$tripid][2]['tripNotes']= true;}
 
+
+//            dd($tripProperty);
 
             $originalTrips->add($trip);
+            array_push($allTripsProperties, $tripProperty);
         }
+//        dd($allTripsProperties);
+
+
 
 
 
@@ -300,19 +315,12 @@ class CruiseController extends AbstractController
                     foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                         if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
                             $tripinvestigator->setInvestigatornr(null);
-                            //$tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
+
                             $manager->persist($tripinvestigator);
                         }
                     }
                 }
 
-                /*
-                foreach ($trip->getTripinvestigators() as $tripinvestigator)
-                {
-                    $tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
-                    $manager->persist($tripinvestigator);
-                }
-                 */
             }
 
             $manager->persist($cruise);
@@ -329,7 +337,8 @@ class CruiseController extends AbstractController
         }
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
-            'mode' => 'edit'
+            'mode' => 'edit',
+            'alltripsproperties' => $allTripsProperties
         ]);
     }
 
@@ -391,34 +400,6 @@ class CruiseController extends AbstractController
         return json_encode($arraySurnames);
     }
 
-//    /**
-//     * If the tripinvestigator is in the investigators table, fill the required json file
-//     */
-//    public static function completeTripInvestigatorFields(EntityManagerInterface $manager, Tripinvestigators $tripinvestigator) :Tripinvestigators
-//    {
-//        $investigators = $manager->getRepository(Investigators::class)
-//            ->findAll();
-//        foreach ($investigators as $investigator)
-//        {
-//            if (($tripinvestigator->getFirstname() != null)
-//                && ($tripinvestigator->getFirstname() == $investigator->getFirstname())
-//                && ($tripinvestigator->getSurname() != null)
-//                && ($tripinvestigator->getSurname() == $investigator->getSurname()))
-//            {
-//                $tripinvestigator->setInvestigatornr($investigator)
-//                    ->setImisnr($investigator->getImisnr())
-//                    ->setPassengertype($investigator->getPassengertype())
-////                    ->setBirthdate($investigator->getBirthdate())
-//                    ->setNationality($investigator->getNationality());
-//                return $tripinvestigator;
-//            }
-//        }
-//        $tripinvestigator-> setInvestigatornr(null)
-//            ->setImisnr(null)
-//            ->setPassengertype(null)
-////            ->setBirthdate(null)
-//            ->setNationality(null);
-//        return $tripinvestigator;
-//    }
+
 
 }
