@@ -61,7 +61,7 @@
 {#    <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>#}
 
     <script type="text/javascript" src="/js/datatables.min.js"></script>
-    {#<script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>#}
+{#    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>#}
     <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
@@ -82,6 +82,10 @@
             //https://stackoverflow.com/questions/39407881/pagination-at-top-and-bottom-with-datatables
             var table =
                 $('#myDataTable').DataTable( {
+                    // fixedHeader: {
+                    //     header: true,
+                    //     footer: true
+                    // },
                     "pageLength": 50,
                     dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -192,6 +196,7 @@
             $('#myDataTable thead input').on('click', function(e){
                 e.stopPropagation();
             });
+            // table.fixedHeader.enable(  );
         } );
     </script>
 

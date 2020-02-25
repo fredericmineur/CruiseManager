@@ -65,7 +65,7 @@
 
                 <td>
                     {% if cruise.trips and cruise.trips|length %} {% set nbTrips = cruise.trips|length %}
-                        <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d')}}</span>{{ cruise.trips[0].startdate|date('d/m/Y')}}- {{ cruise.trips[nbTrips-1].enddate|date('d/m/Y') }}
+                        <span style="display:none">{{ cruise.trips[0].startdate|date('Y/m/d')}}</span>{{ cruise.trips[0].startdate|date('Y/m/d')}}- {{ cruise.trips[nbTrips-1].enddate|date('Y/m/d') }}
                     {% else %}No planned trip
                     {% endif %}</td>
 

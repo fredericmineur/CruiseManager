@@ -1,52 +1,144 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div class="container">
-    <div class="row">
-        <div class="card" >
-            <div class="card-header">
-                <div class="row">
-                    <div class="col">
-                        <h3>Trip  {{ trip.startdate | date('d/m/Y')}} - {{ trip.enddate | date('d/m/Y')}}</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 my-2">
+                <div class="card border-dark">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col">
+                                <h3>Trip  {{ trip.startdate | date('Y/m/d')}} - {{ trip.enddate | date('Y/m/d')}}</h3>
+                            </div>
+                            <div class="col">
+                                <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}">
+                                    <i class="fa fa-edit fa-5x"></i></a>
+                            </div>
+                        </div>
+
                     </div>
-                    <div class="col">
-                        <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i
-                                    class="fa fa-edit fa-5x"></i></a>
+                    <div class="card-body">
+                        <p>Destination: {% if trip.destinationarea %}{{ trip.destinationarea }}
+                            {% else %}N.A.{% endif %}</p>
+                        <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }}
+                            {% else %}N.A.{% endif %}</p>
+                        <p>Campaign(s):
+                            {% if trip.cruiseid %}
+                                {% for campaign in trip.cruiseid.campaign %}
+                                    "{{ campaign.campaign }}"
+                                    {% if loop.last %}{% else %}, {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </p>
+
+                    </div>
+                    <div class="card-body">
+                        <h5>Trip investigators</h5>
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>First name</th>
+                                    <th>Surname</th>
+                                    <th>ID</th>
+                                    <th>Campaign</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for tripinvestigator in trip.tripinvestigators %}
+                                <tr>
+                                    <td>{{ tripinvestigator.firstname }}</td>
+                                    <td>{{tripinvestigator.surname}}</td>
+                                    <td>{% if tripinvestigator.investigatornr is not null %}yes{% endif %}</td>
+                                    <td>
+                                        {#                                                {{ tripinvestigator.campaign | length > 25 ?#}
+                                        {#                                                       tripinvestigator.campaign|slice(0,22) ~ '...' : tripinvestigator.campaign }}#}
+                                        {{ tripinvestigator.campaign }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-body">
+                        <h5>Trip stations</h5>
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Latitude</th>
+                                    <th>Longitude</th>
+                                    <th>ID</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for tripstation in trip.tripstations %}
+                                <tr>
+                                    <td>{{tripstation.code}}</td>
+                                    <td>{{tripstation.deflatitude | number_format(3)}}</td>
+                                    <td>{{tripstation.deflongitude | number_format(3)}}</td>
+                                    <td>{% if tripstation.stationnr is not null %}yes{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-            <div class="card-body">
-                <p>Destination: {% if trip.destinationarea %}{{ trip.destinationarea }}
-                {% else %}N.A.{% endif %}</p>
-                <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }}
-                {% else %}N.A.{% endif %}</p>
-                <p>Campaign(s):
-                    {% if trip.cruiseid %}
-                    {% for campaign in trip.cruiseid.campaign %}
-                        "{{ campaign.campaign }}"
-                        {% if loop.last %}{% else %}, {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                </p>
-                <p>Start and end points: {{ trip.startpoint }}-{{ trip.endpoint }}</p>
-                <p>Ship: {{ trip.ship }}</p>
-                <p>Trip stations:</p>
-                {% for tripstation in trip.tripstations %} <p style="line-height: 40%">&nbsp;&nbsp;&nbsp;&nbsp;&#8226;{{ tripstation.stationnr.code}}
-                </p>{% endfor %}
-
-
-                <p>trip investigators:</p>
-                    {% for tripinvestigator in trip.tripinvestigators %} <p style="line-height: 40%">&nbsp;&nbsp;&nbsp;&nbsp;&#8226;{{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}
-                    {% if tripinvestigator.investigatornr is null or tripinvestigator.investigatornr is empty%}
-                        &nbsp;(not in investigators)</p>
-
-                    {% endif %}
-                    {% endfor %}
-
-
-            </div>
         </div>
     </div>
-</div>
+
+
+
+{#<div class="container">#}
+{#    <div class="row">#}
+{#        <div class="card" >#}
+{#            <div class="card-header">#}
+{#                <div class="row">#}
+{#                    <div class="col">#}
+{#                        <h3>Trip  {{ trip.startdate | date('d/m/Y')}} - {{ trip.enddate | date('d/m/Y')}}</h3>#}
+{#                    </div>#}
+{#                    <div class="col">#}
+{#                        <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i#}
+{#                                    class="fa fa-edit fa-5x"></i></a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="card-body">#}
+{#                <p>Destination: {% if trip.destinationarea %}{{ trip.destinationarea }}#}
+{#                {% else %}N.A.{% endif %}</p>#}
+{#                <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }}#}
+{#                {% else %}N.A.{% endif %}</p>#}
+{#                <p>Campaign(s):#}
+{#                    {% if trip.cruiseid %}#}
+{#                    {% for campaign in trip.cruiseid.campaign %}#}
+{#                        "{{ campaign.campaign }}"#}
+{#                        {% if loop.last %}{% else %}, {% endif %}#}
+{#                    {% endfor %}#}
+{#                    {% endif %}#}
+{#                </p>#}
+{#                <p>Start and end points: {{ trip.startpoint }}-{{ trip.endpoint }}</p>#}
+{#                <p>Ship: {{ trip.ship }}</p>#}
+{#                <p>Trip stations:</p>#}
+{#                {% for tripstation in trip.tripstations %} <p style="line-height: 40%">&nbsp;&nbsp;&nbsp;&nbsp;&#8226;{{ tripstation.stationnr.code}}#}
+{#                </p>{% endfor %}#}
+
+
+{#                <p>trip investigators:</p>#}
+{#                    {% for tripinvestigator in trip.tripinvestigators %} <p style="line-height: 40%">&nbsp;&nbsp;&nbsp;&nbsp;&#8226;{{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}#}
+{#                    {% if tripinvestigator.investigatornr is null or tripinvestigator.investigatornr is empty%}#}
+{#                        &nbsp;(not in investigators)</p>#}
+
+{#                    {% endif %}#}
+{#                    {% endfor %}#}
+
+
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
 
 {% endblock %}

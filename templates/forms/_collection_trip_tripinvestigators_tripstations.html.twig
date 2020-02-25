@@ -4,9 +4,10 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-3">INVESTIGATORS (<span id="{{ id }}-counter" class="counter"></span>)</div>
-                <div class="col-3">Surname</div>
-                <div class="col-3">First name</div>
-                <div class="col-3">
+                <div class="col-2">Surname</div>
+                <div class="col-2">First name</div>
+                <div class="col-3">Campaign</div>
+                <div class="col-2">
                     <p data-toggle="collapse" href="#collapse-investigator" aria-expanded="true" aria-controls="collapse-investigator" id="heading-investigator" class="d-block">
                         <i class="fa fa-chevron-down pull-right" ></i>
                     </p>
@@ -36,11 +37,15 @@
                 {{ form_widget(form.fullname) }}
                 {{ form_widget(form.investigatornr) }}
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 {{ form_widget(form.surname) }}
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 {{ form_widget(form.firstname) }}
+            </div>
+            <div class="col-3">
+                {{ form_widget(form.campaign) }}
+                {{ form_widget(form.campaignnr) }}
             </div>
             <div class="col-1">
                 <button type="button" id="remove-trip-investigator" class="btn btn-danger" data-action="delete" data-id="{{ id }}"
@@ -72,7 +77,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripstation" class="btn btn-secondary ml-4 mb-3" data-id="{{ id }}">Add station</button>
+                <button type="button" id="add-tripstation" class="btn btn-light ml-4 mb-3" data-id="{{ id }}">Add station</button>
             </div>
         </div>
     </div>

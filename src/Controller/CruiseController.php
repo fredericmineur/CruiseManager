@@ -186,6 +186,18 @@ class CruiseController extends AbstractController
         $form -> handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //Get the first campaign to assign it to the trip investigators
+            $mainCampaign = null;
+            foreach($cruise->getCampaign() as $campaign){
+                $mainCampaign = $campaign;
+                break;
+            }
+
+
+
+
+
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
 
@@ -195,6 +207,9 @@ class CruiseController extends AbstractController
                         //$tripinvestigator = self::completeTripInvestigatorFields($manager, $tripinvestigator);
                         $manager->persist($tripinvestigator);
                     }
+
+                    $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
+                        ->setCampaign($mainCampaign->getCampaign());
                 }
 
                 $manager->persist($trip);
@@ -263,6 +278,14 @@ class CruiseController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //Get the first campaign to assign it to the trip investigators
+//            $mainCampaign = null;
+//            foreach($cruise->getCampaign() as $campaign){
+//                $mainCampaign = $campaign;
+//                break;
+//            }
+
+
 //            dump($originalTrips);
             foreach ($originalTrips as $trip) {
 //                dump($cruise->getTrips()->contains($trip));

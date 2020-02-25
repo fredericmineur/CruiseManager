@@ -66,6 +66,14 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
         $form = $this->createForm(TripType::class, $trip);
         $form ->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
+
+            foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+                if($tripinvestigator->getCampaign() === '' || $tripinvestigator->getCampaign() === null ) {
+                    $tripinvestigator->setCampaignnr(null);
+                }
+            }
+
+
             $manager->persist($trip);
             $manager->flush();
 

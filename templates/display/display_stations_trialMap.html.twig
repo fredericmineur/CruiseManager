@@ -58,6 +58,7 @@
 {% block javascripts %}
 
     <script type="text/javascript" src="/js/datatables.min.js"></script>
+    <script src="/js/myDataTable/dataTables.fixedHeader.min.js"></script>
     <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
@@ -75,8 +76,12 @@
                 // dom: "<'row'<'col-sm-3'l><'col-sm-3'f><'col-sm-6'p>>" +
                 //     "<'row'<'col-sm-12'tr>>" +
                 //     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                responsive: true,
-                paging: false,
+                // responsive: true,
+                // paging: false,
+                fixedHeader: {
+                    header: true,
+                    // footer: true
+                },
 
                 "ajax": {
                     "url": "/api/getStationsGeoJSON",
@@ -105,7 +110,7 @@
                                 console.log(layer);
                                 layer.setStyle({
                                     color: 'red',
-                                    radius: 10,
+                                    radius: 7,
                                     fillColor: 'red',
                                     fillOpacity: 1
                                 });
@@ -128,7 +133,7 @@
                     {"targets": 1, "width" : "50px"}, {"targets": 2, "width" : "50px"}
                 ]
             });
-            new $.fn.dataTable.FixedHeader( tableStations );
+            // new $.fn.dataTable.FixedHeader( tableStations );
 
 
 

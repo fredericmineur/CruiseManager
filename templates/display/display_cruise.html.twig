@@ -72,6 +72,7 @@
                                 <p>Start: {{ trip.startdate|date('Y-m-d') }}</p>
                                 <p>End: {{ trip.enddate|date('Y-m-d') }}</p>
                                 <p>Destination: {{ trip.destinationarea }}</p>
+                                <p><a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i class="fa fa-edit fa-2x"></i></a></p>
                             </div>
                             <div class="card-body">
                                 <h5>Trip investigators</h5>
@@ -82,6 +83,7 @@
                                             <th>First name</th>
                                             <th>Surname</th>
                                             <th>ID</th>
+                                            <th>Campaign</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -90,6 +92,11 @@
                                             <td>{{ tripinvestigator.firstname }}</td>
                                             <td>{{tripinvestigator.surname}}</td>
                                             <td>{% if tripinvestigator.investigatornr is not null %}yes{% endif %}</td>
+                                            <td>
+{#                                                {{ tripinvestigator.campaign | length > 25 ?#}
+{#                                                       tripinvestigator.campaign|slice(0,22) ~ '...' : tripinvestigator.campaign }}#}
+                                                {{ tripinvestigator.campaign }}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

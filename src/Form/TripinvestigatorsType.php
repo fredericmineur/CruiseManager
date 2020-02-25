@@ -63,6 +63,15 @@ class TripinvestigatorsType extends AbstractType
             ->add('investigatornr', HiddenType::class)
 
 
+            ->add('campaign', TextType::class, [
+                'label' => 'Campaign',
+                'required' => false
+            ])
+
+            ->add('campaignnr', HiddenType::class)
+
+
+
 
 //            ->add('initials')
 //            ->add('serverdate')
