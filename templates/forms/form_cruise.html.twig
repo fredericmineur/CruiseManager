@@ -113,7 +113,7 @@
     </div>
 
     <div class="container-fluid">
-        {{ form_widget(formCruise.trips, {'alltripsproperties': alltripsproperties, 'mode': mode}) }}
+        {{ form_widget(formCruise.trips) }}
     </div>
     {{ form_end(formCruise) }}
 {% endblock %}
@@ -128,8 +128,18 @@
 
     <script>
         $(document).ready(function () {
+
+            var allTripsRemoveDeleteTripFunctionality = null;
+
+            var mode = '{{ mode }}';
+            if(mode == 'edit') {
+                allTripsRemoveDeleteTripFunctionality = {{ allTripsRemoveDeleteTripFunctionality | json_encode| raw }};
+
+            } 
+
+
             //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
-            addTripsAndInvestigators.init();
+            addTripsAndInvestigators.init(allTripsRemoveDeleteTripFunctionality, mode);
             addCampaigns.init();
             $('#cruise_principalinvestigator').select2();
 

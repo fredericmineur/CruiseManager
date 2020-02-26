@@ -236,7 +236,8 @@ class CruiseController extends AbstractController
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
             'mode' => 'new',
-            'newplancode' =>$newplancode
+            'newplancode' =>$newplancode,
+            'allTripsRemoveDeleteTripFunctionality' => null
         ]);
     }
 
@@ -244,7 +245,7 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/{cruiseId}/edit", name="cruise_edit", options={"expose"=true})
      */
-    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId, TripRepository $tripRepository)
+    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId, SerializerInterface $serializer)
     {
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
@@ -253,36 +254,61 @@ class CruiseController extends AbstractController
         $originalTrips = new ArrayCollection();
 
         //Idea: link to tripid. In twig file, relate to hidden file
-        $allTripsProperties = [];
+        $allTripsRemoveDeleteTripFunctionality = [];
 
         foreach ($cruise->getTrips() as $trip) {
 
-            $tripActions = false;
-            $tripEquipments = false;
-            $tripNotes = false;
+            $removeDeleteTripFunctionality = false;
             $tripid = $trip->getTripid();
-            $tripProperty = [$tripid=>[['tripActions'=>false], ['tripEquipments' => false], ['tripNotes' => false]] ];
+
+//Check for the conditions for the possibility of deleting a trip or not
+            if ($trip->getInsync()== 1){
+                $removeDeleteTripFunctionality = true;
+            } elseif ($trip->getStatus() == 'planned') {
+                $removeDeleteTripFunctionality = true;
+            } else {
+                $tripTripactions = $manager->getRepository(Tripactions::class)->findBy(['tripnr' => $tripid], []);
+                if(count($tripTripactions)>0) {
+                    $removeDeleteTripFunctionality = true;
+                } else {
+                    $tripTripequipments = $manager->getRepository(Tripequipment::class)->findBy(['tripnr' => $tripid], []);
+                    if(count($tripTripequipments)>0){
+                        $removeDeleteTripFunctionality = true;
+                    } else {
+                        $tripTripnotes = $manager->getRepository(Tripnotes::class)->findBy(['tripnr' => $tripid],[]);
+                        if(count($tripTripnotes)>0){
+                            $removeDeleteTripFunctionality = true;
+                        }
+                    }
+                }
+            }
+
+
+
+            $tripRemoveDeleteTripFunctionality = [$tripid => $removeDeleteTripFunctionality];
+
 
             foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                 if ($tripinvestigator->getInvestigatornr()!== null) {
                     $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
                 }
             }
-            //Check for the presence of tripActions,.... (in order to prevent the possibility of deleting the trip)
-            $tripTripactions = $manager->getRepository(Tripactions::class)->findBy(['tripnr' => $tripid], []);
-            if(count($tripTripactions)>0) {$tripProperty[$tripid][0]['tripActions']= true;}
-            $tripTripequipments = $manager->getRepository(Tripequipment::class)->findBy(['tripnr' => $tripid], []);
-            if(count($tripTripequipments)>0) { $tripProperty[$tripid][1]['tripEquipments']= true; }
-            $tripTripnotes = $manager->getRepository(Tripnotes::class)->findBy(['tripnr' => $tripid],[]);
-            if(count($tripTripnotes)>0) { $tripProperty[$tripid][2]['tripNotes']= true;}
 
-
-//            dd($tripProperty);
 
             $originalTrips->add($trip);
-            array_push($allTripsProperties, $tripProperty);
+            array_push($allTripsRemoveDeleteTripFunctionality, $tripRemoveDeleteTripFunctionality);
         }
-//        dd($allTripsProperties);
+
+        //Transforming the array into an object
+        $allTripsRemoveDeleteTripFunctionality = json_decode(json_encode($allTripsRemoveDeleteTripFunctionality), FALSE);
+//        $serializedAllTripsProperties = $serializer->serialize($allTripsProperties, 'json');
+
+
+
+//        dd($serializedAllTripsProperties);
+
+
+
 
 
 
@@ -338,7 +364,8 @@ class CruiseController extends AbstractController
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
             'mode' => 'edit',
-            'alltripsproperties' => $allTripsProperties
+            'allTripsRemoveDeleteTripFunctionality' => $allTripsRemoveDeleteTripFunctionality
+
         ]);
     }
 
@@ -377,28 +404,28 @@ class CruiseController extends AbstractController
         ]);
     }
 
-    public static function generateJsonDistinctFirstNamesTripInvestigators (EntityManagerInterface $manager){
-        $tripInvestigatorsFirstNames = $manager->getRepository(Tripinvestigators::class)
-            ->findDistinctFirstNames();
-        $arrayFirstNames = [];
-        foreach($tripInvestigatorsFirstNames as $firstName) {
-            $firstName = trim($firstName['firstname']);
-            array_push($arrayFirstNames, $firstName);
-        }
-        return json_encode($arrayFirstNames);
-
-    }
-
-    public static function generateDistinctSurnamesTripInvestigators(EntityManagerInterface $manager) {
-        $tripInvestigatorsSurnames = $manager->getRepository(Tripinvestigators::class)
-            ->findDistinctSurnames();
-        $arraySurnames = [];
-        foreach ($tripInvestigatorsSurnames as $surname) {
-            $surname = trim($surname['surname']);
-            array_push($arraySurnames, $surname);
-        }
-        return json_encode($arraySurnames);
-    }
+//    public static function generateJsonDistinctFirstNamesTripInvestigators (EntityManagerInterface $manager){
+//        $tripInvestigatorsFirstNames = $manager->getRepository(Tripinvestigators::class)
+//            ->findDistinctFirstNames();
+//        $arrayFirstNames = [];
+//        foreach($tripInvestigatorsFirstNames as $firstName) {
+//            $firstName = trim($firstName['firstname']);
+//            array_push($arrayFirstNames, $firstName);
+//        }
+//        return json_encode($arrayFirstNames);
+//
+//    }
+//
+//    public static function generateDistinctSurnamesTripInvestigators(EntityManagerInterface $manager) {
+//        $tripInvestigatorsSurnames = $manager->getRepository(Tripinvestigators::class)
+//            ->findDistinctSurnames();
+//        $arraySurnames = [];
+//        foreach ($tripInvestigatorsSurnames as $surname) {
+//            $surname = trim($surname['surname']);
+//            array_push($arraySurnames, $surname);
+//        }
+//        return json_encode($arraySurnames);
+//    }
 
 
 

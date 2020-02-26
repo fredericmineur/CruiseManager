@@ -2,12 +2,12 @@
     <div class="card">
         <div class="card-header">
             <h4>Manage the trips </h4>
-
-            {{   dump(alltripsproperties) }}
-            {{ dump(mode) }}
+{#{{ dump(form) }}#}
+{#            {{   dump(alltripsproperties) }}#}
+{#            {{ dump(mode) }}#}
         </div>
         <div class="card-body">
-            {{ form_widget(form, {'alltripsproperties': alltripsproperties, 'mode': mode}) }}
+            {{ form_widget(form) }}
 
 
             <div class="form-group">
@@ -31,9 +31,9 @@
             </div>
             <div class="col-4">
                 {{ form_row (form.destinationarea) }} {{ form_row(form.tripid) }}
-                {{ dump (form.tripid.vars.value) }}
-{#                {{   dump(alltripsproperties) }}#}
-{#                {{ mode }}#}
+{#                {{ dump(form) }}#}
+{#                {{ dump (form.tripid.vars.value) }}#}
+
             </div>
             <div class="col-2">
                 {#                <button type="button" class="btn btn-danger remove-trip" data-action="delete" data-id="{{ id }}"#}
@@ -46,7 +46,7 @@
                     <i class="fa fa-trash fa-2x"></i>
                 </button>
 
-{% dump (form.tripid.vars.value) %}
+
                 <button type="button" class="btn btn-primary clone-trip" data-action="clone" data-id="{{ id }}"
                         data-target="#block_{{ id }}">
                     <i class="fa fa-clone fa-2x"></i>
