@@ -40,8 +40,10 @@
                     <div class="col">
                         <a href="{{ path('cruise_edit', {'cruiseId': cruise.cruiseid}) }}"><i
                                     class="btn btn-success fa fa-edit fa-4x"></i></a>
+                        {% if cruise.trips is empty %}
                         <a href="{{ path('cruise_remove_warning', {'cruiseId': cruise.cruiseid}) }}"><i
                                     class="btn btn-danger fa fa-trash fa-4x"></i></a>
+                        {% endif %}
                     </div>
                 </div>
 

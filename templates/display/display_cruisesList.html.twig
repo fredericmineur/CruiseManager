@@ -136,12 +136,15 @@
                                     +'&nbsp <a href="'
                                     + Routing.generate('cruise_edit', {cruiseId: row.CruiseID})
                                     + '" title="Edit">'
-                                    +'<span style="font-size: 23px; "><i class = "fa fa-edit"></i></span></a>'
-                                    +'&nbsp <a href="'
-                                    + Routing.generate('cruise_edit', {cruiseId: row.CruiseID}) + Routing.generate('cruise_edit', {cruiseId: row.CruiseID})
+                                    +'<span style="font-size: 23px; "><i class = "fa fa-edit"></i></span></a>';
+                                    // +'&nbsp <a href="'
+                                    // + Routing.generate('cruise_edit', {cruiseId: row.CruiseID}) + Routing.generate('cruise_edit', {cruiseId: row.CruiseID});
 
 
-                                ;
+                                if(row.numberOfTrips == 0) {
+                                    cruiseOutput += ('&nbsp&nbsp&nbsp<a href=" ' + Routing.generate('cruise_remove_warning', {cruiseId: row.CruiseID})
+                                        + '"><span style="font-size: 20px; "><i style="color:red" class="fa fa-trash"></i></span></a>');
+                                }
 
                                     // + '<a href="' + Routing.generate('')
                                 return cruiseOutput;

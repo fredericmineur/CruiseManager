@@ -27,39 +27,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class CruiseController extends AbstractController
 {
-//
-//  /**
-//  * @Route("/campaign/{campaignId}/cruises", name="cruises_for_campaign")
-//  */
-//
-//    public function cruisesIndex($campaignId = null)
-//
-//    {
-////        $cruisesForCampaign=false;
-////        if ($campaignId) {
-////            $cruisesForCampaign=true;
-////        }
-//        $cruises = $manager->getRepository(Cruise::class)->findBy([], ['plancode'=> 'DESC']);
-////        $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
-////        $repoInvestigator = $this->getDoctrine()->getRepository(Investigators::class);
-//
-//
-//        //Check findBy with first array empty https://stackoverflow.com/questions/7124340/doctrine-coregettable-findall-how-to-specify-order
-//
-////        $cruises = $repoCruise->findAll();
-////        $investigators = $repoInvestigator->findAll();
-////        $repoCampaign = $this->getDoctrine()->getRepository(Campaign::class);
-////        $campaigns1 = $repoCampaign->findAll();
-//
-////        $campaign = $repoCampaign->findOneBy(['campaignid' => $campaignId ]);
-//
-//        return $this->render('display/display_cruises.html.twig', [
-//            'cruises' => $cruises,
-////            'investigators' => $investigators,
-////            'campaign' => $campaign,
-////            'cruisesForCampaign' =>$cruisesForCampaign
-//        ]);
-//    }
+
 
 
     /**
@@ -114,7 +82,7 @@ class CruiseController extends AbstractController
 
 
     /**
-     * @Route("/cruises/remove_warning/{cruiseId}", name="cruise_remove_warning")
+     * @Route("/cruises/remove_warning/{cruiseId}", name="cruise_remove_warning", options={"expose"=true})
      */
     public function warnRemoveCruise(EntityManagerInterface $manager, $cruiseId)
     {
@@ -131,16 +99,16 @@ class CruiseController extends AbstractController
     {
         $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid'=>$cruiseId]);
 
-        foreach ($cruise->getTrips() as $trip){
-            foreach ($trip->getTripinvestigators() as $tripinvestigator){
-                $trip->removeTripinvestigator($tripinvestigator);
-            }
-            foreach ($trip->getTripstations() as $tripstation) {
-                $trip->removeTripstation($tripstation);
-            }
-            $cruise->removeTrip($trip);
-
-        }
+//        foreach ($cruise->getTrips() as $trip){
+//            foreach ($trip->getTripinvestigators() as $tripinvestigator){
+//                $trip->removeTripinvestigator($tripinvestigator);
+//            }
+//            foreach ($trip->getTripstations() as $tripstation) {
+//                $trip->removeTripstation($tripstation);
+//            }
+//            $cruise->removeTrip($trip);
+//
+//        }
         foreach ($cruise->getCampaign() as $campaign){
             $cruise->removeCampaign($campaign);
         }
@@ -199,9 +167,6 @@ class CruiseController extends AbstractController
             }
 
 
-
-
-
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
 
@@ -245,7 +210,7 @@ class CruiseController extends AbstractController
     /**
      * @Route("/cruises/{cruiseId}/edit", name="cruise_edit", options={"expose"=true})
      */
-    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId, SerializerInterface $serializer)
+    public function editCruise(Request $request, EntityManagerInterface $manager, $cruiseId)
     {
         $repoCruise = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruise->findOneBy(['cruiseid' => $cruiseId]);
@@ -301,18 +266,6 @@ class CruiseController extends AbstractController
 
         //Transforming the array into an object
         $allTripsRemoveDeleteTripFunctionality = json_decode(json_encode($allTripsRemoveDeleteTripFunctionality), FALSE);
-//        $serializedAllTripsProperties = $serializer->serialize($allTripsProperties, 'json');
-
-
-
-//        dd($serializedAllTripsProperties);
-
-
-
-
-
-
-
 
 
         $form = $this ->createForm(CruiseType::class, $cruise);
