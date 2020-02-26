@@ -37,31 +37,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
 {
         $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
         $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
-//            $trip1 = new Trip();
-//        $trip1->setStartdate(new \DateTime('2020-04-11'))->setEnddate(new \DateTime('2020-04-11'))
-//            ->setDestinationarea('BCP');
-////        $trip2 = new Trip();
-////        $trip2->setStartdate(new \DateTime('2020-04-12'))->setEnddate(new \DateTime('2020-04-12'))
-////            ->setDestinationarea('BCP2');
-////        $cruise->addTrip($trip1)->addTrip($trip2);
-//        $tripinvestigator1 = new Tripinvestigators();
-//        $tripinvestigator2 = new Tripinvestigators();
-//        $tripinvestigator3 = new Tripinvestigators();
-//        $tripinvestigator1->setFirstname('Fn1')->setSurname('Sn1');
-//        $tripinvestigator2->setFirstname('Fn2')->setSurname('Sn2');
-//        $tripinvestigator3->setFirstname('Fn3')->setSurname('Sn3');
-//        $trip1->addTripinvestigator($tripinvestigator1)->addTripinvestigator($tripinvestigator2)
-//            ->addTripinvestigator($tripinvestigator3);
-//        $tripStation1 = new Tripstations();
-//        $tripStation2 = new Tripstations();
-//        $tripStation3 = new Tripstations();
-//        $tripStation1->setCode('test1')->setDeflatitude(45)->setDeflongitude(45);
-//        $tripStation2->setCode('test2')->setDeflatitude(45)->setDeflongitude(45);
-//        $tripStation3->setCode('test3')->setDeflatitude(45)->setDeflongitude(45);
-//        $trip1->addTripstation($tripStation1)->addTripstation($tripStation2)
-//        ->addTripstation($tripStation3);
 
-//        dd($trip);
 
         $form = $this->createForm(TripType::class, $trip);
         $form ->handleRequest($request);
@@ -98,11 +74,6 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
      */
     public function tripsIndex()
     {
-//        $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
-//        $trips = $repoTrips->findAll();
-//        return $this->render('display/display_trips.html.twig', [
-//            'trips'=> $trips
-//        ]);
 
         return $this->render('display/display_tripsListAjax.html.twig');
     }
@@ -113,7 +84,6 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     public function getTripsForTable(SerializerInterface $serializer, TripRepository $tripRepository, EntityManagerInterface $em)
     {
         $trips = $tripRepository->getAllTripsForTable();
-//        dd($trips);
         $jsonTrips = $serializer->serialize($trips, 'json');
 
         return new JsonResponse($jsonTrips, 200, [], true);
@@ -155,14 +125,17 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     public function listTripDestinations(SerializerInterface $serializer, TripRepository $tripRepository)
     {
         $destinations= $tripRepository->getListDestinationArea();
-//        dd($destinations);
+
         $jsonDestinations = $serializer->serialize($destinations, 'json');
         return new JsonResponse($jsonDestinations, 200, [], true);
     }
 
 }
 
-//
+// NB: logic maybe useful for removing cruise/campaigns entries
+
+
+
 ////MANY TO MANY WITH A SUPPLEMENTARY FIELD IN THE INTERMEDIARY TABLE
 ////https://openclassrooms.com/forum/sujet/symfony-manytomany-avec-un-champs-supplementaire
 ////https://github.com/capdigital/manytomanyattribute

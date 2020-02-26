@@ -25,13 +25,8 @@ class InvestigatorController extends AbstractController
     /**
      * @Route("/investigators", name="investigators_index")
      */
-    public function displayInvestigators (EntityManagerInterface $manager){
-//        $repoInvestigators = $manager->getRepository(Investigators::class);
-//        $investigators = $repoInvestigators->findBy([],['surname'=>'ASC']);
-//        return $this->render('display/display_investigators.html.twig', [
-//            'investigators' => $investigators
-//        ]);
-
+    public function displayInvestigators (EntityManagerInterface $manager)
+    {
         return $this->render('display/display_investigatorsListAjax.html.twig');
     }
 

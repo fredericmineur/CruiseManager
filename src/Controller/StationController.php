@@ -24,7 +24,6 @@ class StationController extends AbstractController
      */
     public function getStations (SerializerInterface $serializer, StationRepository $stationRepository, $value)
     {
-//        $stationCodes = $stationRepository->listStationCodes();
         $stationCodes = $stationRepository->listStationCodesWithConcat($value);
         $jsonStationCodes = $serializer->serialize($stationCodes, 'json');
         return new JsonResponse($jsonStationCodes, 200, [], true);
@@ -72,10 +71,7 @@ class StationController extends AbstractController
     public function getAllStations (SerializerInterface $serializer, StationRepository $stationRepository)
     {
         $stations = $stationRepository->findAll();
-//        foreach ($stations as $station){
-////            dd($station->getTripstations());
-//        }
-//        dd($stations);
+
         $jsonStations = $serializer->serialize($stations, 'json', ['groups'=>'read:all_stations']);
         return new JsonResponse($jsonStations, 200, [], true);
     }
@@ -143,16 +139,6 @@ class StationController extends AbstractController
 
     }
 
-//    /**
-//     * @Route("/stations/createWithParams/{lat}-{long}-{code}", name="create_station_params")
-//     */
-//    public function createStationParams (Request $request, EntityManagerInterface $manager, $lat, $long, $code)
-//    {
-//        $station = new Stations();
-//        $station->setLatitude($lat)->setLongitude($long)->setCode($code);
-//        dd($station);
-//    }
-
 
 
     /**
@@ -163,7 +149,6 @@ class StationController extends AbstractController
         $station = $stationRepository->findOneBy(['nr' => $stationId]);
         $trips = $manager->getRepository(Trip::class)->stationTrips($stationId);
         $cruises = $manager->getRepository(Cruise::class)->stationCruise($stationId);
-//        dd($cruises);
 
         return $this->render('display/display_station.html.twig',[
             'station' => $station,

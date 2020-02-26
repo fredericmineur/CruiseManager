@@ -36,33 +36,6 @@ class ImisController extends AbstractController
         return $response;
     }
 
-//    /**
-//     * @Route("/imispersonsforfull", name="searchimispersonsforfull", options={"expose"=true})
-//     */
-//    public function getImisPersonsForFull(ImisService $imisService, $index = 1): JsonResponse
-//    {
-//        $looping = true;
-//        $persons = [];
-//        while($looping) {
-//            $data = $imisService->getPersonsForFull($index);
-//            $persons = array_merge(($persons), json_decode($data, true));
-////            $persons = array_merge($persons, $data);
-//            $index += 10;
-//            if ($index > 50) {
-//                $looping = false;
-//            }
-////            if ($data === NULL || empty($data)){
-////                break;
-////            }
-//        }
-//        dump(gettype($persons));
-//        dd($persons);
-////        $data = $imisService->getPersonsForFull($index);
-//        $response = JsonResponse::fromJsonString($persons);
-////        dump($data);
-//        dd($response);
-//        return $response;
-//    }
 
     /**
      * @Route("/imisprojectById/{imisId}", name="findImisProject", options={"expose"=true})
