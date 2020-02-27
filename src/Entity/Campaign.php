@@ -59,6 +59,24 @@ class Campaign
      */
     private $imisprojectnr;
 
+    private $imistitle;
+
+    /**
+     * @return mixed
+     */
+    public function getImistitle()
+    {
+        return $this->imistitle;
+    }
+
+    /**
+     * @param mixed $imistitle
+     */
+    public function setImistitle($imistitle): void
+    {
+        $this->imistitle = $imistitle;
+    }
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
@@ -82,26 +100,6 @@ class Campaign
      */
     private $samples;
 
-//    /**
-//     * @var string|null
-//     */
-//    private $imisPlusName;
-
-//    /**
-//     * @return string|null
-//     */
-//    public function getImisPlusName(): ?string
-//    {
-//        return $this->imisPlusName;
-//    }
-//
-//    /**
-//     * @param string|null $imisPlusName
-//     */
-//    public function setImisPlusName(?string $imisPlusName): void
-//    {
-//        $this->imisPlusName = $imisPlusName;
-//    }
 
     /**
      * Constructor

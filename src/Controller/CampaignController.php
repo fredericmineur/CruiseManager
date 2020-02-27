@@ -3,32 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Campaign;
-use App\Entity\Cruise;
-use App\Entity\Investigators;
-use App\Entity\Trip;
-use App\Entity\Tripinvestigators;
 use App\Form\CampaignType;
-use App\Form\CruiseEditType;
-use App\Form\CruiseTrialType;
-use App\Form\CruiseType;
-use App\Form\TripType;
 use App\Repository\CampaignRepository;
 use App\Service\ImisService;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
-
 
 class CampaignController extends AbstractController
 {
@@ -135,9 +118,6 @@ class CampaignController extends AbstractController
             $imisJson = json_decode($imisJson, true);
         }
 
-
-
-
         if($form->isSubmitted() && $form->isValid()){
             $manager->persist($campaign);
             $manager->flush();
@@ -153,10 +133,7 @@ class CampaignController extends AbstractController
         return $this->render('forms/form_campaign.html.twig', [
             'formCampaign' => $form->createView(),
             'mode' => 'edit',
-//            'imisJson'=> gettype(json_decode($imisJson, true)),
-//            'imisJson'=> gettype($imisJson)
             'imisJson'=> $imisJson
-
         ]);
     }
 

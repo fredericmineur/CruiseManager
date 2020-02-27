@@ -8,6 +8,7 @@
 
 namespace App\Service;
 
+use stdClass;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ImisService
@@ -47,6 +48,7 @@ class ImisService
 
         }
         return $response->getContent();
+//        return  array('result'=> json_decode ($response->getContent(),true));
     }
 
 //    public function getPersonsForFull($index)//: Array

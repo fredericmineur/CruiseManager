@@ -3,15 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Campaign;
-use App\Entity\Cruise;
-use App\Form\DataTransformer\CampaignToNumberTransformer;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CampaignType extends AbstractType
@@ -35,10 +33,23 @@ class CampaignType extends AbstractType
             ->add('campaign',
                 TextType::class, [
                     'label' => 'Name of the campaign',
+                    'required'=>true,
                     'attr' => [
                         'placeholder' => 'Campaign'
                     ]
                 ])
+
+            ->add('imistitle',
+                ChoiceType::class, [
+                    'choices' => [
+                        '' => 1,
+                    ],
+                    'mapped' => false,
+                    'required' => false,
+                    'empty_data'=>[]
+                    ]
+                )
+
             ->add('memo',
                 TextareaType::class, [
                     'label' => 'Memo',
@@ -53,23 +64,18 @@ class CampaignType extends AbstractType
                     'label' => 'IMIS project number',
                     'required' => false,
                     'attr' => [
-                        'placeholder' => 'IMIS project number'
+                        'placeholder' => 'IMIS project number',
+                         'readonly' => true
                     ]
                 ]
-            )
+            );
 
-//            ->add('imisprojectnr',
-//                HiddenType::class
-//            )
-
-
-//            ->add('campaignid',
-//                HiddenType::class)
-
-        ;
-
-//        $builder->get('campaignid')
-//            ->addModelTransformer($this->transformer);
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+                $data = $event->getData();
+                $data['imistitle'] =1;
+                $event->setData($data);
+            }
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
