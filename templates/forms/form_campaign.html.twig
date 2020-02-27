@@ -1,31 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
-{#   {{dump(app.flashes)}}#}
-
-    {% if  mode == 'edit' and imisJson is not null  %}
-    <div class="container my-2">
-        <div class="card">
-            <div class="card-header">
-                IMIS data for the campaign ({{ imisJson["projectrec"]["ProID"] }})
-            </div>
-            <div class="card-body">
-                {% if imisJson %}
-{#                    {{ dump(imisJson["projectrec"]) }}#}
-                    <p>Standard title: "{{ imisJson["projectrec"]["StandardTitle"] }}"</p>
-                    <p>Original title: "{{ imisJson["projectrec"]["OrigTitle"] }}"</p>
-                    <p>Acronym: "{{ imisJson["projectrec"]["Acronym"] }}"</p>
-
-                {% else %} Campaign not in IMIS {% endif %}
-
-            </div>
-        </div>
-
-
-    </div>
-    {% endif %}
-
     <div class="container my-2">
         <div class="card">
             <div class="card-header">
@@ -33,127 +8,119 @@
                 {% elseif  mode == 'create'%}Create campaign {% endif %}
             </div>
 
-        <div class="card-body">
-            {{ form_start(formCampaign) }}
+            <div class="card-body">
+                {{ form_start(formCampaign) }}
 
-            <div class="row">
-                <div class="col-8">
-                    {{ form_row(formCampaign.campaign) }}
-                </div>
-                <div class="col-4">
-                    {{ form_row(formCampaign.imisprojectnr) }}
+                <div class="row">
+                    <div class="col-8">
+                        {{ form_row(formCampaign.imistitle) }}
+                    </div>
+                    <div class="col-4">
+                        {{ form_row(formCampaign.imisprojectnr) }}
 
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-8">
+                        {{ form_row(formCampaign.campaign) }}
+                    </div>
+                </div>
+
+                {{ form_row(formCampaign.memo) }}
+
+
+                <button type="submit" class="btn btn-primary">
+                    {% if mode == 'edit' %}
+                    Confirm edit{% elseif mode == 'create' %}
+                    Submit new campaign {% endif %}
+                </button>
+
+                {{ form_end(formCampaign) }}
             </div>
-
-            {{ form_row(formCampaign.memo) }}
-
-
-        <button type="submit" class="btn btn-primary">
-            {% if mode == 'edit' %}
-            Confirm edit{% elseif mode == 'create' %}
-            Submit new campaign {% endif %}
-        </button>
-
-        {{ form_end(formCampaign) }}
-
         </div>
     </div>
+
+    <div  id="myModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Copy to campaign field</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <strong>Which title do you want to copy in the campaign field?</strong>
+                        <div class="form-check">
+                           <input class="form-check-input" type="radio" name="copyImisProj" id="acronym" value="a">
+                           <label id="label_acronym"  class="form-check-label" for="exampleRadios1"></label>
+                        </div>
+                        <div class="form-check">
+                           <input class="form-check-input" type="radio" name="copyImisProj" id="shortTitle" value="b">
+                           <label id="label_shortTitle"  class="form-check-label" for="exampleRadios2"></label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button  id="copyValues" type="button" class="btn btn-primary">Copy value</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
 {% endblock %}
 
 {% block javascripts %}
-    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
     <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 
     <script>
-        // function addAutocompleteForCampaign(){
-
         $(document).ready(function () {
-
-            /////AUTO COMPLETE FIELD TITLE
-            var optionsTitle = {
-                url: function(phrase){
-                    // return Routing.generate("searchImisProjects", {searchParameter: phrase});
-                    return Routing.generate("searchImisProjects") + "/" + phrase;
-                },
-                getValue: function (element) {
-                    return element.StandardTitle;
-                },
-                ajaxSettings: {
-                    dataType: "json",
-                    method: "POST",
-                    data: {
-                        dataType: "json"
+            $('#campaign_imistitle').select2({
+                    placeholder: 'Select a IMIS project',
+                    allowClear: true,
+                    minimumInputLength:3,
+                    ajax: {
+                        url: function (params) {
+                            return Routing.generate("searchImisProjects") + '/' + params.term;
+                        },
+                        processData: false,
+                        dataType: 'json',
                     }
-                },
+                }
+            );
 
-                preparePostData: function(data) {
-                    data.phrase = $('#campaign_campaign').val();
-                    return data;
-                },
-                list: {
-                    maxNumberOfElements: 10,
-                    onChooseEvent: function () {
-                        var selectedItemValue = $('#campaign_campaign').getSelectedItemData().ProID;
-                        $('#campaign_imisprojectnr').val(selectedItemValue);
-                    }
-                },
+            {% if  mode == 'edit' and imisJson is not null  %}
+                var data = {
+                    id: 1,
+                    text: "{{ imisJson["projectrec"]["StandardTitle"] }}"
+                };
 
-                requestDelay: 400
-            };
+                var newOption = new Option(data.text, data.id, false, true);
+                $('#campaign_imistitle').append(newOption);
+            {% endif %}
 
-            //AUTOCOMPLETE FOR IMIS (BY ID)
-            // var optionsImis = {
-            //     url: function(phrase) {
-            //         console.log( Routing.generate("findImisProject", {imisId: phrase})) ;
-            //         return Routing.generate("findImisProject", {imisId: phrase}) ;
-            //     },
-            //     getValue: function (element) {
-            //         console.log(element.projectrec);
-            //         return element.projectrec.ProID;
-            //     },
-            //     // listLocation: "projectrec",
-            //     // getValue: "ProID",
-            //
-            //     ajaxSettings: {
-            //         dataType: "json",
-            //         method: "POST",
-            //         data: {
-            //             dataType: "json"
-            //         }
-            //     },
-            //     preparePostData: function(data) {
-            //         data.phrase = $('#campaign_imisprojectnr').val();
-            //         return data;
-            //     },
-            //     list: {
-            //         onChooseEvent : function () {
-            //             var selectedItemValue = $('#campaign_imisprojectnr').getSelectedItemData().projectrec.StandardTitle;
-            //             $('#campaign_campaign').val(selectedItemValue);
-            //         }
-            //     },
-            //     requestDelay: 400
-            // };
+            $('#campaign_imistitle').on('select2:select', function (e) {
+                $('#campaign_imisprojectnr').val(e.params.data.ProID);
+                $('#myModal').modal('show');
+                $('#label_acronym').html('<b>The acronym: </b>' +(e.params.data.Acronym || '') );
+                $('#acronym').val((e.params.data.Acronym || ''));
+                $('#label_shortTitle').html('<b>The first 50 characters of the tile: </b>'+ e.params.data.text.substring(0, 50) );
+                $('#shortTitle').val(e.params.data.text.substring(0, 50));
+            });
 
+            $('#campaign_imistitle').on('select2:clear', function (e) {
+                $('#campaign_imisprojectnr').val(null);
+            });
 
+            $("#copyValues").click(function(){
+                $('#campaign_campaign').val($('input:radio[name=copyImisProj]:checked').val());
+                $('#myModal').modal('hide');
+            });
 
-
-            $("#campaign_campaign").easyAutocomplete(optionsTitle);
-            // $("#campaign_imisprojectnr").easyAutocomplete(optionsImis);
-        })
-
-
-
-
-
+        });
     </script>
-
-
 
 {% endblock %}

@@ -22,6 +22,8 @@ class ImisController extends AbstractController
     public function getImisPersons(ImisService $imisService, $searchParameter): JsonResponse
     {
         $data = $imisService->getPersons($searchParameter);
+
+
         $response = JsonResponse::fromJsonString($data);
         return $response;
     }
@@ -32,10 +34,16 @@ class ImisController extends AbstractController
     public function getImisProjects(ImisService $imisService, $searchParameter): JsonResponse
     {
         $data = $imisService->getProjects($searchParameter);
-        $response = JsonResponse::fromJsonString($data);
-        return $response;
-    }
+        $data = json_decode($data, true);
 
+        foreach($data as $k =>$val) {
+            $data[$k]['id']= (int)$data[$k]['RowNum'];
+            $data[$k]['text']= $data[$k]['StandardTitle'];
+            unset($data[$k]['RowNum'], $data[$k]['StandardTitle']);
+        }
+        $data=json_encode(array('results'=>$data));
+        return JsonResponse::fromJsonString($data);
+    }
 
     /**
      * @Route("/imisprojectById/{imisId}", name="findImisProject", options={"expose"=true})
@@ -43,16 +51,9 @@ class ImisController extends AbstractController
     public static function findImisProject (SerializerInterface $serializer, ImisService $imisService, $imisId)
 
     {
-
-        //FOR USING IN AUTOCOMPLETE (form campaign)....find a way to wrap the JSON in square brackets?
-
         $data = $imisService->getProjectByImisId($imisId);
-
         $response = JsonResponse::fromJsonString($data );
         return $response;
-
-
-
     }
 
 }
