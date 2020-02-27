@@ -19,6 +19,23 @@ class StationRepository extends ServiceEntityRepository
         parent::__construct($registry, Stations::class);
     }
 
+    public function idInTripStation ($stationId)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql ='
+        SELECT listStationsTripStation FROM Stations 
+            LEFT JOIN 
+            (SELECT DISTINCT(StationNR) as listStationsTripStation FROM TRIPSTATIONS WHERE StationNr is not null ) AS StationWithTripstations
+            ON StationWithTripstations.listStationsTripStation = Stations.nr
+            WHERE listStationsTripStation = ?
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $stationId);
+        $stmt->execute();
+        return $stmt->fetchColumn();
+
+    }
+
     public function listStationCodes ()
     {
         return $this->createQueryBuilder('s')

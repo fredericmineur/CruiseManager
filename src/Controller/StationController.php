@@ -48,7 +48,8 @@ class StationController extends AbstractController
                     'stationId' => $station->getNr(),
                     'code' => trim($station->getCode()),
                     'latitude_rounded' => round($station->getLatitude(), 4),
-                    'longitude_rounded' => round($station->getLongitude(), 4)
+                    'longitude_rounded' => round($station->getLongitude(), 4),
+                    'idInTripStation' => $stationRepository->idInTripStation($station->getNr())
                 ),
                 'geometry' => array(
                     'type' => 'Point',
@@ -117,7 +118,7 @@ class StationController extends AbstractController
     }
 
     /**
-     * @Route("/stations/edit/{stationId}", name="edit_station")
+     * @Route("/stations/edit/{stationId}", name="edit_station", options={"expose"=true})
      */
     public function editStation(Request $request, EntityManagerInterface $manager, $stationId){
         $station = $this->getDoctrine()->getRepository(Stations::class)
@@ -166,7 +167,7 @@ class StationController extends AbstractController
     }
 
     /**
-     * @Route("/stations/remove_station_warning/{stationId}", name="remove_station_warning")
+     * @Route("/stations/remove_station_warning/{stationId}", name="remove_station_warning", options={"expose"=true})
      */
     public function warningRemoveStation (EntityManagerInterface $manager, $stationId){
         $station = $manager->getRepository(Stations::class)->findOneBy(['nr' => $stationId]);
@@ -186,12 +187,12 @@ class StationController extends AbstractController
         return $this->redirectToRoute('display_all_stations');
     }
 
-    /**
-     * @Route("/stations/map", name="stations_map")
-     */
-    public function stationsMap(){
-        return $this->render('display/display_stations_trialMap.html.twig');
-    }
+//    /**
+//     * @Route("/stations/map", name="stations_map")
+//     */
+//    public function stationsMap(){
+//        return $this->render('display/display_stations_trialMap.html.twig');
+//    }
 
 
 
