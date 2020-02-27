@@ -24,7 +24,6 @@ let fillTableAllTrips = (function () {
                     {"data" : "status"},
                     {"data" : "destination"},
                     {"data" : "ship"},
-                    // {"data" : "TripID"},
                 ],
                 "columnDefs": [
 
