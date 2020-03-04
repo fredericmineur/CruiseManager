@@ -7,8 +7,9 @@
     {#    <link rel="stylesheet" type="text/css" href="/css/datatables.min.css"/>#}
 
     {#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
-    <link rel="stylesheet" href="/css/datatables.min.css">
-    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
+{#    <link rel="stylesheet" href="/css/datatables.min.css">#}
+{#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
+    {{ encore_entry_link_tags('displays_app') }}
 
 {% endblock %}
 
@@ -127,11 +128,12 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script type="text/javascript" src="/js/datatables.min.js"></script>
-    {#    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>#}
-    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script type="text/javascript" src="/js/dataTablesForTrip.js"></script>
+{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
+{#   #}
+{#    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>#}
+{#    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
+{#    <script type="text/javascript" src="/js/dataTablesForTrip.js"></script>#}
+    {{ encore_entry_script_tags('displays_app') }}
 
     <script type="text/javascript">
         $(document).ready( function () {

@@ -345,9 +345,13 @@ function addAutoCompleteDestinations(indexTrip) {
 
 
 function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctionality){
-    allTripsRemoveDeleteTripFunctionality.forEach(removeButton);
 
-    function removeButton(trip, index){
+    // console.log(allTripsRemoveDeleteTripFunctionality.length);
+    if (allTripsRemoveDeleteTripFunctionality){
+
+
+
+    allTripsRemoveDeleteTripFunctionality.forEach(function (trip, index) {
         // 'trip' has the following format: Object { 3675: true }
         var tripId = Object.keys(trip)[0];
         var removeTripBoolean  = Object.values(trip)[0];
@@ -361,13 +365,37 @@ function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctio
             var deleteButton = $(deleteButtonColumn).children()[0];
             $(deleteButton).remove();
 
-            console.log(deleteButton);
-        } else {
-            console.log ('removeDeleteButton = false');
+            // console.log(deleteButton);
         }
-
+        // else {
+        //     console.log ('removeDeleteButton = false');
+        // }
+    });
 
     }
+
+    // function removeButton(trip, index){
+    //     // 'trip' has the following format: Object { 3675: true }
+    //     var tripId = Object.keys(trip)[0];
+    //     var removeTripBoolean  = Object.values(trip)[0];
+    //     // $('.block-trip').each(function(){
+    //     //     console.log($(this));
+    //     // })
+    //     if(removeTripBoolean){
+    //         var elementTrip =  $('input[id$=_tripid][value=' + tripId + ']').parents()[2];
+    //         var rowWithdeleteButton = $(elementTrip).children()[0];
+    //         var deleteButtonColumn = $(rowWithdeleteButton).children()[3];
+    //         var deleteButton = $(deleteButtonColumn).children()[0];
+    //         $(deleteButton).remove();
+    //
+    //         // console.log(deleteButton);
+    //     }
+    //     // else {
+    //     //     console.log ('removeDeleteButton = false');
+    //     // }
+    //
+    //
+    // }
 
 }
 
@@ -379,7 +407,8 @@ let addTripsAndInvestigators = (function () {
 
     initObjectTI.init = function (allTripsRemoveDeleteTripFunctionality, mode){
 
-        counter = {countTrip: 0};
+
+        window.counter = {countTrip: 0};
 
         $('#add-trip').click(function(e){
             //getting the number of trips from the counter
@@ -478,6 +507,8 @@ let addTripsAndInvestigators = (function () {
     return initObjectTI;
 
 })();
+
+export default  addTripsAndInvestigators;
 
 
 

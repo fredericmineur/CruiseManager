@@ -3,8 +3,9 @@
 {% block title %}Cruises{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/css/datatables.min.css">
-    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
+{#    <link rel="stylesheet" href="/css/datatables.min.css">#}
+    {{ encore_entry_link_tags('displays_app') }}
+{#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
 
 {% endblock %}
 
@@ -60,10 +61,11 @@
 {#    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>#}
 {#    <script src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/datetime-moment.js"></script>#}
 
-    <script type="text/javascript" src="/js/datatables.min.js"></script>
+{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
+    {{ encore_entry_script_tags('displays_app') }}
 {#    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>#}
-    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{#    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>#}
+{#    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
 
     <script type="text/javascript">
         $(document).ready(function() {

@@ -3,8 +3,10 @@
 {% block title %}Campaigns{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/css/datatables.min.css">
-    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
+{#    <link rel="stylesheet" href="/css/datatables.min.css">#}
+{#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
+
+    {{ encore_entry_link_tags('displays_app') }}
 {% endblock %}
 
 
@@ -56,8 +58,8 @@
             {#            ((a,b)=>a.startdate<=>b.startdate)#}
             <tr>
                 <td>{{ cruise.plancode }} <a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></td>
-                <td>{% set arrayOrphanInvestigatorIds = [0, 264, 549, 556, 637] %}
-                    {% if cruise.principalinvestigator is not empty and cruise.principalinvestigator.investigatorid not in arrayOrphanInvestigatorIds %}
+                <td>
+                    {% if cruise.principalinvestigator is not empty  %}
                         {{ cruise.principalinvestigator.surname }}, {{ cruise.principalinvestigator.firstname |first}}
                         <a href="{{ path('investigator_details', {'investigatorId': cruise.principalinvestigator.investigatorid}) }}" ><i  class="fa fa-info-circle "></i></a>
                     {% endif %}</td>
@@ -91,33 +93,67 @@
 
 
 
-
-
-
-
-
-
-
 {% endblock %}
 
 {% block javascripts %}
 
-    <script type="text/javascript" src="/js/datatables.min.js"></script>
-    <script type="text/javascript" src="/js/myDataTable/tableSearchHeaders.js"></script>
 
-{#    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>#}
-{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
-{#<script src="/js/dataTables.fixedHeader.min.js"></script>#}
-{#<script type="text/javascript">#}
-{#    $(document).ready( function () {#}
-{#        $('#myDataTable').DataTable({#}
-{#            // "dom": '<"top"i>rt<"bottom"flp><"clear">',#}
-{#            fixedHeader: {#}
-{#                footer: true#}
-{#            }#}
-{#            // "scrollX": true#}
-{#        });#}
-{#    } );#}
-{#</script>#}
+
+    {{ encore_entry_script_tags('displays_app') }}
+
+    <script>
+        $(document).ready( function () {
+            //allow sorting date
+            // $.fn.dataTable.moment("D/M/YYYY");
+
+            //Add another header below the first
+            $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
+
+            //Transform the second header row to have the search input fields
+            $('#myDataTable thead tr:odd th').each( function () {
+                $(this).html('<input type="text" placeholder="Search" />');
+            });
+
+            //Create the table
+            var table =
+                $('#myDataTable').DataTable({
+                    // scrollY:        true,
+                    // scrollX:        true
+                });
+
+
+
+            //Hide the generic search field
+            $('#myDataTable_filter').hide();
+
+
+            // Apply the search on every column
+            table.columns().every( function () {
+                var that = this;
+
+                $( 'input', this.header() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                } );
+            } );
+
+
+
+            //prevent that clicking on the search field sort the column
+            //https://stackoverflow.com/questions/31677257/datatables-only-allow-sorting-with-buttons
+
+            $('#myDataTable thead input').on('click', function(e){
+                e.stopPropagation();
+            });
+
+        } );
+    </script>
+
+
+
+
 
 {% endblock %}
