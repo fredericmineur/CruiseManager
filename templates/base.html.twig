@@ -62,10 +62,9 @@
 
 
         {% block body %}{% endblock %}
-{#        <script src="/js/jquery-3.4.1.min.js"></script>#}
-        {{ encore_entry_script_tags('base_app') }}
-{#        <script src="/js/popper.min.js"></script>#}
-{#        <script src="/js/bootstrap.min.js"></script>#}
-        {% block javascripts %}{% endblock %}
+
+        {% block javascripts %}
+            {{ encore_entry_script_tags('base_app') }}
+        {% endblock %}
     </body>
 </html>

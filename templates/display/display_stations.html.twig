@@ -59,17 +59,7 @@
 
 {% block javascripts %}
 
-{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
-{#    <script src="/js/myDataTable/dataTables.fixedHeader.min.js"></script>#}
-{#    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>#}
-{#    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
-
     {{ encore_entry_script_tags('displays_app') }}
-
-
-{#    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"#}
-{#            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="#}
-{#            crossorigin=""></script>#}
 
     <script>
         $(document).ready(function () {
