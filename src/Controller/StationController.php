@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Cruise;
 use App\Entity\Stations;
 use App\Entity\Trip;
-use App\Entity\Tripstations;
 use App\Form\StationType;
 use App\Repository\StationRepository;
 
@@ -186,15 +185,5 @@ class StationController extends AbstractController
         $manager->flush();
         return $this->redirectToRoute('display_all_stations');
     }
-
-//    /**
-//     * @Route("/stations/map", name="stations_map")
-//     */
-//    public function stationsMap(){
-//        return $this->render('display/display_stations_trialMap.html.twig');
-//    }
-
-
-
 
 }

@@ -28,8 +28,7 @@ class StationType extends AbstractType
                         'placeholder' => 'DefLongitude'
                     ]
             ])
-//            ->add('name')
-//            ->add('type')
+
             ->add('code',
                 TextType::class, [
                     'label' => 'Code',

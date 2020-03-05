@@ -24,7 +24,6 @@ class TripStationsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-//            ->add('ordernr')
             ->add('code',
                 TextType::class,
                 [
@@ -55,31 +54,6 @@ class TripStationsType extends AbstractType
             ->add('stationnr',
                 HiddenType::class
                 )
-
-
-//            ->add('surname',
-//                TextType::class,
-//                [
-//                    'label' => 'Surname',
-//                    'attr' => [
-//                        'placeholder' => 'Surname'
-//                    ]
-//
-//                ]
-//            )
-//            ->add('name')
-//            ->add('startlat')
-//            ->add('startlong')
-//            ->add('endlat')
-//            ->add('endlong')
-//            ->add('deflatitude')
-//            ->add('deflongitude')
-//            ->add('serverdate')
-//            ->add('startdate')
-//            ->add('enddate')
-//            ->add('expid')
-//            ->add('stationnr')
-//            ->add('tripnr')
         ;
 
         $builder->get('stationnr')

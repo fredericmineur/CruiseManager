@@ -2,23 +2,14 @@
 
 namespace App\Controller;
 
-use App\Entity\Campaign;
 use App\Entity\Cruise;
-use App\Entity\Investigators;
-use App\Entity\Trip;
 use App\Entity\Tripactions;
 use App\Entity\Tripequipment;
-use App\Entity\Tripinvestigators;
 use App\Entity\Tripnotes;
-use App\Entity\Tripstations;
 use App\Form\CruiseType;
 use App\Repository\CruiseRepository;
-use App\Repository\TripRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\DocBlock\Tags\Method;
-use Psr\Log\NullLogger;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,16 +91,6 @@ class CruiseController extends AbstractController
     {
         $cruise = $manager->getRepository(Cruise::class)->findOneBy(['cruiseid'=>$cruiseId]);
 
-//        foreach ($cruise->getTrips() as $trip){
-//            foreach ($trip->getTripinvestigators() as $tripinvestigator){
-//                $trip->removeTripinvestigator($tripinvestigator);
-//            }
-//            foreach ($trip->getTripstations() as $tripstation) {
-//                $trip->removeTripstation($tripstation);
-//            }
-//            $cruise->removeTrip($trip);
-//
-//        }
         foreach ($cruise->getCampaign() as $campaign){
             $cruise->removeCampaign($campaign);
         }

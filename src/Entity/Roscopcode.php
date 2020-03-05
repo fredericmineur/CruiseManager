@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use mysql_xdevapi\Collection;
 
 /**
  * Roscopcode
@@ -38,7 +37,7 @@ class Roscopcode
     private $roscopdivision;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Actiontype", mappedBy="roscopcode")
      */

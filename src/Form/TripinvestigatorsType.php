@@ -69,32 +69,7 @@ class TripinvestigatorsType extends AbstractType
             ])
 
             ->add('campaignnr', HiddenType::class)
-
-
-
-
-//            ->add('initials')
-//            ->add('serverdate')
-//            ->add('campaignnr')
-//            ->add('imisnr')
-//            ->add('campaign')
-//            ->add('birthdate')
-//            ->add('nationality')
-//            ->add('passengertype',
-//                ChoiceType::class,
-//                [
-//                    'choices' => [
-//                        'Scientist' => 'Scientist',
-//                        'Diver' => 'Diver',
-//                        'Passenger' => 'Passenger',
-//                        'Student' => 'Student',
-//                        'Volunteer' => 'Volunteer'
-//                    ]
-//                ]
-//                )
-
-//            ->add('expid')
-//            ->add('tripnr')
+            
         ;
 
         $builder->get('investigatornr')

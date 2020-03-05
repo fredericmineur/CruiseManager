@@ -74,12 +74,6 @@ class Cruise
      */
     private $plancode;
 
-
-//* @ORM\ManyToOne(targetEntity="Investigators", inversedBy="cruises")
-//* @ORM\JoinColumns({
-//*    @ORM\JoinColumn(name="Ship", referencedColumnName="ShipName")
-//* })
-
     /**
      * @var string|null
      *
@@ -263,13 +257,11 @@ class Cruise
      */
     public function getTrips(): Collection
     {
-//        dump("getTrips");
         return $this->trips;
     }
 
     public function addTrip(Trip $trip): self
     {
-//        dump("addTrip");
         if (!$this->trips->contains($trip)) {
             $this->trips[] = $trip;
             $trip->setCruiseid($this);
@@ -280,7 +272,6 @@ class Cruise
 
     public function removeTrip(Trip $trip): self
     {
-//        dump("removeTrip triggered");
         if ($this->trips->contains($trip)) {
             $this->trips->removeElement($trip);
             // set the owning side to null (unless already changed)

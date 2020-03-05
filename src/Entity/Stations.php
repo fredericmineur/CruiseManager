@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Cassandra\Collection;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -70,7 +70,7 @@ class Stations
     private $code;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="stationnr")
      * @Groups("read:all_stations")

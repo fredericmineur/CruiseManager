@@ -21,7 +21,7 @@ class TripRepository extends ServiceEntityRepository
     }
 
 
-    public function getAllTripsForTable ()
+    public function getAllTripsForTable()
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
@@ -41,7 +41,7 @@ class TripRepository extends ServiceEntityRepository
         return $stmt->fetchAll();
     }
 
-    public function getAllTripsForTableWithStation () :array
+    public function getAllTripsForTableWithStation(): array
     {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
@@ -74,21 +74,22 @@ SELECT Trip.TripID,
         return $stmt->fetchAll();
     }
 
-    public function getTripsWithStations() {
+    public function getTripsWithStations()
+    {
         {
             $qb = $this->createQueryBuilder('trip')
                 ->leftJoin('trip.tripstations', 'tripstat')
                 ->addSelect('tripstat')
                 ->leftJoin('tripstat.stationnr', 'station')
-                ->addSelect('station')
-            ;
+                ->addSelect('station');
             $query = $qb->getQuery();
             return $query->getArrayResult();
 
         }
     }
 
-    public function getTripsDiffTripStationStation() {
+    public function getTripsDiffTripStationStation()
+    {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
             SELECT MAX(Trip.TripID) as TripID, 
@@ -113,7 +114,8 @@ SELECT Trip.TripID,
         return $stmt->fetchAll();
     }
 
-    public function getTripsDiffTripInvestigatorsInvestigators() {
+    public function getTripsDiffTripInvestigatorsInvestigators()
+    {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
             SELECT MAX(Trip.TripID) as TripID, 
@@ -138,7 +140,8 @@ SELECT Trip.TripID,
         return $stmt->fetchAll();
     }
 
-    public function getListDestinationArea() {
+    public function getListDestinationArea()
+    {
         $conn = $this->getEntityManager()->getConnection();
         $sql = '
             SELECT DISTINCT TRIM(destinationarea) as destinationlist
@@ -152,7 +155,8 @@ SELECT Trip.TripID,
     }
 
 
-    public function stationTrips ($stationId) {
+    public function stationTrips($stationId)
+    {
         return $this->createQueryBuilder('trip')
             ->join('trip.tripstations', 'trip_tripstations')
             ->andWhere('trip_tripstations.stationnr = :stationid')
@@ -161,200 +165,5 @@ SELECT Trip.TripID,
             ->getQuery()
             ->execute();
     }
-
-
-
-
-
-
-    // /**
-    //  * @return Trip[] Returns an array of Trip objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Trip
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
 
-
-/*
- SQL
-
-use [midasmanagement]
-
-GO
-
-SELECT Trip.TripId as TripId,
-CONVERT(varchar, DATEDIFF(day, Trip.Startdate, Trip.Enddate)+1) as Days,
-CONVERT (varchar, Trip.Startdate, 103)
-		+ ' [' + CONVERT(varchar, DATEDIFF(day, Trip.Startdate, Trip.Enddate)+1)
-		+ ']'
-		+ (CASE
-			WHEN (DATEDIFF(day, Trip.Startdate, Trip.Enddate)>1) THEN '*'
-			ELSE ''
-		  END)
-		as StartDayNbDays,
-
-CONVERT (varchar, Trip.Enddate, 103) as EndD,
-(CASE WHEN (Trip.DestinationArea IS NULL) THEN '' ELSE Trip.DestinationArea END) as Destination,
-Cruise.CruiseID as cruiseID,
-Cruise.Plancode as PlanCode,
-
-
-
-FROM Trip
-LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
-
-//////////////////////////////////
-
-use [midasmanagement]
-
-GO
-
-SELECT MAX(Trip.TripId) as TripId,
-CONVERT(varchar, DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))+1) as Days,
-CONVERT (varchar, MAX(Trip.Startdate), 103)
-		+ ' [' + CONVERT(varchar, DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))+1)
-		+ ']'
-		+ (CASE
-			WHEN (DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))>1) THEN '*'
-			ELSE ''
-		  END)
-		as StartDayNbDays,
-
-CONVERT (varchar, MAX(Trip.Enddate), 103) as EndD,
-(CASE WHEN (MAX(Trip.DestinationArea) IS NULL) THEN '' ELSE MAX(Trip.DestinationArea) END) as Destination,
-MAX(Cruise.CruiseID) as cruiseID,
-MAX(Cruise.Plancode) as PlanCode,
-SUM(CASE WHEN TripInvestigators.ID IS NULL THEN 0 ELSE 1 END) as TripInvestigatorID
-
-
-
-FROM Trip
-LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
-LEFT JOIN TripInvestigators ON TripInvestigators.TripNr = Trip.TripID
-GROUP BY Trip.TripID
-
-////////////////////////////////////////
-
-use [midasmanagement]
-
-GO
-
-SELECT MAX(Trip.TripId) as TripId,
-CONVERT(varchar, DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))+1) as Days,
-CONVERT (varchar, MAX(Trip.Startdate), 103)
-		+ ' [' + CONVERT(varchar, DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))+1)
-		+ ']'
-		+ (CASE
-			WHEN (DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))>1) THEN '*'
-			ELSE ''
-		  END)
-		as StartDayNbDays,
-
-CONVERT (varchar, MAX(Trip.Enddate), 103) as EndD,
-(CASE WHEN (MAX(Trip.DestinationArea) IS NULL) THEN '' ELSE MAX(Trip.DestinationArea) END) as Destination,
-MAX(Cruise.CruiseID) as cruiseID,
-MAX(Cruise.Plancode) as PlanCode,
-SUM(CASE WHEN TripInvestigators.ID IS NULL THEN 0 ELSE 1 END) as NumberTripInvestigators,
-SUM(CASE WHEN Investigators.InvestigatorID IS NULL THEN 0 ELSE 1 END) as NumberInvestigators
-
-
-
-FROM Trip
-LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
-LEFT JOIN TripInvestigators ON TripInvestigators.TripNr = Trip.TripID
-FULL OUTER JOIN Investigators ON TripInvestigators.InvestigatorNR = Investigators.InvestigatorID
-GROUP BY Trip.TripID
-
-
-
-////////////////////////////
-
-SELECT MAX(Trip.TripID) as TripID,
-SUM(CASE WHEN TRIPSTATIONS.ID IS NULL THEN 0 ELSE 1 END) AS NumberTripstations,
-SUM(CASE WHEN TRIPSTATIONS.StationNR IS NULL THEN 0 ELSE 1 END) AS NumberStations
-
-
-
-FROM Trip
---LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
-LEFT JOIN TRIPSTATIONS ON TRIPSTATIONS.TripNr = Trip.TripID
-FULL OUTER JOIN Stations ON TRIPSTATIONS.StationNR = Stations.NR
-
-GROUP BY Trip.TripID
-ORDER BY Trip.TripID DESC
-
-////////////////////////// TOTAL QUERY
-
-use [midasmanagement]
-
-GO
-SELECT MAX(Trip.TripID) as TripID,
-SUM(CASE WHEN TRIPSTATIONS.ID IS NULL THEN 0 ELSE 1 END) AS NumberTripstations,
-SUM(CASE WHEN TRIPSTATIONS.StationNR IS NULL THEN 0 ELSE 1 END) AS NumberStations
-INTO #temporary_tripstat
-FROM Trip
-LEFT JOIN TRIPSTATIONS ON TRIPSTATIONS.TripNr = Trip.TripID
-FULL OUTER JOIN Stations ON TRIPSTATIONS.StationNR = Stations.NR
-GROUP BY Trip.TripID
-ORDER BY Trip.TripID DESC;
-
-SELECT MAX(Trip.TripId) as TripId,
-CONVERT(varchar, DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))+1) as Days,
-CONVERT (varchar, MAX(Trip.Startdate), 103)
-		+ ' [' + CONVERT(varchar, DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))+1)
-		+ ']'
-		+ (CASE
-			WHEN (DATEDIFF(day, MAX(Trip.Startdate), MAX(Trip.Enddate))>1) THEN '*'
-			ELSE ''
-		  END)
-		as StartDayNbDays,
-CONVERT (varchar, MAX(Trip.Enddate), 103) as EndD,
-(CASE WHEN (MAX(Trip.DestinationArea) IS NULL) THEN '' ELSE MAX(Trip.DestinationArea) END) as Destination,
-MAX(Cruise.CruiseID) as cruiseID,
-MAX(Cruise.Plancode) as PlanCode,
-SUM(CASE WHEN TripInvestigators.ID IS NULL THEN 0 ELSE 1 END) as NumberTripInvestigators,
-SUM(CASE WHEN Investigators.InvestigatorID IS NULL THEN 0 ELSE 1 END) as NumberInvestigators
-INTO #temporary_trip
-FROM Trip
-LEFT JOIN Cruise ON Cruise.CruiseID = Trip.CruiseID
-LEFT JOIN TripInvestigators ON TripInvestigators.TripNr = Trip.TripID
-FULL OUTER JOIN Investigators ON TripInvestigators.InvestigatorNR = Investigators.InvestigatorID
-
-GROUP BY Trip.TripID ;
-
-SELECT * FROM #temporary_tripstat JOIN #temporary_trip ON #temporary_tripstat.TripID = #temporary_trip.TripId;
-
-DROP TABLE #temporary_tripstat;
-DROP TABLE #temporary_trip;
-
---HAVING Trip.TripID =3132
-
-
-
-
-
-
- */

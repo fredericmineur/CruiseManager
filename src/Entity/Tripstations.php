@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -138,32 +137,11 @@ class Tripstations
     private $tripnr;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Tripactions", mappedBy="tripstationnr")
      */
     private $tripactions;
-
-//    /**
-//     * @var string
-//     */
-//    private $codeLatLong;
-//
-//    /**
-//     * @return string
-//     */
-//    public function getCodeLatLong(): string
-//    {
-//        return $this->codeLatLong;
-//    }
-//
-//    /**
-//     * @param string $codeLatLong
-//     */
-//    public function setCodeLatLong(string $codeLatLong): void
-//    {
-//        $this->codeLatLong = $codeLatLong;
-//    }
 
     public function __construct()
     {

@@ -28,41 +28,19 @@ use Symfony\Component\Validator\Constraints\DateTime;
 class CruiseType extends AbstractType
 {
 
-    /*
-    //SORTING THE TRIPS BY DATE for the edit form
-//https://stackoverflow.com/questions/34967795/order-of-symfony-form-collectiontype-field/34968046
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        usort($view['trips']->children, function (FormView $a, FormView $b){
-            $startDateA = $a->vars['value']->getStartdate();
-            $startDateB = $b ->vars['value']->getStartdate();
-            if ($startDateA == $startDateB) {
-                return 0;
-            }
-            return ($startDateA < $startDateB) ? -1 : 1;
-        });
-    }
-*/
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-//        dd($options);
         $builder
-
-
             ->add(
                 'plancode',
                 TextType::class,
                 [
                     'label' => 'Plan Code',
-//                    'attr' => [
-//                        'placeholder' => 'xx-xxx'
-//                    ],
                     'required' => false
                 ]
             )
-
             ->add('ship',
                 ChoiceType::class, [
                     'label' => 'Ship',
@@ -71,135 +49,70 @@ class CruiseType extends AbstractType
                         'Zeekat' => 'Zeekat'
                     ]
                 ])
-
             ->add('campaign', CollectionType::class,
                 [
                     'label' => 'Campaign(s)',
-                    'allow_add'=>true,
-                    'allow_delete'=>true,
-                    'by_reference'=>false,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
                     'entry_type' => EntityType::class,
                     'entry_options' => [
-//                                   'label' => 'Campaign (IMIS + name)',
                         'label' => false,
                         'class' => Campaign::class,
                         'required' => false,
 
-                        'choice_label' => function($campaign) {
-                            return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
+                        'choice_label' => function ($campaign) {
+                            return $campaign->getImisprojectnr() . ' ' . $campaign->getCampaign();
                         },
-                        'query_builder' => function(EntityRepository $er) {
+                        'query_builder' => function (EntityRepository $er) {
                             return $er->createQueryBuilder('i')
-                                ->orderBy('i.campaign', 'ASC')
-                                ;
+                                ->orderBy('i.campaign', 'ASC');
                         }
                     ]
                 ])
-
-
-
-
-            /*            ->add('campaign', CollectionType::class,
-                [
-                    'entry_type' => ChoiceType::class,
-                    'allow_add' => true,
-                    'prototype' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'label' => 'Campaign(s)',
-                    'entry_options' => [
-                        'label' => false
-                    ]
-                ])*/
-
-
-
-//            ->add('campaign', CollectionType::class,
-//                           [
-//                               'label' => 'Campaign(s)',
-//                               'allow_add'=>true,
-//                               'allow_delete'=>true,
-//                               'by_reference'=>false,
-//                               'entry_type' => EntityType::class,
-//                               'entry_options' => [
-//                                   'label' => 'Campaign (IMIS + name)',
-//                               'class' => Campaign::class,
-//                               'required' => false,
-//
-//                               'choice_label' => function($campaign) {
-//                                   return $campaign->getImisprojectnr().' '.$campaign->getCampaign();
-//                               },
-//                               'query_builder' => function(EntityRepository $er) {
-//                                   return $er->createQueryBuilder('i')
-//                                       ->orderBy('i.campaign', 'ASC')
-//                                       ;
-//                               }
-//                               ]
-//
-//                           ])
-
-
-
-
             ->add(
-                           // CHECK https://ourcodeworld.com/articles/read/652/how-to-create-a-dependent-select-dependent-dropdown-in-symfony-3
-                           'principalinvestigator',
-                           //https://stackoverflow.com/questions/37617786/combine-columns-in-choice-list-symfony-form
-                           EntityType::class,
-                           [
-                               'label' => 'Principal Investigator',
-                               'class' => Investigators::class,
-                               //                    'multiple' => true,
-                               //                    'expanded' => true,
-                               'required' => false,
-                               'attr'=> [
-                                   'placeholder' => 'xxxxxx'
-                               ],
-                               'choice_label' => function ($investigator) {
-                                   return $investigator->getSurname().', '.$investigator->getFirstname();
-                               },
-                               'query_builder' =>function (EntityRepository $er) {
-                                   return $er->createQueryBuilder('i')
-                                       ->orderBy('i.surname', 'ASC');
-                               }
-                           ]
-                       )
-
-
-
-
+            // CHECK https://ourcodeworld.com/articles/read/652/how-to-create-a-dependent-select-dependent-dropdown-in-symfony-3
+                'principalinvestigator',
+                //https://stackoverflow.com/questions/37617786/combine-columns-in-choice-list-symfony-form
+                EntityType::class,
+                [
+                    'label' => 'Principal Investigator',
+                    'class' => Investigators::class,
+                    //                    'multiple' => true,
+                    //                    'expanded' => true,
+                    'required' => false,
+                    'attr' => [
+                        'placeholder' => 'xxxxxx'
+                    ],
+                    'choice_label' => function ($investigator) {
+                        return $investigator->getSurname() . ', ' . $investigator->getFirstname();
+                    },
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('i')
+                            ->orderBy('i.surname', 'ASC');
+                    }
+                ]
+            )
             ->add(
                 'trips',
                 CollectionType::class,
 
                 [
-                    'label'=>false,
+                    'label' => false,
                     'entry_type' => TripType::class,
-                    'entry_options' => ['label'=> false],
+                    'entry_options' => ['label' => false],
                     'allow_add' => true,
 
-//                    'delete_empty' => function(Trip $trip){
-//                        return null === $trip || empty($trip->getStartdate());
-//                    },
+
                     'allow_delete' => true,
 
                     'by_reference' => false,
 
                     'required' => false,
-//                    'attr' => [
-//                        'class' => 'trips-collection',
-//                    ],
-                 ]
-            )
-        ;
+                ]
+            );
 
-}
-
-
-
-
-
-
+    }
 
 
     public function configureOptions(OptionsResolver $resolver)
@@ -207,29 +120,9 @@ class CruiseType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Cruise::class,
 
-//            'arrayCampaigns' => array()
         ]);
     }
-
-//    public function getBlockPrefix()
-//    {
-//        return 'cruise';
-//    }
-
-//    public function getConfiguration($label, $placeholder)
-//    {
-//        return [
-//            'label' => $label,
-//            'attr' => [
-//                'placeholder' => $placeholder
-//            ]
-//        ];
-//    }
 }
 
-
-
-
-//https://stackoverflow.com/questions/45169833/symfony-fill-choicetype-with-an-array
 
 

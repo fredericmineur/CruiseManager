@@ -20,11 +20,7 @@ class InvestigatorsRepository extends ServiceEntityRepository
         parent::__construct($registry, Investigators::class);
     }
 
-/*
- * sqlSELECT article FROM Entity\Article article WHERE 'string' LIKE CONCAT(article.property, '%');
- * $qb->expr()->concat($qb->expr()->literal(' '), 'p.lastName', )
- *
- * */
+
 
     public function findByName ($value){
         return $this->createQueryBuilder('i')

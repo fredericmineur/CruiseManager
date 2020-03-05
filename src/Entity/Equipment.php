@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -45,14 +44,14 @@ class Equipment
     private $showonship = '1';
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Tripequipment", mappedBy="equipmentnr")
      */
     private $tripequipments;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Actiontype", mappedBy="equipment")
      */

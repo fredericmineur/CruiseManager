@@ -4,9 +4,6 @@ namespace App\Form;
 
 
 use App\Entity\Trip;
-use App\Entity\Tripstations;
-use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -105,161 +102,8 @@ class TripType extends AbstractType
 
             )
 
-            ->add('tripid', HiddenType::class)
+            ->add('tripid', HiddenType::class);
 
-
-
-
-//            ->add('stations', CollectionType::class,[
-//                'allow_add' => true,
-//                'by_reference'=>false,
-//                'entry_type'=> EntityType::class,
-//                'entry_options' => [
-//                    'label' => 'Station code',
-//                    'class' => Stations::class,
-//                    'required' =>false,
-//                    'choice_label' => function($station){
-//                        return $station->getCode();
-//                    },
-//                    'query_builder' => function(EntityRepository $er) {
-//                        return $er->createQueryBuilder('s')
-//                            ->orderBy('s.code', 'ASC');
-//                    }
-//                ]
-//            ])
-
-
-
-//            ->add('startpoint')
-//            ->add('endpoint')
-//
-//            ->add('memo')
-//            ->add('status')
-//            ->add('logtext')
-//            ->add('ship')
-//            ->add('insync')
-//            ->add('gpsstart')
-//            ->add('gpsstop')
-//            ->add('traveldistance')
-//            ->add('leaveportdate')
-//            ->add('arriveportdate')
-
-        ;
-
-
-
-//        $builder->add('tripid', TextType::class, [
-//            'attr' => [
-//                'readonly' => true,
-//                'autocomplete' => 'off',
-//            ],
-//        ]);
-//            ->add('cruiseid')
-
-//            ->add('startpoint',
-//                TextType::class, [
-//                    'label' => 'Start point',
-//                    'attr' => [
-//                        'placeholder' => 'Call port'
-//                    ]
-//                ])
-//
-//            ->add('endpoint',
-//                TextType::class, [
-//                    'label' => 'End point',
-//                    'attr' => [
-//                        'placeholder' => 'Call port'
-//                    ]
-//                ])
-//
-//            ->add('destinationarea',
-//                TextType::class, [
-//                    'label' => 'Destination area',
-//                    'attr' => [
-//                        'placeholder' => 'Destination area'
-//                    ]
-//                ])
-//
-//            ->add('memo',
-//                TextareaType::class, [
-//                    'label' => 'Notes',
-//                    'attr' => [
-//                        'placeholder' => 'Memo'
-//                    ]
-//                ])
-
-//            ->add('status', //DONE or CANCELLED
-//                TextType::class,[
-//                    'label' => 'Status',
-//                    'attr' => [
-//                        'placeholder' => 'Status'
-//                    ]
-//                ])
-//
-//            ->add('logtext',
-//                TextareaType::class, [
-//                    'label' => 'Log Text',
-//                    'attr' => [
-//                        'placeholder' => 'Log text'
-//                    ]
-//                ])
-//
-//            ->add('ship',
-//                TextType::class, [
-//                    'label' =>'Ship',
-//                    'attr' => [
-//                        'placeholder' => 'Ship'
-//                    ]
-//                ])
-//
-//            ->add('insync', //bit
-//                CheckboxType::class, [
-//                    'label' => 'Insync',
-//                    'required' => false
-//                ]
-//            )
-//            ->add('gpsstart',
-//                DateTimeType::class,[
-//                    'label' => 'GPS start time',
-//                    'attr' => [
-//                        'placeholder' => 'GPS start time'
-//                    ]
-//                ])
-//
-//            ->add('gpsstop',
-//                DateTimeType::class, [
-//                    'label' => 'GPS stop time',
-//                    'attr' => [
-//                        'placeholder' => 'GPS stop time'
-//                    ]
-//                ])
-//
-//            ->add('traveldistance',
-//                NumberType::class, [
-//                    'label' => 'Tavel distance',
-//                    'attr' => [
-//                        'placeholder' => ''
-//                    ]
-//                ])
-
-//            ->add('leaveportdate',
-//                DateTimeType::class
-//                )
-//            ->add('arriveportdate')
-
-            //https://symfonycasts.com/screencast/collections/entity-type-checkboxes
-            //https://symfonycasts.com/screencast/symfony-forms/entity-type
-//            ->add('cruiseid', EntityType::class, [
-////                'class' => Cruise::class,
-////                'multiple' => true,
-////                'expanded' => true
-////            ])
-//         ;
-
-//        $builder -> get('startdate')
-//        ->addModelTransformer(new Time8HTransformer());
-//        $builder ->get('enddate')
-//            ->addModelTransformer(new Time17HTransformer());
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -270,8 +114,5 @@ class TripType extends AbstractType
         ]);
     }
 
-//    public function getBlockPrefix()
-//    {
-//        return 'trip';
-//    }
+
 }

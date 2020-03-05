@@ -11,7 +11,6 @@
 namespace App\Repository;
 
 use App\Entity\Cruise;
-use App\Entity\Trip;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,7 +50,6 @@ class CruiseRepository extends ServiceEntityRepository
         ';
 
         $stmt = $conn->prepare($sql);
-//        dd($stmt);
         $stmt->execute();
         return $stmt->fetchAll();
     }
@@ -64,7 +62,6 @@ class CruiseRepository extends ServiceEntityRepository
             ->addSelect('ca')
         ;
         $query = $qb->getQuery();
-//        dd($query);
         return $query->getArrayResult();
     }
 
@@ -102,7 +99,6 @@ class CruiseRepository extends ServiceEntityRepository
 
         ;
         $query = $qb->getQuery();
-//        dd($query->getArrayResult());
         return $query->getArrayResult();
 
 

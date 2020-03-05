@@ -142,42 +142,7 @@
     </div>
 {% endif %}
 
-{#    {% if cruise.trips %}#}
-{#        <div class="container-fluid">#}
-{#        <div class="row ">#}
-{#            {% for trip in cruise.trips %}#}
-{#                #}{#                <div class="col">#}
-{#                <div class="card" style="width: 300px !important;">#}
-{#                    <div class="card-header">#}
-{#                        <p>Trip: <span#}
-{#                                    style="display:none">{{ trip.startdate|date('Y/m/d') }}</span>#}
-{#                            {{ trip.startdate|date('Y-m-d') }}-{{ trip.enddate|date('Y-m-d') }} </p>#}
-{#                    </div>#}
-{#                    <div class="card-body">#}
-{#                        <p>Number of days:#}
-{#                            {% if trip.startdate is not null %}#}
-{#                                {% set diffDays = date(trip.startdate).diff(date(trip.enddate)) %}#}
-{#                                {{ diffDays.days + 1 }}#}
-{#                                {% if diffDays.days > 0 %} (multi-day) {% else %} (single day) {% endif %}#}
-{#                            {% endif %}#}
-{#                        </p>#}
-{#                        <p>Destination: {{ trip.destinationarea }}</p>#}
-{#                        <p>Investigators:#}
-{#                            {% for tripinvestigator in trip.tripinvestigators %}#}
-{#                                {{ tripinvestigator.firstname }} {{ tripinvestigator.surname }}#}
-{#                                {% if tripinvestigator.investigatornr is not null %}[*]{% endif %}#}
-{#                                {% if loop.last %}{% else %}, {% endif %}#}
-{#                            {% endfor %}#}
-{#                            <a href="{{ path('trip_edit', {'tripId': trip.tripid}) }}"><i#}
-{#                                        class="btn btn-default fa fa-edit fa-2x"></i></a>#}
-{#                        </p>#}
-{#                        <p>[*] = in Investigators directory in db</p>#}
-{#                    </div>#}
-{#                </div>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        </div>#}
-{#    {% endif %}#}
+
 
 {% endblock %}
 

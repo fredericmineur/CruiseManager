@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Cassandra\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -94,14 +93,14 @@ class Investigators
     private $passengertype;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Cruise", mappedBy="principalinvestigator")
      */
     private $cruises;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="investigatornr")
      */

@@ -5,9 +5,6 @@ namespace App\Repository;
 use App\Entity\Campaign;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
-use phpDocumentor\Reflection\DocBlock\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @method Campaign|null find($id, $lockMode = null, $lockVersion = null)
@@ -33,9 +30,9 @@ class CampaignRepository extends ServiceEntityRepository
         $arrayImis =[];
         $arrayCampaignNames = [];
         foreach ($campaigns as $key => $value) {
-            array_push($arrayCampaignNames, $value["campaign"]);
-            array_push($arrayCampaignIds, $value["campaignid"]);
-            array_push($arrayImis, $value["imisprojectnr"]);
+            $arrayCampaignNames[]= $value["campaign"];
+            $arrayCampaignIds[]= $value["campaignid"];
+            $arrayImis[]= $value["imisprojectnr"];
         }
 
 
@@ -82,37 +79,4 @@ class CampaignRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-
-
-
-
-
-    // /**
-    //  * @return Campaign[] Returns an array of Campaign objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Campaign
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
