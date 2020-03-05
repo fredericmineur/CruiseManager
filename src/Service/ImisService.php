@@ -7,8 +7,6 @@
  */
 
 namespace App\Service;
-
-use stdClass;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ImisService
@@ -48,21 +46,15 @@ class ImisService
 
         }
         return $response->getContent();
-//        return  array('result'=> json_decode ($response->getContent(),true));
     }
 
-//    public function getPersonsForFull($index)//: Array
-//    {
-//
-//
-//        $response = $this->httpClient->request('GET',
-//            'http://www.vliz.be/imis?module=person&show=json',
-//            ['query' => ['start' => $index]]);
-////        dump($response);
-//
-//
-//        return $response->getContent();
-//    }
+    public function getPersonByImisID($imisId)
+    {
+        $response = $this->httpClient->request('GET',
+            'http://www.vliz.be/imis?module=person&show=json',
+            ['query' => ['persid' => $imisId]]);
+        return $response->getContent();
+    }
 
     public function getProjectByImisId($imisId)
     {
@@ -71,6 +63,4 @@ class ImisService
             ['query' => ['proid'=>$imisId]]);
         return $response->getContent();
     }
-
-
 }

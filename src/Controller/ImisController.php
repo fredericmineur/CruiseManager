@@ -22,10 +22,16 @@ class ImisController extends AbstractController
     public function getImisPersons(ImisService $imisService, $searchParameter): JsonResponse
     {
         $data = $imisService->getPersons($searchParameter);
+        $data = json_decode($data, true);
 
+        foreach($data as $k =>$val) {
+            $data[$k]['id']= (int)$data[$k]['RowNum'];
+            $data[$k]['text']= $data[$k]['FullPers'];
+            unset($data[$k]['RowNum'], $data[$k]['FullPers']);
+        }
 
-        $response = JsonResponse::fromJsonString($data);
-        return $response;
+        $data=json_encode(array('results'=>$data));
+        return JsonResponse::fromJsonString($data);
     }
 
     /**

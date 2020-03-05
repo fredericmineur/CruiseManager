@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Investigators;
+use PHP_CodeSniffer\Generators\Text;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -11,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvestigatorsType extends AbstractType
@@ -33,16 +36,16 @@ class InvestigatorsType extends AbstractType
                         'placeholder' => 'First name'
                     ]
                 ])
-            ->add('imisnr',
-                HiddenType::class,[
-//                    'label' => 'IMIS number',
-                    'required' => false,
-//                    'attr' => [
-//                        'placeholder' => 'To be generated'
-//                    ]
-                    ]
-            )
 
+            ->add('imisnr',
+                TextType::class,[
+                    'label' => 'IMIS number',
+                    'required' => false,
+                    'attr' => [
+                        'readonly' => true
+                    ]
+                ]
+            )
 
             ->add('passengertype',
                 ChoiceType::class,[
@@ -61,44 +64,25 @@ class InvestigatorsType extends AbstractType
                 ])
 
             ->add('fullName',
-                TextType::class,[
-                    'label' => 'Full name (for IMIS search)',
+                ChoiceType::class, [
+                    'choices' => [
+                        '' => 1,
+                    ],
+                    'mapped' => false,
                     'required' => false,
-                    'attr' => [
-                        'placeholder' => 'Type and search...'
-                    ]
+                    'empty_data'=>[],
+                    'label' => 'Full name (for IMIS search)',
                 ]
-                )
-
-
-//            ->add('shortname',
-//                TextType::class, [
-//                    'label' => 'Short name',
-//                    'attr' => [
-//                        'placeholder' => 'Short Name'
-//                    ]
-//                ])
-//            ->add('initials',
-//                TextType::class,[
-//                    'label' => 'Initials',
-//                    'attr' => [
-//                        'placeholder' => 'Initials'
-//                    ]
-//                ])
-//            ->add('memo',
-//                TextareaType::class,[
-//                    'label' => 'Memo',
-//                    'attr' => [
-//                        'placeholder' => 'Memo text'
-//                ])
-
-
-//            ->add('birthdate',[
-//
-//            ])
-//            ->add('nationality')
-
+            )
         ;
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
+                $data = $event->getData();
+                $data['fullName'] =1;
+                $event->setData($data);
+            }
+        );
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

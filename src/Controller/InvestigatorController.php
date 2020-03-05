@@ -4,21 +4,16 @@ namespace App\Controller;
 
 use App\Entity\Cruise;
 use App\Entity\Investigators;
-use App\Entity\Trip;
 use App\Entity\Tripinvestigators;
 use App\Form\InvestigatorsType;
 use App\Repository\InvestigatorsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Service\ImisService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class InvestigatorController extends AbstractController
 {
@@ -113,9 +108,16 @@ class InvestigatorController extends AbstractController
     /**
      * @Route("/investigators/edit/{investigatorId}", name="edit_investigator", options={"expose"=true})
      */
-    public function editPI(EntityManagerInterface $manager, Request $request, $investigatorId) {
+    public function editInvestigator(EntityManagerInterface $manager, Request $request, $investigatorId, ImisService $imisService) {
         $investigator = $manager->getRepository(Investigators::class)
             ->findOneBy(['investigatorid'=> $investigatorId]);
+
+        $imisJson = null;
+        if ($investigator->getImisnr()){
+            $imisJson = $imisService->getPersonByImisID($investigator->getImisnr());
+            $imisJson = json_decode($imisJson, true);
+        }
+
         $form = $this->createForm(InvestigatorsType::class, $investigator);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -128,7 +130,8 @@ class InvestigatorController extends AbstractController
         return $this->render('forms/form_investigator.html.twig', [
             'formInvestigator' => $form->createView(),
             'investigator' => $investigator,
-            'mode' => 'edit'
+            'mode' => 'edit',
+            'imisJson'=> $imisJson
         ]);
     }
 
