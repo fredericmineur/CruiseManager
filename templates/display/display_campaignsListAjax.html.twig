@@ -97,11 +97,16 @@
                                     + '" title="Info campaign"><i  class="fa fa-info-circle "></i></a>'
                                     + '&nbsp&nbsp<a href="'
                                     + Routing.generate('campaign_edit', {campaignId: row.campaignid})
-                                    + '" title="Edit campaign"><i  class="fa fa-edit"></i></a>'
-                                    + '&nbsp&nbsp<a href="'
-                                    + Routing.generate('remove_campaign_warning',{'campaignId': row.campaignid})
-                                    + '" title="Remove campaign"><i style="color:red" class="fa fa-trash"></i></a>'
-                                ;
+                                    + '" title="Edit campaign"><i  class="fa fa-edit"></i></a>';
+                                if(Array.isArray(row.cruise) && row.cruise.length){
+                                } else {
+                                    campaignOutput +=
+                                        ( '&nbsp&nbsp<a href="'
+                                            + Routing.generate('remove_campaign_warning',{'campaignId': row.campaignid})
+                                            + '" title="Remove campaign"><i style="color:red" class="fa fa-trash"></i></a>')
+                                    ;
+                                }
+
 
                                 return campaignOutput;
                             }
