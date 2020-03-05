@@ -213,3 +213,9 @@ let fillTableStations = (function () {
     }
     return initFillTableStations;
 })();
+
+// export default fillTableAllTrips;
+// export fillTableStations;
+
+export  {fillTableAllTrips, fillTableInvestigators, fillTableStations};
+

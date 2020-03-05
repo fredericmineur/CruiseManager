@@ -3,8 +3,9 @@
 {% block title %}Cruises{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="/css/datatables.min.css">
-    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">
+{#    <link rel="stylesheet" href="/css/datatables.min.css">#}
+    {{ encore_entry_link_tags('displays_app') }}
+{#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
 
 {% endblock %}
 
@@ -58,9 +59,10 @@
 
 
 
-    <script type="text/javascript" src="/js/datatables.min.js"></script>
-    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+{#    <script type="text/javascript" src="/js/datatables.min.js"></script>#}
+    {{ encore_entry_script_tags('displays_app') }}
+{#    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>#}
+{#    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
 
     <script type="text/javascript">
         $(document).ready(function() {

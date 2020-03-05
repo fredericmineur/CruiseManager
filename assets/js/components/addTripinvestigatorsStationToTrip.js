@@ -193,7 +193,7 @@ function addAutocompleteForStation (indexTStations)
 let addTripInvestigatorsStationsToTrip = (function () {
     let initObjectTI = {};
     initObjectTI.init = function () {
-        counter = {countTripInvestigators: 0, countTripStations : 0};
+        window.counter = {countTripInvestigators: 0, countTripStations : 0};
         $('#add-tripinvestigator').click(function(){
             const index = counter.countTripInvestigators;
             const tmpl = $('#trip_tripinvestigators').data('prototype').replace(/__name__/g, index);
@@ -237,4 +237,4 @@ let addTripInvestigatorsStationsToTrip = (function () {
     return initObjectTI;
 })();
 
-
+export default addTripInvestigatorsStationsToTrip;

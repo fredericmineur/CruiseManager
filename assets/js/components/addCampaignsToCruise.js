@@ -25,7 +25,7 @@ let addCampaigns = (function () {
 
     initObjectCA.init = function () {
 
-        counterCampaigns = {count : 0};
+        window.counterCampaigns = {count : 0};
 
         $('#add-campaign').click(function(){
 
@@ -54,5 +54,7 @@ let addCampaigns = (function () {
     return initObjectCA;
 
 })();
+
+export default addCampaigns;
 
 

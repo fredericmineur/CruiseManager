@@ -73,11 +73,13 @@
 
 
 {% block javascripts %}
-    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>
+{#    <script src="/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.js"></script>#}
 
-    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>
-    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-    <script src="/js/addTripinvestigatorsStationToTrip.js"></script>
+{#    <script src="{{ '/bundles/fosjsrouting/js/router.min.js' }}"></script>#}
+{#    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>#}
+{#    <script src="/js/addTripinvestigatorsStationToTrip.js"></script>#}
+
+    {{ encore_entry_script_tags('forms_app') }}
 
     <script>
         $(document).ready(function () {
