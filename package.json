@@ -1,5 +1,5 @@
 {
-    "devDependencies": {
+    "dependencies": {
         "@symfony/webpack-encore": "^0.28.2",
         "bootstrap": "^4.4.1",
         "bootstrap-datepicker": "^1.9.0",
@@ -13,17 +13,7 @@
         "popper.js": "^1.16.1",
         "regenerator-runtime": "^0.13.2",
         "select2": "^4.0.13",
-        "webpack-notifier": "^1.6.0"
-    },
-    "license": "UNLICENSED",
-    "private": true,
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "build": "encore production --progress"
-    },
-    "dependencies": {
+        "webpack-notifier": "^1.6.0",
         "leaflet": "^1.6.0"
     }
 }
