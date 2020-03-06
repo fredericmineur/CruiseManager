@@ -211,6 +211,14 @@ class Trip
 
     }
 
+    /**
+     * @param int $tripid
+     */
+    public function setTripid(int $tripid): void
+    {
+        $this->tripid = $tripid;
+    }
+
 //    public function addStation (Stations $station ): self
 //    {
 //        $stations = $this->tripstations

@@ -487,12 +487,12 @@ let addTripsAndInvestigators = (function () {
                 addAutoCompleteDestinations(indexTrip);
 
                 var numberOfinvestigators = counter[property]['investigators'];
-                for (i = 0; i < numberOfinvestigators; i++) {
+                for (var i = 0; i < numberOfinvestigators; i++) {
                     addAutocompleteForInvestigator(indexTrip, i)
                 }
 
                 var numberOfStations = counter[property]['stations'];
-                for (i = 0; i < numberOfStations; i++) {
+                for (var i = 0; i < numberOfStations; i++) {
                     addAutocompleteForStation(indexTrip, i)
                 }
             }
