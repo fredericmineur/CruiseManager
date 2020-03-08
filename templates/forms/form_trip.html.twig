@@ -32,12 +32,14 @@
             </div>
             <div class="card-body">
                 <p>Destination: {{ trip.destinationarea }}</p>
-                <p>Cruise {{ trip.cruiseid.getPlanCode }}</p>
+                <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }} {% endif %}</p>
                 <p>Campaign(s):
+                    {% if trip.cruiseid %}
                     {% for campaign in trip.cruiseid.campaign %}
                         "{{ campaign.campaign }}"
                         {% if loop.last %}{% else %}, {% endif %}
                     {% endfor %}
+                    {% endif %}
                 </p>
             </div>
         </div>

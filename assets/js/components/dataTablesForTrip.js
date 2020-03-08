@@ -35,7 +35,11 @@ let fillTableAllTrips = (function () {
                                 var plancodeOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId : row.cruiseID})
                                     + '">' + data + '</a>';
                                 return  plancodeOutput;
-                            } else {return 'N.A.';}
+                            } else if (row.cruiseID) {
+                                var plancodeOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId : row.cruiseID})
+                                    + '">' + 'N.A.' + '</a>';
+                                return  plancodeOutput;
+                            } else  {return 'N.A.';}
                         }
                     },
                     {
