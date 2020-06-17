@@ -27,10 +27,10 @@
 
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-success">
                         {% if mode == 'edit' %}
-                            Confirm edit{% elseif mode == 'create' %}
-                            Create investigator {% endif %}
+                            Save changes{% elseif mode == 'create' %}
+                            Save {% endif %}
                     </button>
                     {{ form_end(formInvestigator) }}
                 </div>

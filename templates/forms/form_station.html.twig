@@ -20,10 +20,10 @@
                         {{ form_row(formStation) }}
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-success">
                     {% if mode == 'edit' %}
-                        Confirm edit{% elseif mode == 'create' %}
-                        Create new station {% endif %}
+                        Save changes{% elseif mode == 'create' %}
+                        Save {% endif %}
                 </button>
                 {{ form_end(formStation) }}
 
