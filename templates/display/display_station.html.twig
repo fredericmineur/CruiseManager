@@ -45,7 +45,24 @@
                         {% for cruisetrip in cruise.trips %}
                                {% if cruisetrip in trips %} {% set stationInTrip = true %} {% else %} {% set stationInTrip = false %} {% endif %}
 
-                            <p style="line-height: 20%">{% if stationInTrip %}<b style="text-decoration: underline;">{% endif %}{{cruisetrip.startdate | date ('Y-m-d')}}{% if stationInTrip %}</b>{% endif %}</p>
+                            <p style="line-height: 20%">
+                                {% if stationInTrip %}<mark><b style="text-decoration: underline;">{% endif %}
+                                        {{cruisetrip.startdate | date ('Y-m-d')}}
+                                {% if stationInTrip %}</b></mark>
+
+                                {% for tripstation in cruisetrip.tripstations %}
+                                    {% if  tripstation.stationnr == station and tripstation.code|trim != tripstation.stationnr.code|trim %}
+                                         as {{ tripstation.code }}
+                                    {% endif %}
+                                {% endfor %}
+
+
+
+                                {% endif %}
+
+                            </p>
+
+
                             {% endfor %}
 
 
