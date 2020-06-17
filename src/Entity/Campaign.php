@@ -93,12 +93,7 @@ class Campaign
      */
     private $cruise;
 
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(targetEntity="Sample", mappedBy="campaign")
-     */
-    private $samples;
+
 
 
     /**
@@ -177,35 +172,6 @@ class Campaign
         return $this;
     }
 
-    /**
-     * @return Collection|Sample[]
-     */
-    public function getSamples(): Collection
-    {
-        return $this->samples;
-    }
 
-    public function addSample(Sample $sample): self
-    {
-        if (!$this->samples->contains($sample)) {
-            $this->samples[] = $sample;
-            $sample->setCampaign($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSample(Sample $sample): self
-    {
-        if ($this->samples->contains($sample)) {
-            $this->samples->removeElement($sample);
-            // set the owning side to null (unless already changed)
-            if ($sample->getCampaign() === $this) {
-                $sample->setCampaign(null);
-            }
-        }
-
-        return $this;
-    }
 
 }

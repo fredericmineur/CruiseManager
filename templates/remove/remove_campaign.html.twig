@@ -4,13 +4,13 @@
     <div class="container">
 
 
-        {% if campaign.cruise is empty and campaign.samples is empty %}
+        {% if campaign.cruise is empty %}
             <h5>You are about to remove the campaign:</h5>
             <h3>"{{ campaign.campaign }}"</h3>
             <h5>Do you really want to proceed?</h5>
             <a href="{{ path('remove_campaign', {'campaignId': campaign.campaignid}) }}" class="btn btn-danger">Yes, remove<br>the campaign</a>
         {% else %}
-            <h5>The following campaign is either linked to some cruises or samples: </h5>
+            <h5>The following campaign is either linked to some cruises: </h5>
             <h3>"{{ campaign.campaign }}"</h3>
             <h3>You cannot delete it at present</h3>
         {% endif %}

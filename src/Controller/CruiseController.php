@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Cruise;
+use App\Entity\Trip;
 use App\Entity\Tripactions;
 use App\Entity\Tripequipment;
 use App\Entity\Tripnotes;
+use App\Entity\Tripstations;
 use App\Form\CruiseType;
 use App\Repository\CruiseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -273,6 +275,28 @@ class CruiseController extends AbstractController
     {
         $repoCruises = $this->getDoctrine()->getRepository(Cruise::class);
         $cruise = $repoCruises->findOneBy(['cruiseid'=>$cruiseId]);
+        $trips = $this->getDoctrine()->getRepository(Trip::class)
+            ->findBy(['cruiseid'=>$cruiseId]);
+        $repoTripStations = $this->getDoctrine()->getRepository(Tripstations::class);
+        $tripStationsArray = new ArrayCollection();
+        foreach ($trips as $trip) {
+            $tripStations = $repoTripStations
+                ->findBy(['tripnr'=>$trip->getTripid()]);
+            foreach ($tripStations as $tripStation){
+                $tripStationsArray->add($tripStation);
+            }
+//            dump($tripStations);
+        }
+//        $tripStationsArray = array_unique($tripStationsArray);
+        dump($tripStationsArray);
+
+//        $tripStations = $this->getDoctrine()->getRepository(TripStationRepository::class)
+//            ->findBy(['tripnr']);
+
+//        dump($trips);
+
+
+
 
 
         return $this->render('display/display_cruise.html.twig', [
