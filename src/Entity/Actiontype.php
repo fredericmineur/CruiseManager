@@ -57,12 +57,7 @@ class Actiontype
      */
     private $roscopcode;
 
-    /**
-     * @var Collection
-     *
-     * @ORM\OneToMany(targetEntity="Sample", mappedBy="actiontype")
-     */
-    private $samples;
+
 
     public function __construct()
     {
@@ -122,36 +117,7 @@ class Actiontype
         return $this;
     }
 
-    /**
-     * @return Collection|Sample[]
-     */
-    public function getSamples(): Collection
-    {
-        return $this->samples;
-    }
 
-    public function addSample(Sample $sample): self
-    {
-        if (!$this->samples->contains($sample)) {
-            $this->samples[] = $sample;
-            $sample->setActiontype($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSample(Sample $sample): self
-    {
-        if ($this->samples->contains($sample)) {
-            $this->samples->removeElement($sample);
-            // set the owning side to null (unless already changed)
-            if ($sample->getActiontype() === $this) {
-                $sample->setActiontype(null);
-            }
-        }
-
-        return $this;
-    }
 
 
 }
