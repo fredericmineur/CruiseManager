@@ -1,8 +1,6 @@
 function cloneTrip(contextElement){
     $('button.clone-trip[data-action="clone"]', contextElement).click(function(){
-
         const index = counter.countTrip;
-
 
         //gets the target of the click on button event
         const target = this.dataset.target;
@@ -12,14 +10,13 @@ function cloneTrip(contextElement){
              ie.attr("value", ie.val());
         })
         const clonedTrip = $(target).parent('fieldset').clone();
-
         //  NB Somehow unable to modify properties of the object clonedTrip (declared as "let clonedTrip").
         //  Therefore, just extracting the innerHTML code, modify it (also removing the <a> tag linking to trip_edit (as the trip as not been submitted yet),
         //  and appending it to the form
 
         //update the attributes id (e.g. cruise_trips_0_tripinvestigators_0_surname to cruise_trips_3_tripinvestigators_0_surname)
         let clonedTripHTML = clonedTrip['0'].innerHTML.replace(/_trips_\d+/g, '_trips_' + index);
-
+        // console.log(clonedTrip['0'].innerHTML);
 
         //update the attributes name (e.g. name="cruise[trips][0][tripinvestigators][0][surname]" to name="cruise[trips][3][tripinvestigators][0][surname]"
         clonedTripHTML = clonedTripHTML.replace(/\[trips\]\[\d+\]/g, '[trips][' + index + ']');
@@ -176,6 +173,7 @@ function  addTripInvestigatorsHandler(contextElement){
 
         deleteTripinvestigators(elementTripinvestigator);
         addAutocompleteForInvestigator(idTrip, indexTInvestigators);
+        addAutoCompleteForInvestigatorCampaign(idTrip, indexTInvestigators);
 
         displayCounterValues(contextElement);
 
@@ -288,6 +286,42 @@ function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
     $("#"+tripinvestigatorFullNameID).easyAutocomplete(options);
 }
 
+function addAutoCompleteForInvestigatorCampaign (indexTrip, indexTInvestigator) {
+    var tripinvestigatorCampaignID = 'cruise_trips_'+ indexTrip + '_tripinvestigators_' + indexTInvestigator + '_campaign';
+    var tripinvestigatorCampaignNrID = 'cruise_trips_'+ indexTrip + '_tripinvestigators_' + indexTInvestigator + '_campaignnr';
+
+    var options = {
+        url: function (phrase) {
+            //return "/api/campaignsNames/" + phrase;
+            // console.log(Routing.generate("api_campaign_names_search", {'search': phrase}));
+            return Routing.generate("api_campaign_names_search") + '/' + phrase;
+        },
+        getValue: function (element) {
+            return element.name;
+        },
+        ajaxSettings: {
+            dataType: "json",
+            method: "POST",
+            data: {
+                dataType: "json"
+            }
+        },
+        preparePostData: function (data) {
+            data.phrase = $('#' + tripinvestigatorCampaignID).val();
+            return data;
+        },
+        list: {
+            onChooseEvent: function () {
+                var valueCampaignNr = $('#' + tripinvestigatorCampaignID).getSelectedItemData().campaignid;
+                $('#' + tripinvestigatorCampaignNrID).val(valueCampaignNr);
+            }
+            //NB it the campaign name input is made empty, campaignnr is made null in the controller
+
+        },
+        requestDelay: 400
+    };
+    $('#'+ tripinvestigatorCampaignID).easyAutocomplete(options);
+}
 
 function changeAttributesForCardCollapse(contextElement){
     $('.block-trip', contextElement).each(function(){
@@ -420,9 +454,9 @@ let addTripsAndInvestigators = (function () {
             var elementTrip = $(tmpl);
             $('#cruise_trips').append(elementTrip);
 
-            addAutoCompleteDestinations(index)
+            addAutoCompleteDestinations(index);
 
-            //Starting the tripinvestigators and tripstations for the trip
+            //Starting the tripinvestigators and tripstations counter for the trip
             counter['block_cruise_trips_'+ index] = {};
             counter['block_cruise_trips_'+ index] ['investigators']= 0;
             counter['block_cruise_trips_'+ index] ['stations']= 0;
@@ -489,6 +523,7 @@ let addTripsAndInvestigators = (function () {
                 var numberOfinvestigators = counter[property]['investigators'];
                 for (var i = 0; i < numberOfinvestigators; i++) {
                     addAutocompleteForInvestigator(indexTrip, i)
+                    addAutoCompleteForInvestigatorCampaign(indexTrip, i);
                 }
 
                 var numberOfStations = counter[property]['stations'];

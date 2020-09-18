@@ -67,7 +67,7 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
     var tripinvestigatornrID='trip_tripinvestigators_'+ indexTInvestigator+'_investigatornr';
 
     //locate the create investigator button for the row
-   var buttonCreate = $('#block_trip_tripinvestigators_' + indexTInvestigator).find('a');
+    var buttonCreate = $('#block_trip_tripinvestigators_' + indexTInvestigator).find('a');
 
 
     var options = {

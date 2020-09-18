@@ -130,11 +130,12 @@ class CruiseController extends AbstractController
                 foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                     if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
                         $tripinvestigator->setInvestigatornr(null);
-                        $manager->persist($tripinvestigator);
                     }
-
-                    $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
-                        ->setCampaign($mainCampaign->getCampaign());
+                    if (trim($tripinvestigator->getCampaign()) === '' || $tripinvestigator->getCampaignnr() === null) {
+                        $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
+                            ->setCampaign($mainCampaign->getCampaign());
+                    }
+                    $manager->persist($tripinvestigator);
                 }
 
                 $manager->persist($trip);
@@ -229,6 +230,13 @@ class CruiseController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            //Get the first campaign to assign it to the trip investigators (default)
+            $mainCampaign = null;
+            foreach($cruise->getCampaign() as $campaign){
+                $mainCampaign = $campaign;
+                break;
+            }
+
             foreach ($originalTrips as $trip) {
                 if (false === $cruise->getTrips()->contains($trip)) {
 
@@ -238,9 +246,13 @@ class CruiseController extends AbstractController
                     foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                         if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
                             $tripinvestigator->setInvestigatornr(null);
-
-                            $manager->persist($tripinvestigator);
                         }
+                        if (trim($tripinvestigator->getCampaign()) === '' || $tripinvestigator->getCampaignnr() === null) {
+                            $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
+                                ->setCampaign($mainCampaign->getCampaign());
+                        }
+                        $manager->persist($tripinvestigator);
+
                     }
                 }
 
