@@ -28,6 +28,7 @@ function highlightTripInvestigatorNoInvestigator(contextElement){
             $('input#' + idTripInvestigatorBlock + '_surname').css('background-color', '#ecf0f1');
             $('input#' + idTripInvestigatorBlock + '_firstname').css('background-color', '#ecf0f1');
             $('input#' + idTripInvestigatorBlock + '_fullname').css('background-color', '#ecf0f1');
+            $('input#' + idTripInvestigatorBlock + '_campaign').css('background-color', '#ecf0f1');
         } else {
             const surname = $('input#' + idTripInvestigatorBlock + '_surname').val();
             const firstname = $('input#' + idTripInvestigatorBlock + '_firstname').val();
@@ -59,7 +60,7 @@ function highlightTripStationNoStation(contextElement){
     });
 }
 
-function addAutocompleteForInvestigator (indexTInvestigator) {
+function addAutocompleteForInvestigator(indexTInvestigator, categTInvestigator) {
 
     var tripinvestigatorFullNameID ='trip_tripinvestigators_'+ indexTInvestigator+'_fullname';
     var tripinvestigatorSurnameID='trip_tripinvestigators_' + indexTInvestigator+'_surname';
@@ -92,9 +93,12 @@ function addAutocompleteForInvestigator (indexTInvestigator) {
         },
         list: {
             onChooseEvent: function() {
+                if (categTInvestigator == 'new') {
+                    $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+                    $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
+                }
                 $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
-                $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
-                $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+
                 //If there is a create button, it will be deleted as the tripinvestigator is now fetched from the investigator table.
                 if(buttonCreate.length>0){
                     $(buttonCreate).remove();
@@ -179,7 +183,7 @@ function addAutocompleteForStation (indexTStations)
                 $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
                 var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
                 $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
-                var stationIdForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id;
+                var stationIdForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id; //if mode is on edit only fill that one
                 $('#' + tripstationStationnrID).val(stationIdForSelectedItemValue);
             }
         },
@@ -201,7 +205,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
             $('#trip_tripinvestigators').append(elementTripinvestigator);
             window.counter.countTripInvestigators = index + 1;
             handleDeleteTripInvestigatorButtons(elementTripinvestigator);
-            addAutocompleteForInvestigator(index);
+            addAutocompleteForInvestigator(index, 'new');
             addAutoCompleteForInvestigatorCampaign(index);
 
 
@@ -223,7 +227,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
 
         $('input[id$=fullname]').each(function(){
             const indexTripinvestigator = $(this).attr('id').replace('trip_tripinvestigators_', '').replace('_fullname', '');
-            addAutocompleteForInvestigator(indexTripinvestigator);
+            addAutocompleteForInvestigator(indexTripinvestigator, 'old');
             addAutoCompleteForInvestigatorCampaign(indexTripinvestigator);
         });
 

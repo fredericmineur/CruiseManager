@@ -35,7 +35,9 @@ class TripinvestigatorsType extends AbstractType
                     'label' => 'Surname',
                     'attr' => [
                         'placeholder' => 'Surname'
-                    ]
+                    ],
+                    'required' => true
+
 
                 ]
                 )
@@ -45,7 +47,8 @@ class TripinvestigatorsType extends AbstractType
                     'label' => 'First Name',
                     'attr' => [
                         'placeholder' => 'First Name'
-                    ]
+                    ],
+                    'required' => true
                 ]
                 )
             ->add('fullname',
@@ -69,6 +72,8 @@ class TripinvestigatorsType extends AbstractType
             ])
 
             ->add('campaignnr', HiddenType::class)
+
+//            ->add('id', HiddenType::class)
             
         ;
 

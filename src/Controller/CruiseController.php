@@ -126,20 +126,23 @@ class CruiseController extends AbstractController
 
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
-
                 foreach ($trip->getTripinvestigators() as $tripinvestigator) {
-                    if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
-                        $tripinvestigator->setInvestigatornr(null);
-                    }
-                    if (trim($tripinvestigator->getCampaign()) === '' || $tripinvestigator->getCampaignnr() === null) {
-                        $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
-                            ->setCampaign($mainCampaign->getCampaign());
-                    }
-                    $manager->persist($tripinvestigator);
+
+                        if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
+                            $tripinvestigator->setInvestigatornr(null);
+                        }
+                        if (trim($tripinvestigator->getCampaign()) === '' || $tripinvestigator->getCampaignnr() === null) {
+                            $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
+                                ->setCampaign($mainCampaign->getCampaign());
+                        }
+                        $manager->persist($tripinvestigator);
+
                 }
+
 
                 $manager->persist($trip);
             }
+
 
             $manager->persist($cruise);
             $manager->flush();

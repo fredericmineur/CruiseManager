@@ -172,7 +172,7 @@ function  addTripInvestigatorsHandler(contextElement){
         window.counter[idBlockTrip]['investigators']=indexTInvestigators + 1;
 
         deleteTripinvestigators(elementTripinvestigator);
-        addAutocompleteForInvestigator(idTrip, indexTInvestigators);
+        addAutocompleteForInvestigator(idTrip, indexTInvestigators, 'new');
         addAutoCompleteForInvestigatorCampaign(idTrip, indexTInvestigators);
 
         displayCounterValues(contextElement);
@@ -243,7 +243,7 @@ function addAutocompleteForStation(indexTrip, indexTStations){
 
 
 
-function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
+function addAutocompleteForInvestigator(indexTrip, indexTInvestigators, categTInvestigator){
 
     var tripinvestigatorFullNameID='cruise_trips_'+indexTrip+'_tripinvestigators_'+ indexTInvestigators+'_fullname';
     var tripinvestigatorSurnameID='cruise_trips_'+indexTrip+'_tripinvestigators_'+ indexTInvestigators+'_surname';
@@ -276,8 +276,11 @@ function addAutocompleteForInvestigator(indexTrip, indexTInvestigators){
             onChooseEvent: function() {
 
                 $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
-                $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
-                $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+                if (categTInvestigator == 'new'){
+                    $("#" +tripinvestigatorSurnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().surname);
+                    $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
+                }
+
             }
         },
 
@@ -511,7 +514,6 @@ let addTripsAndInvestigators = (function () {
 
         displayCounterValues(window.document);
 
-        // console.log(counter);
 
 
         // NB The counter is in the following structure : { countTrip: 3, block_cruise_trips_0: {...}, block_cruise_trips_1: {....}, block_cruise_trips_2: {....} }
@@ -522,7 +524,7 @@ let addTripsAndInvestigators = (function () {
 
                 var numberOfinvestigators = counter[property]['investigators'];
                 for (var i = 0; i < numberOfinvestigators; i++) {
-                    addAutocompleteForInvestigator(indexTrip, i)
+                    addAutocompleteForInvestigator(indexTrip, i, 'old');
                     addAutoCompleteForInvestigatorCampaign(indexTrip, i);
                 }
 
