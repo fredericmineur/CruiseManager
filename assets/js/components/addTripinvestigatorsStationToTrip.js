@@ -151,7 +151,7 @@ function addAutoCompleteForInvestigatorCampaign (indexTInvestigator) {
 }
 
 
-function addAutocompleteForStation (indexTStations)
+function addAutocompleteForStation (indexTStations, categTstation)
 {
     var tripstationCodeID = 'trip_tripstations_' + indexTStations + '_code';
     var tripstationLatitudeID = 'trip_tripstations_' + indexTStations + '_deflatitude';
@@ -179,10 +179,12 @@ function addAutocompleteForStation (indexTStations)
         },
         list: {
             onChooseEvent: function () {
-                var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
-                $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
-                var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
-                $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
+                if (categTstation == 'new') {
+                    var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
+                    $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
+                    var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
+                    $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
+                }
                 var stationIdForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id; //if mode is on edit only fill that one
                 $('#' + tripstationStationnrID).val(stationIdForSelectedItemValue);
             }
@@ -217,7 +219,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
             $('#trip_tripstations').append(elementTripstation);
             window.counter.countTripStations = index + 1;
             handleDeleteTripStationButtons(elementTripstation);
-            addAutocompleteForStation(index);
+            addAutocompleteForStation(index, 'new');
         });
         updateCounter();
         handleDeleteTripInvestigatorButtons(window.document);
@@ -233,7 +235,7 @@ let addTripInvestigatorsStationsToTrip = (function () {
 
         $('input[id$=code]').each(function(){
             const indexTripstation = $(this).attr('id').replace('trip_tripstations_', '').replace('_code','');
-            addAutocompleteForStation(indexTripstation);
+            addAutocompleteForStation(indexTripstation, 'old');
         });
 
 

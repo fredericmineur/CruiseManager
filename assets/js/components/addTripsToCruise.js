@@ -124,7 +124,7 @@ function addTripStationHandler(contextElement){
         console.log(counter);
 
         deleteTripStations(elementTripStation);
-        addAutocompleteForStation(idTrip, indexTStations);
+        addAutocompleteForStation(idTrip, indexTStations, 'new');
         displayCounterValues(contextElement);
 
 
@@ -194,7 +194,7 @@ function deleteTripinvestigators(contextElement){
 
 // see http://easyautocomplete.com/example/ajax-post
 
-function addAutocompleteForStation(indexTrip, indexTStations){
+function addAutocompleteForStation(indexTrip, indexTStations, categTStation){
     var tripstationID = 'cruise_trips_'+ indexTrip + '_tripstations_' + indexTStations;
     var tripstationCodeID = tripstationID + '_code';
     var tripstationLatitudeID = tripstationID + '_deflatitude';
@@ -224,10 +224,12 @@ function addAutocompleteForStation(indexTrip, indexTStations){
         //http://easyautocomplete.com/example/select-event
         list: {
             onChooseEvent: function() {
-                var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
-                $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
-                var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
-                $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
+                if (categTStation == 'new') {
+                    var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
+                    $('#' + tripstationLatitudeID).val(latForSelectedItemValue);
+                    var longForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Long;
+                    $('#' + tripstationLongitudeID).val(longForSelectedItemValue);
+                }
                 var stationIdForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().id;
                 $('#' + tripstationStationnrID).val(stationIdForSelectedItemValue);
             }
@@ -530,7 +532,7 @@ let addTripsAndInvestigators = (function () {
 
                 var numberOfStations = counter[property]['stations'];
                 for (var i = 0; i < numberOfStations; i++) {
-                    addAutocompleteForStation(indexTrip, i)
+                    addAutocompleteForStation(indexTrip, i, 'old')
                 }
             }
         }
