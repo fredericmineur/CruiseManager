@@ -21,6 +21,10 @@ let fillTableAllTrips = (function () {
                 "columns" : [
                     {"data" : "startdateAndNumberOfDays"},
                     {"data" : "plancode"},
+                    { "data": "campaigns",
+                        "name": "campaigns",
+                        "defaultContent": ""
+                    },
                     {"data" : "status"},
                     {"data" : "destination"},
                     {"data" : "ship"},
@@ -52,6 +56,23 @@ let fillTableAllTrips = (function () {
                             tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
                                 + '"  target="_blank"><i class="fa fa-info-circle"></i></a>');
                             return  tripOutput;
+                        }
+                    },
+                    {
+                        "targets" : 2,
+                        "render": function (data, type, row) {
+                            var campaignOutput = '';
+                            var campaignRouteName =  'campaign_details' ;
+                            if (Array.isArray(data) && data.length) {
+                                console.log(data);
+                                for (var i = 0; i < data.length; i++) {
+                                    campaignOutput +=  '<a href="' + Routing.generate(campaignRouteName, {campaignId: data[i]['campaignid']}) + '" title="Open Campaign">'
+                                        // + '<span style="font-size: 20px;"><i class="fa fa-info-circle" aria-hidden="true"></i></span>&nbsp;'
+                                        + '&#8226&nbsp' + data[i]['campaign']
+                                        +  '</a><br/>';
+                                }
+                                return campaignOutput ;
+                            }
                         }
                     }
                 ]

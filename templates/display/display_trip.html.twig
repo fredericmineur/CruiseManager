@@ -20,7 +20,10 @@
                     <div class="card-body">
                         <p>Destination: {% if trip.destinationarea %}{{ trip.destinationarea }}
                             {% else %}N.A.{% endif %}</p>
-                        <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }}
+                        <p>Cruise: {% if trip.cruiseid %}{{ trip.cruiseid.getPlanCode }}&nbsp;
+                            <a href="{{ path('cruise_details',{'cruiseId': trip.cruiseid.getCruiseid}) }}">
+                                <span style="font-size: 20px;"><i class="fa fa-info-circle"></i></span></a>
+                        </p>
                             {% else %}N.A.{% endif %}</p>
                         <p>Campaign(s):
                             {% if trip.cruiseid %}

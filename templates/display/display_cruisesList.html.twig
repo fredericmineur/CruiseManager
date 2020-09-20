@@ -111,7 +111,7 @@
                                 var campaignOutput = '';
                                 var campaignRouteName =  'campaign_details' ;
                                 if (Array.isArray(data) && data.length) {
-                                    // console.log(data);
+
                                     for (var i = 0; i < data.length; i++) {
                                         campaignOutput +=  '<a href="' + Routing.generate(campaignRouteName, {campaignId: data[i]['campaignid']}) + '" title="Open Campaign">'
                                             // + '<span style="font-size: 20px;"><i class="fa fa-info-circle" aria-hidden="true"></i></span>&nbsp;'
