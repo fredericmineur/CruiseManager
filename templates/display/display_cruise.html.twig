@@ -92,16 +92,23 @@
                                     <tbody>
                                     {% for tripinvestigator in trip.tripinvestigators %}
                                         <tr>
-                                            <td>{{ tripinvestigator.firstname }}</td>
-                                            <td>{{tripinvestigator.surname}}</td>
+                                            <td>{{ tripinvestigator.firstname }}
+                                                {% if tripinvestigator.investigatornr is not null %}
+                                                    {% if tripinvestigator.firstname|trim != tripinvestigator.investigatornr.firstname|trim %}
+                                                        &#9888;
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{tripinvestigator.surname}}
+                                                {% if tripinvestigator.investigatornr is not null %}
+                                                    {% if tripinvestigator.surname|trim != tripinvestigator.investigatornr.surname|trim %}
+                                                        &#9888;
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
                                             <td>{% if tripinvestigator.investigatornr is not null %}
-                                                    {% if tripinvestigator.firstname|trim == tripinvestigator.investigatornr.firstname|trim
-                                                            and tripinvestigator.surname|trim ==tripinvestigator.investigatornr.surname|trim %}
-                                                        &#10003; {% else %} &#9888; {{ tripinvestigator.investigatornr.firstname }}<br/>
-                                                        {{ tripinvestigator.investigatornr.surname }}
-                                                        {% endif %}
-                                                    {% else %} &#10008;
-                                                {% endif %}</td>
+                                                    &#10003; {% else %} &#10008; {% endif %}
+                                            </td>
                                             <td>
 {#                                                {{ tripinvestigator.campaign | length > 25 ?#}
 {#                                                       tripinvestigator.campaign|slice(0,22) ~ '...' : tripinvestigator.campaign }}#}
@@ -128,14 +135,31 @@
                                     <tbody>
                                     {% for tripstation in trip.tripstations %}
                                         <tr>
-                                            <td>{{tripstation.code}}</td>
-                                            <td>{{tripstation.deflatitude | number_format(3)}}</td>
-                                            <td>{{tripstation.deflongitude | number_format(3)}}</td>
-                                            <td>{% if tripstation.stationnr is not null %}
+                                            <td>{{tripstation.code}}
+                                                {% if tripstation.stationnr is not null %}
                                                     {% if tripstation.code|trim != tripstation.stationnr.code|trim %}
-                                                        &#9888; {{ tripstation.stationnr.code }}
-                                                    {% else %}&#10003; {% endif %}
-                                                {% else %} &#10008; {% endif %}</td>
+                                                        &#9888;
+                                                    {% endif %}
+                                                {% endif %}
+
+                                            </td>
+                                            <td>{{tripstation.deflatitude | number_format(3)}}
+                                                {% if tripstation.stationnr is not null %}
+                                                    {% if (tripstation.deflatitude - tripstation.stationnr.latitude)|abs > 0.01  %}
+                                                        &#9888;
+                                                    {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{tripstation.deflongitude | number_format(3)}}
+                                                {% if tripstation.stationnr is not null %}
+                                                   {% if (tripstation.deflongitude - tripstation.stationnr.longitude)|abs > 0.01  %}
+                                                       &#9888;
+                                                   {% endif %}
+                                                {% endif %}
+                                            </td>
+                                            <td>{% if tripstation.stationnr is not null %}
+                                                    &#10003; {% else %} &#10008;{% endif %}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
