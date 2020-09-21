@@ -64,8 +64,8 @@ class CruiseController extends AbstractController
 
         $cruises= $cruiseRepository->GetAllCruisesForTable($em);
 
-        $cruisesForTable= $cruiseRepository->GetAllCruisesWithPIAndNumberOfTrips();
-        $cruisesWithCampaigns = $cruiseRepository->GetAllCruisesWithCampaigns();
+//        $cruisesForTable= $cruiseRepository->GetAllCruisesWithPIAndNumberOfTrips();
+//        $cruisesWithCampaigns = $cruiseRepository->GetAllCruisesWithCampaigns();
 
         $jsonCruisesForTable = $serializer->serialize($cruises, 'json');
 

@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Periods{% endblock %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('displays_app') }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="container my-2">
+        <div class="row">
+            <div class="col-4">
+                <h3>List of periods</h3>
+            </div>
+            <div class="col-8">
+                <a href="" class="btn btn-success">Add a new period</a>
+            </div>
+        </div>
+    </div>
+    <div class="container my-2">
+
+        <table class="table-hover table-bordered display" id="myDataTable" width="100%">
+            <thead>
+            {% set headerRow = "
+            <tr>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Short</th>
+                <th>Color code</th>
+            </tr>"
+            %}
+
+            {{ headerRow | raw}}
+
+            </thead>
+
+            <tfoot>
+
+            {{ headerRow | raw}} {# Variable containing columns headers, see above #}
+            </tfoot>
+
+
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('displays_app') }}
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //Add another header below the first
+            $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
+
+            // Transform the second header row to have the search input fields
+            $('#myDataTable thead tr:odd th').each( function () {
+                $(this).html('<input type="text" placeholder="Search" />');
+            });
+
+            var table =
+                $('#myDataTable').DataTable({
+
+
+                    "ajax": {
+                        "url": "/api/getperiods",
+                        // "url":Routing.generate('get_periods'),
+                        "dataSrc": ""
+                    },
+                    "columns": [
+                        {"data": "startdate"},
+                        {"data": "enddate"},
+                        {"data": "short"},
+                        {"data": "colorcode"}
+                    ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                });
+
+            $('#myDataTable_filter').hide();
+
+            table.columns().every(function(){
+                var that = this;
+                $('input', this.header() ).on( 'keyup change clear', function () {
+                    if ( that.search() !== this.value ) {
+                        that
+                            .search( this.value )
+                            .draw();
+                    }
+                });
+            });
+
+
+            $('#myDataTable thead input').on('click', function(e){
+                e.stopPropagation();
+            });
+
+
+
+        });
+
+
+
+
+    </script>
+
+{% endblock %}
