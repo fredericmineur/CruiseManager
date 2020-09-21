@@ -62,9 +62,11 @@ class PeriodType extends AbstractType
                 ChoiceType::class,[
                     'label' => 'Category',
                     'choices' => [
-                        'Multi-day trip' => 'Multi-day trip',
-                        'WEEKEND - HOLIDAY' => 'WEEKEND - HOLIDAY',
-                        'Maintenance MOB/DEMOB' =>'Maintenance MOB/DEMOB'
+                        'Multi-day trip' => 'Multi-day trip                          ',
+                        'WEEKEND - HOLIDAY' => 'WEEKEND - HOLIDAY                       ',
+                        'Maintenance MOB/DEMOB' =>'Maintenance MOB/DEMOB                   '
+                        //White spaces are really important here for edit periods (as those whitespaces are present in the database....nchar, fixed length)
+                        //otherwise, symfony takes the first choice (multi-day trip) as default value, whatever the underlying data is
                     ]
                 ])
 //            ->add('description')
