@@ -1,6 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('forms_app') }}
+{% endblock %}
 
+{% block body %}
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-header">
+                <h5>Create period</h5>
+            </div>
+
+        </div>
+        <div class="card-body">
+            {{ form_start(formPeriod) }}
+            <div class="row">
+                <div class="col-7">
+                    {{ form_row(formPeriod.short) }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    {{ form_row(formPeriod.startdate) }}
+                </div>
+                <div class="col3"></div>
+                <div class="col-3">
+                    {{ form_row(formPeriod.enddate) }}
+                </div>
+            </div>
+
+
+            {{ form_row(formPeriod.enddate) }}
+
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-success">
+                Save
+            </button>
+            {{ form_end(formPeriod) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ encore_entry_script_tags('forms_app') }}
+    <script>
+        $(document).ready(function() {
+            $('.js-datepicker').datepicker({format: 'yyyy-mm-dd'});
+        });
+    </script>
 
 {% endblock %}
