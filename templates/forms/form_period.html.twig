@@ -8,7 +8,9 @@
     <div class="container my-5">
         <div class="card">
             <div class="card-header">
-                <h5>Create period</h5>
+                {% if mode=='new' %}
+                <h5>Create period</h5> {% elseif mode=='edit' %}
+                <h5>Edit period</h5> {% endif %}
             </div>
 
         </div>
@@ -28,9 +30,6 @@
                     {{ form_row(formPeriod.enddate) }}
                 </div>
             </div>
-
-
-            {{ form_row(formPeriod.enddate) }}
 
         </div>
         <div class="card-footer">

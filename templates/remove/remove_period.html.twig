@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h5>You are about to remove the period: </h5>
+        <h3>Start: {{ period.startdate |date ("Y-m-d") }} || End: {{ period.enddate |date ("Y-m-d")}}</h3>
+        <h3>{{ period.short }}</h3>
+        <h5>Do you really want to proceed?</h5>
+        <a href="{{ path('remove_period', {'periodId': period.id}) }} " class="btn btn-danger">Yes</a>
+        <a href="{{ path('edit_period', {'periodId': period.id}) }}" class="btn btn-success">Edit</a>
+        <a href="{{ path('display_periods', {'periodId': period.id}) }}" class="btn btn-dark">Periods list</a>
+    </div>
+
+{% endblock %}

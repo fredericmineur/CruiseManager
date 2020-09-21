@@ -19,32 +19,20 @@ class PeriodsRepository extends ServiceEntityRepository
         parent::__construct($registry, Periods::class);
     }
 
-    // /**
-    //  * @return Periods[] Returns an array of Periods objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+    public function getPeriodsWithColor () {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = '
+            SELECT id, startdate, enddate, trim(short) as short, trim(colorcode) as colorcode, 
+                CASE 
+                    WHEN colorcode = \'grey\' THEN \'#F4F4F4\'
+                    WHEN colorcode = \'blue\' THEN \'#F0F8FF\'
+                    WHEN colorcode = \'red\' THEN \'#FF0000\'
+                END AS colorhexcode
+            FROM Periods;
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $conn->close();
+        return $stmt->fetchAll();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Periods
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
