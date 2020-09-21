@@ -38,6 +38,7 @@ class Stations
      */
     private $latitude;
 
+
     /**
      * @var float|null
      *
@@ -178,6 +179,8 @@ class Stations
 
         return $this;
     }
+
+
 
 
 }

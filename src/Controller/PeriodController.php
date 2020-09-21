@@ -44,9 +44,10 @@ class PeriodController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             switch ($period->getShort()){
-                case 'Multi-day trip': $period->setColorcode('red'); break;
-                case 'WEEKEND - HOLIDAY': $period->setColorcode('grey'); break;
-                case 'Maintenance MOB/DEMOB': $period->setColorcode('blue'); break;
+                //LEAVE THE WHITE SPACES (fixed length field in database)
+                case 'Multi-day trip                          ': $period->setColorcode('red'); break;
+                case 'WEEKEND - HOLIDAY                       ': $period->setColorcode('grey'); break;
+                case 'Maintenance MOB/DEMOB                   ': $period->setColorcode('blue'); break;
             }
             $manager->persist($period);
             $manager->flush();
@@ -70,9 +71,10 @@ class PeriodController extends AbstractController
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             switch ($period->getShort()){
-                case 'Multi-day trip': $period->setColorcode('red'); break;
-                case 'WEEKEND - HOLIDAY': $period->setColorcode('grey'); break;
-                case 'Maintenance MOB/DEMOB': $period->setColorcode('blue'); break;
+                //LEAVE THE WHITE SPACES (fixed length field in database)
+                case 'Multi-day trip                          ': $period->setColorcode('red'); break;
+                case 'WEEKEND - HOLIDAY                       ': $period->setColorcode('grey'); break;
+                case 'Maintenance MOB/DEMOB                   ': $period->setColorcode('blue'); break;
             }
             $manager->persist($period);
             $manager->flush();

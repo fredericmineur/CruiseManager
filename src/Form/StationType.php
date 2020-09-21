@@ -16,16 +16,16 @@ class StationType extends AbstractType
         $builder
             ->add('latitude',
                 NumberType::class,[
-                    'label' => 'Latitude',
+                    'label' => 'Latitude dd (required)',
                     'attr' => [
-                        'placeholder' => 'DefLatitude'
+                        'placeholder' => 'Decimal latitude'
                     ]
                 ])
             ->add('longitude',
                 NumberType::class, [
-                'label' => 'Longitude',
+                'label' => 'Longitude dd (required)',
                     'attr' => [
-                        'placeholder' => 'DefLongitude'
+                        'placeholder' => 'Decimal longitude'
                     ]
             ])
 

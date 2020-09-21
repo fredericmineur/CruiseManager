@@ -5,7 +5,9 @@
 
         {% if station.tripstations is empty %}
         <h5>You are about to remove the station:</h5>
-        <h3>{{ station.code }}  Lat: {{ station.latitude }}, {{ station.longitude }}</h3>
+        <h3>{{ station.code }}</h3>
+        <h3>Latitude: {{ station.latitude }}</h3>
+        <h3>Longitude: {{ station.longitude }}</h3>
         <h5>Do you really want to proceed?</h5>
         <a href="{{ path('remove_station', {'stationId': station.nr}) }}" class="btn btn-danger">Yes, remove the station</a>
         {% else %}

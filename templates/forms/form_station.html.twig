@@ -4,31 +4,116 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                {% if mode == 'edit' %}Edit Station
-                {% elseif mode == 'create' %}Create station {% endif %}
+                <div class="row">
+                    <div class="col-4">
+                        {% if mode == 'edit' %} <h5>Edit Station</h5>
+                        {% elseif mode == 'create' %} <h5>Create station</h5>  {% endif %}
+                    </div>
+                    <div class="col-8">
+                        <p>Tip: CTRL + F5 for hard refresh (NB: unsaved fields will also be emptied)</p>
+                    </div>
+                </div>
+
             </div>
             <div class="card-body">
                 {{ form_start (formStation) }}
                 <div class="row">
-                    <div class="col-4">
-                        {{ form_row(formStation) }}
-                    </div>
-                    <div class="col-4">
-                        {{ form_row(formStation) }}
-                    </div>
-                    <div class="col-4">
-                        {{ form_row(formStation) }}
-                    </div>
+                    <div class="col-6">{{ form_row(formStation.code) }}</div>
                 </div>
+                <div class="row">
+
+
+                    <div class="col-4">
+                        {{ form_row(formStation.latitude) }}
+                    </div>
+                    <div class="col-2" style="text-align: center;">
+                        <button type="button" name="convert" value="latitude" style="position: absolute; bottom: 20px; left: 60px;">
+                            &#8592; Convert</button>
+                    </div>
+
+                    <div class="col-2">
+                        <label for="latDeg" class="required">Latitude Degrees</label>
+                        <input type="text" class="form-control" id="latDeg">
+                    </div>
+                    <div class="col-2">
+                        <label for="latMin" class="required">Minutes</label>
+                        <input type="text" class="form-control" id="latMin">
+                    </div>
+                    <div class="col-2">
+                        <label for="latSec" class="required">Seconds</label>
+                        <input type="text" class="form-control" id="latSec">
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        {{ form_row(formStation.longitude) }}
+                    </div>
+                    <div class="col-2" style="text-align: center;">
+                        <button type="button" name="convert" value="longitude" style="position: absolute; bottom: 20px; left: 60px;">
+                            &#8592; Convert</button>
+                    </div>
+                    <div class="col-2">
+                        <label for="longDeg" class="required">Longitude Degrees</label>
+                        <input type="text" class="form-control" id="longDeg">
+                    </div>
+                    <div class="col-2">
+                        <label for="longMin" class="required">Minutes</label>
+                        <input type="text" class="form-control" id="longMin">
+                    </div>
+                    <div class="col-2">
+                        <label for="longSec" class="required">Seconds</label>
+                        <input type="text" class="form-control" id="longSec">
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="card-footer">
                 <button type="submit" class="btn btn-success">
                     {% if mode == 'edit' %}
                         Save changes{% elseif mode == 'create' %}
                         Save {% endif %}
                 </button>
                 {{ form_end(formStation) }}
-
             </div>
         </div>
     </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('forms_app') }}
+
+    <script>
+        $(document).ready(function () {
+            function fromDMStoDecimal (degree, minute, second){
+                degree = parseFloat(degree); degree = (isNaN(degree)) ? 0 : degree;
+                minute = parseFloat(minute); minute = (isNaN(minute)) ? 0 : minute;
+                second = parseFloat(second); second = (isNaN(second)) ? 0 : second;
+                var conversionToDecimal = Math.abs(degree) + minute/60 + second/3600;
+                conversionToDecimal = (degree < 0) ? -conversionToDecimal : conversionToDecimal;
+                return conversionToDecimal;
+            };
+
+            $('button[name$="convert"][value$="latitude"]').on("click", function(){
+                var latDeg = $('input#latDeg').val();
+                var latMin = $('input#latMin').val();
+                var latSec = $('input#latSec').val();
+                $('input#station_latitude').val(fromDMStoDecimal(latDeg, latMin, latSec));
+            });
+            $('button[name$="convert"][value$="longitude"]').on("click", function(){
+                var longDeg = $('input#longDeg').val();
+                var longMin = $('input#longMin').val();
+                var longSec = $('input#longSec').val();
+                $('input#station_longitude').val(fromDMStoDecimal(longDeg, longMin, longSec));
+            });
+
+
+
+
+        })
+    </script>
 
 {% endblock %}
