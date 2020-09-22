@@ -122,10 +122,11 @@ class CruiseController extends AbstractController
                 $mainCampaign = $campaign;
                 break;
             }
-
+//            dd($cruise);
 
             foreach ($cruise->getTrips() as $trip) {
                 $trip->setCruiseid($cruise);
+
                 foreach ($trip->getTripinvestigators() as $tripinvestigator) {
 
                         if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {

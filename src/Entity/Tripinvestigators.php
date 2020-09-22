@@ -35,7 +35,7 @@ class Tripinvestigators
      * @var string|null
      *
      * @ORM\Column(name="Surname", type="string", length=50, nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotNull()
      */
     private $surname;
@@ -44,7 +44,7 @@ class Tripinvestigators
      * @var string|null
      *
      * @ORM\Column(name="Firstname", type="string", length=50, nullable=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\NotNull()
      */
     private $firstname;

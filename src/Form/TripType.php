@@ -82,7 +82,10 @@ class TripType extends AbstractType
                     'entry_options' => [
                         //Avoid labels 0, 1, 2, 3, 4 to show for each entry
                         'label' =>false,
-                    ]
+                    ],
+//                    'constraints' => [new NotBlank()]
+
+
                 ]
             )
 

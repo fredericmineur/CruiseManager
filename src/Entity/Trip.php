@@ -155,6 +155,7 @@ class Trip
      *
      * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="tripnr", cascade={"all"}, orphanRemoval=true)
      * @Assert\Valid
+     * @Assert\All({@Assert\NotBlank()})
      */
     private $tripinvestigators;
 

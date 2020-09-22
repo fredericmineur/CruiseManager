@@ -121,11 +121,13 @@ function addTripStationHandler(contextElement){
 
         window.counter[idBlockTrip]['stations']=indexTStations + 1;
 
-        console.log(counter);
+        // console.log(counter);
 
         deleteTripStations(elementTripStation);
         addAutocompleteForStation(idTrip, indexTStations, 'new');
         displayCounterValues(contextElement);
+
+        warningEmptyStations (contextElement);
 
 
     });
@@ -176,6 +178,7 @@ function  addTripInvestigatorsHandler(contextElement){
         addAutoCompleteForInvestigatorCampaign(idTrip, indexTInvestigators);
 
         displayCounterValues(contextElement);
+        warningEmptyTripinvestigators (contextElement);
 
         // console.log(counter);
 
@@ -394,9 +397,7 @@ function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctio
         // 'trip' has the following format: Object { 3675: true }
         var tripId = Object.keys(trip)[0];
         var removeTripBoolean  = Object.values(trip)[0];
-        // $('.block-trip').each(function(){
-        //     console.log($(this));
-        // })
+
         if(removeTripBoolean){
             var elementTrip =  $('input[id$=_tripid][value=' + tripId + ']').parents()[2];
             var rowWithdeleteButton = $(elementTrip).children()[0];
@@ -404,39 +405,36 @@ function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctio
             var deleteButton = $(deleteButtonColumn).children()[0];
             $(deleteButton).remove();
 
-            // console.log(deleteButton);
         }
-        // else {
-        //     console.log ('removeDeleteButton = false');
-        // }
     });
-
     }
-
-    // function removeButton(trip, index){
-    //     // 'trip' has the following format: Object { 3675: true }
-    //     var tripId = Object.keys(trip)[0];
-    //     var removeTripBoolean  = Object.values(trip)[0];
-    //     // $('.block-trip').each(function(){
-    //     //     console.log($(this));
-    //     // })
-    //     if(removeTripBoolean){
-    //         var elementTrip =  $('input[id$=_tripid][value=' + tripId + ']').parents()[2];
-    //         var rowWithdeleteButton = $(elementTrip).children()[0];
-    //         var deleteButtonColumn = $(rowWithdeleteButton).children()[3];
-    //         var deleteButton = $(deleteButtonColumn).children()[0];
-    //         $(deleteButton).remove();
-    //
-    //         // console.log(deleteButton);
-    //     }
-    //     // else {
-    //     //     console.log ('removeDeleteButton = false');
-    //     // }
-    //
-    //
-    // }
-
 }
+
+//SYMFONY doesn't deal well with subcollections (i.e. cruise->trip-> tripinvestigators)
+// For instance, when a new trip is created and some trip investigators are added and left empty,
+// constraints usually applied to trip investigators are not applied
+// and NULL trip investigators are submitted with the cruise (-> symfony error)
+// In the case of an existing trip, NULL trip investigators are automatically discarded at submission.
+
+function warningEmptyTripinvestigators (contextElement){
+    $('button[type="submit"]').click(function(eventClick){
+        if($('input[id$=_surname]').length >0 &&  $.trim($('input[id$=_surname]').val())==''  ) {
+            alert('Empty trip investigator(s) !!! \n Please WAIT after closing this warning! \n And press your browser back button if\n ' +
+                 '"Expected argument of type..." appears');
+        }
+    });
+}
+
+function warningEmptyStations (contextElement) {
+    $('button[type="submit"]').click(function(eventClick){
+        if($('input[id$=_code]').length >0 &&  $.trim($('input[id$=_code]').val())==''  ) {
+            alert('Empty trip station(s) !!! \n Please WAIT after closing this warning! \n And press your browser back button if\n ' +
+                '"Expected argument of type..." appears');
+        }
+    });
+}
+
+
 
 
 // Function to initiate the whole module
@@ -487,6 +485,8 @@ let addTripsAndInvestigators = (function () {
 
             displayCounterValues(elementTrip);
 
+            // warningEmptyTripinvestigators(elementTrip);
+
             // console.log(counter);
 
         });
@@ -516,6 +516,8 @@ let addTripsAndInvestigators = (function () {
 
         displayCounterValues(window.document);
 
+        // warningEmptyTripinvestigators (window.document)
+
 
 
         // NB The counter is in the following structure : { countTrip: 3, block_cruise_trips_0: {...}, block_cruise_trips_1: {....}, block_cruise_trips_2: {....} }
@@ -536,8 +538,6 @@ let addTripsAndInvestigators = (function () {
                 }
             }
         }
-
-
 
 
 
