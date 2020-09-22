@@ -6,9 +6,14 @@ import 'easy-autocomplete';
 import 'bootstrap-datepicker';
 import 'select2';
 import addTripsAndInvestigators from '../js/components/addTripsToCruise.js';
-global.addTripsAndInvestigators =  addTripsAndInvestigators;
 import addCampaigns from "../js/components/addCampaignsToCruise.js";
-global.addCampaigns = addCampaigns;
 import addTripInvestigatorsStationsToTrip from '../js/components/addTripinvestigatorsStationToTrip';
-global.addTripInvestigatorsStationsToTrip = addTripInvestigatorsStationsToTrip;
+import stationDMStoDD from '../js/components/formStationDMStoDD';
 import './components/router';
+
+
+global.addTripsAndInvestigators =  addTripsAndInvestigators;
+global.addCampaigns = addCampaigns;
+global.addTripInvestigatorsStationsToTrip = addTripInvestigatorsStationsToTrip;
+global.stationDMStoDD = stationDMStoDD;
+
