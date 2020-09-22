@@ -1,11 +1,9 @@
 let fillTableCruises = (function () {
 
-    let initObjectTC = {};
+    let initObjectTCruise = {};
 
-    initObjectTC.init = function () {
+    initObjectTCruise.init = function () {
 
-            //allow sorting date
-            // $.fn.dataTable.moment("D/M/YYYY");
 
             //Add another header below the first
             $('#myDataTable thead tr').clone().appendTo('#myDataTable thead');
@@ -141,7 +139,7 @@ let fillTableCruises = (function () {
 
     }
 
-    return initObjectTC;
+    return initObjectTCruise;
 
 
 })();

@@ -7,7 +7,10 @@ import './components/router';
 
 import {fillTableAllTrips, fillTableInvestigators, fillTableStations} from '../js/components/dataTablesForTrip';
 import fillTableCruises from '../js/components/dataTablesForCruises';
+import fillTableCampaigns from '../js/components/dataTablesForCampaigns';
 global.fillTableAllTrips = fillTableAllTrips;
 global.fillTableInvestigators = fillTableInvestigators;
-global.fillTableStations =fillTableStations;
-global.fillTableCruises = fillTableCruises;
+global.fillTableStations = fillTableStations;
+global.fillTableCruises =  fillTableCruises;
+global.fillTableCampaigns = fillTableCampaigns;
+
