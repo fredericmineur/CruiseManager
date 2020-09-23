@@ -76,47 +76,58 @@
 
     <script>
         $(document).ready(function () {
-            $('#campaign_imistitle').select2({
-                    placeholder: 'Select a IMIS project',
-                    allowClear: true,
-                    minimumInputLength:3,
-                    ajax: {
-                        url: function (params) {
-                            return Routing.generate("searchImisProjects") + '/' + params.term;
-                        },
-                        processData: false,
-                        dataType: 'json',
-                    }
-                }
-            );
 
-            {% if  mode == 'edit' and imisJson is not null  %}
-                var data = {
-                    id: 1,
-                    text: "{{ imisJson["projectrec"]["StandardTitle"] }}"
-                };
 
-                var newOption = new Option(data.text, data.id, false, true);
-                $('#campaign_imistitle').append(newOption);
+            var imisJson = '';
+            var mode = '{{ mode }}';
+
+            {% if  mode == 'edit' and imisJson is not null %}
+            imisJson = {{ imisJson | json_encode| raw }};
             {% endif %}
 
-            $('#campaign_imistitle').on('select2:select', function (e) {
-                $('#campaign_imisprojectnr').val(e.params.data.ProID);
-                $('#myModal').modal('show');
-                $('#label_acronym').html('<b>The acronym: </b>' +(e.params.data.Acronym || '') );
-                $('#acronym').val((e.params.data.Acronym || ''));
-                $('#label_shortTitle').html('<b>The first 50 characters of the tile: </b>'+ e.params.data.text.substring(0, 50) );
-                $('#shortTitle').val(e.params.data.text.substring(0, 50));
-            });
+            campaignAutofill.init(imisJson, mode);
 
-            $('#campaign_imistitle').on('select2:clear', function (e) {
-                $('#campaign_imisprojectnr').val(null);
-            });
+            {#$('#campaign_imistitle').select2({#}
+            {#        placeholder: 'Select a IMIS project',#}
+            {#        allowClear: true,#}
+            {#        minimumInputLength:3,#}
+            {#        ajax: {#}
+            {#            url: function (params) {#}
+            {#                return Routing.generate("searchImisProjects") + '/' + params.term;#}
+            {#            },#}
+            {#            processData: false,#}
+            {#            dataType: 'json',#}
+            {#        }#}
+            {#    }#}
+            {#);#}
 
-            $("#copyValues").click(function(){
-                $('#campaign_campaign').val($('input:radio[name=copyImisProj]:checked').val());
-                $('#myModal').modal('hide');
-            });
+            {#{% if  mode == 'edit' and imisJson is not null  %}#}
+            {#    var data = {#}
+            {#        id: 1,#}
+            {#        text: "{{ imisJson["projectrec"]["StandardTitle"] }}"#}
+            {#    };#}
+
+            {#    var newOption = new Option(data.text, data.id, false, true);#}
+            {#    $('#campaign_imistitle').append(newOption);#}
+            {#{% endif %}#}
+
+            {#$('#campaign_imistitle').on('select2:select', function (e) {#}
+            {#    $('#campaign_imisprojectnr').val(e.params.data.ProID);#}
+            {#    $('#myModal').modal('show');#}
+            {#    $('#label_acronym').html('<b>The acronym: </b>' +(e.params.data.Acronym || '') );#}
+            {#    $('#acronym').val((e.params.data.Acronym || ''));#}
+            {#    $('#label_shortTitle').html('<b>The first 50 characters of the tile: </b>'+ e.params.data.text.substring(0, 50) );#}
+            {#    $('#shortTitle').val(e.params.data.text.substring(0, 50));#}
+            {#});#}
+
+            {#$('#campaign_imistitle').on('select2:clear', function (e) {#}
+            {#    $('#campaign_imisprojectnr').val(null);#}
+            {#});#}
+
+            {#$("#copyValues").click(function(){#}
+            {#    $('#campaign_campaign').val($('input:radio[name=copyImisProj]:checked').val());#}
+            {#    $('#myModal').modal('hide');#}
+            {#});#}
 
         });
     </script>
