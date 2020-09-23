@@ -81,7 +81,8 @@ let fillTableMapStations = (function () {
 
         $.ajax({
             dataType: "json",
-            url: "/api/getStationsGeoJSON",
+            // url: "/api/getStationsGeoJSON",
+            url: Routing.generate('get_stations_GeoJSON'),
             success: function(data) {
                 stations = L.geoJson(data, {
                     pointToLayer: pointToLayerNormalStyle,

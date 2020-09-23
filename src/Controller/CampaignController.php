@@ -39,7 +39,7 @@ class CampaignController extends AbstractController
 
 
     /**
-     * @Route("/api/getcampaignsslim", name="api_get_campaigns_slim")
+     * @Route("/api/getcampaignsslim", name="api_get_campaigns_slim", options={"expose"=true})
      */
     public function getCampaignList (CampaignRepository $campaignRepository)
     {

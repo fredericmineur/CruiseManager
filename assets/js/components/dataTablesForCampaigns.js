@@ -17,7 +17,8 @@ let fillTableCampaigns = (function () {
         var table =
             $('#myDataTable').DataTable({
                 "ajax": {
-                    "url": "api/getcampaignsslim",
+                    // "url": "api/getcampaignsslim",
+                    "url": Routing.generate('api_get_campaigns_slim'),
                     "dataSrc" : ""
                 },
 
