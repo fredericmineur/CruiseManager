@@ -171,7 +171,7 @@ let fillTableTripInvestigators = (function () {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-let fillTableStations = (function () {
+let fillTableTripStations = (function () {
     let initFillTableStations = {};
 
     initFillTableStations.init = function () {
@@ -242,5 +242,5 @@ let fillTableStations = (function () {
 // export default fillTableAllTrips;
 // export fillTableStations;
 
-export  {fillTableAllTrips, fillTableTripInvestigators, fillTableStations};
+export  {fillTableAllTrips, fillTableTripInvestigators, fillTableTripStations};
 
