@@ -5,78 +5,70 @@
     <div class="container ">
         <div class="card border-dark my-2" style="width: 330px !important; ">
             <div class="card-header">
-                <h4 style="display: inline-block" class="mr-5"> STATION {{ station.code }}</h4><a href="{{ path('display_all_stations') }}" class="btn btn-dark">Stations list</a>
-
+                <h4 style="display: inline-block" class="mr-5"> STATION {{ station.code }}</h4><a
+                        href="{{ path('display_all_stations') }}" class="btn btn-dark">Stations list</a>
             </div>
             <div class="card-body">
-                        <p>Latitude: {{ station.latitude }}</p>
-                        <p>Longitude: {{ station.longitude }}</p>
-                        <p>Trips: {{ station.tripstations |length }}</p>
+                <p>Latitude: {{ station.latitude }}</p>
+                <p>Longitude: {{ station.longitude }}</p>
+                <p>Trips: {{ station.tripstations |length }}</p>
             </div>
             <div class="card-footer">
                 <a href="{{ path('edit_station', {'stationId': station.nr}) }}"><i class="fa fa-edit fa-2x"></i></a>
                 {% if station.tripstations is empty %}
-                <a href="{{ path('remove_station_warning', {'stationId': station.nr}) }}" class=""><i style="color:red" class="fa fa-trash fa-2x"></i></a>
+                    <a href="{{ path('remove_station_warning', {'stationId': station.nr}) }}" class=""><i
+                                style="color:red" class="fa fa-trash fa-2x"></i></a>
                 {% endif %}
-
             </div>
-
-
         </div>
     </div>
 
     <div class="container my-2">
         <div class="row">
-        {% if trips is empty %}No trips for this station{% else %}
-            {% for cruise in cruises %}
+            {% if trips is empty %}No trips for this station{% else %}
+                {% for cruise in cruises %}
 
-
-            <div class="card border-dark" style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
-                <div class="card-header">
-                    <p>Cruise {{ cruise.plancode }}<a href="{{path('cruise_details', {'cruiseId': cruise.cruiseid})}}"><i class="fa fa-info-circle"></i></a></p>
-                    <p>Campaign(s): <br>
-                        {% for campaign in cruise.campaign %}&nbsp;&nbsp;&nbsp;&nbsp;{{ campaign.campaign }}
-                            <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i class="fa fa-info-circle"></i></a><br> {% endfor %}</p>
-                    </p>
-
-                </div>
-                <div class="card-body">
-                    <p>Trips: </p>
-                        {% for cruisetrip in cruise.trips %}
-                               {% if cruisetrip in trips %} {% set stationInTrip = true %} {% else %} {% set stationInTrip = false %} {% endif %}
-
-                            <p style="line-height: 20%">
-                                {% if stationInTrip %}<mark><b style="text-decoration: underline;">{% endif %}
-                                        {{cruisetrip.startdate | date ('Y-m-d')}}
-                                {% if stationInTrip %}</b></mark>
-
-                                {% for tripstation in cruisetrip.tripstations %}
-                                    {% if  tripstation.stationnr == station and tripstation.code|trim != tripstation.stationnr.code|trim %}
-                                         as {{ tripstation.code }}
-                                    {% endif %}
-                                {% endfor %}
-
-
-
-                                {% endif %}
-
+                    <div class="card border-dark"
+                         style="width: 300px !important; margin-right: 20px !important; margin-bottom: 20px !important">
+                        <div class="card-header">
+                            <p>Cruise {{ cruise.plancode }}<a
+                                        href="{{ path('cruise_details', {'cruiseId': cruise.cruiseid}) }}"><i
+                                            class="fa fa-info-circle"></i></a></p>
+                            <p>Campaign(s): <br>
+                                {% for campaign in cruise.campaign %}&nbsp;&nbsp;&nbsp;&nbsp;{{ campaign.campaign }}
+                                    <a href="{{ path('campaign_details', {'campaignId':campaign.campaignid}) }}"><i
+                                                class="fa fa-info-circle"></i></a><br> {% endfor %}</p>
                             </p>
 
+                        </div>
+                        <div class="card-body">
+                            <p>Trips: </p>
+                            {% for cruisetrip in cruise.trips %}
+                                {% if cruisetrip in trips %} {% set stationInTrip = true %} {% else %} {% set stationInTrip = false %} {% endif %}
+
+                                <p style="line-height: 20%">
+                                    {% if stationInTrip %}
+                                    <mark><b style="text-decoration: underline;">{% endif %}
+                                            {{ cruisetrip.startdate | date ('Y-m-d') }}
+                                            {% if stationInTrip %}</b></mark>
+
+                                    {% for tripstation in cruisetrip.tripstations %}
+                                        {% if  tripstation.stationnr == station and tripstation.code|trim != tripstation.stationnr.code|trim %}
+                                            as {{ tripstation.code }}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% endif %}
+                                </p>
 
                             {% endfor %}
 
+                        </div>
+                    </div>
+                {% endfor %}
 
-                </div>
-            </div>
-            {% endfor %}
-
-
-
-        {% endif %}
+            {% endif %}
         </div>
-
-
-
 
 
     </div>
