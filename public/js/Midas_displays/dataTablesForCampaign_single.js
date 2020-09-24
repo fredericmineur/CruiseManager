@@ -50,4 +50,4 @@ let tableSingleCampaign = (function () {
     return initObjectTableCampaign;
 })();
 
-export default tableSingleCampaign;
+// export default tableSingleCampaign;

@@ -144,7 +144,7 @@ let fillTableCruises = (function () {
 
 })();
 
-export default fillTableCruises;
+// export default fillTableCruises;
 
 
 

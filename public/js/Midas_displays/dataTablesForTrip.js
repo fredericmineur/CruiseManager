@@ -21,10 +21,6 @@ let fillTableAllTrips = (function () {
                 "columns" : [
                     {"data" : "startdateAndNumberOfDays"},
                     {"data" : "plancode"},
-                    { "data": "campaigns",
-                        "name": "campaigns",
-                        "defaultContent": ""
-                    },
                     {"data" : "status"},
                     {"data" : "destination"},
                     {"data" : "ship"},
@@ -58,23 +54,6 @@ let fillTableAllTrips = (function () {
                             return  tripOutput;
                         }
                     },
-                    {
-                        "targets" : 2,
-                        "render": function (data, type, row) {
-                            var campaignOutput = '';
-                            var campaignRouteName =  'campaign_details' ;
-                            if (Array.isArray(data) && data.length) {
-                                console.log(data);
-                                for (var i = 0; i < data.length; i++) {
-                                    campaignOutput +=  '<a href="' + Routing.generate(campaignRouteName, {campaignId: data[i]['campaignid']}) + '" title="Open Campaign">'
-                                        // + '<span style="font-size: 20px;"><i class="fa fa-info-circle" aria-hidden="true"></i></span>&nbsp;'
-                                        + '&#8226&nbsp' + data[i]['campaign']
-                                        +  '</a><br/>';
-                                }
-                                return campaignOutput ;
-                            }
-                        }
-                    }
                 ]
             });
         // //Hide the generic search field
@@ -242,5 +221,5 @@ let fillTableTripStations = (function () {
 // export default fillTableAllTrips;
 // export fillTableStations;
 
-export  {fillTableAllTrips, fillTableTripInvestigators, fillTableTripStations};
+// export  {fillTableAllTrips, fillTableTripInvestigators, fillTableTripStations};
 

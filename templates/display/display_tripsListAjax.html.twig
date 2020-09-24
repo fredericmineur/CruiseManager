@@ -38,7 +38,6 @@
                         "<tr>
                                 <th>Start Date [Nb days]</th>
                                 <th>Cruise Plancode</th>
-                                <th>Campaign(s)</th>
                                 <th>Status</th>
                                 <th>Destination</th>
                                 <th>Ship</th>
@@ -99,6 +98,8 @@
 {% block javascripts %}
 
     {{ encore_entry_script_tags('displays_app') }}
+
+    <script src="{{ asset('js/Midas_displays/dataTablesForTrip.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready( function () {

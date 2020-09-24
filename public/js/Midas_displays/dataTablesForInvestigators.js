@@ -78,4 +78,4 @@ let fillTableInvestigators = (function () {
 
 })();
 
-export default fillTableInvestigators;
+// export default fillTableInvestigators;

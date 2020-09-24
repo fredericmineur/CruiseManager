@@ -243,4 +243,4 @@ let addTripInvestigatorsStationsToTrip = (function () {
     return initObjectTI;
 })();
 
-export default addTripInvestigatorsStationsToTrip;
+// export default addTripInvestigatorsStationsToTrip;

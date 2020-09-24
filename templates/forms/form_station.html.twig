@@ -86,6 +86,8 @@
 {% block javascripts %}
     {{ encore_entry_script_tags('forms_app') }}
 
+    <script src="{{ asset('js/Midas_forms/formStationDMStoDD.js') }}"></script>
+
     <script>
         $(document).ready(function () {
             stationDMStoDD.init();

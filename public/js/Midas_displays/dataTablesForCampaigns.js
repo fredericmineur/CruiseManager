@@ -114,5 +114,5 @@ let fillTableCampaigns = (function () {
 
 })();
 
-export default fillTableCampaigns;
+// export default fillTableCampaigns;
 

@@ -93,4 +93,4 @@ let fillTablePeriods = (function () {
 
 })();
 
-export default fillTablePeriods;
+// export default fillTablePeriods;

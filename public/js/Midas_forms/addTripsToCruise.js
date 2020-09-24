@@ -547,7 +547,7 @@ let addTripsAndInvestigators = (function () {
 
 })();
 
-export default  addTripsAndInvestigators;
+// export default  addTripsAndInvestigators;
 
 
 
