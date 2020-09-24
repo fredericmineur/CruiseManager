@@ -68,8 +68,12 @@ class CruiseRepository extends ServiceEntityRepository
     public function GetNewPlancode(){
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = 'SELECT left(MAX(plancode),2) + \'-\' + cast(cast(right(MAX(trim(plancode)),3) as integer)+10 as nvarchar(max)) as maxplancode
-                FROM Cruise';
+//        $sql = 'SELECT left(MAX(plancode),2) + \'-\' + cast(cast(right(MAX(trim(plancode)),3) as integer)+10 as nvarchar(max)) as maxplancode
+//                FROM Cruise';
+        // plan code '21-010' to '21-020' instead of '21-20'
+        $sql ='SELECT left(MAX(plancode),2) + \'-\' + REPLICATE(\'0\', 3 - LEN(cast(cast(right(MAX(trim(plancode)),3) as integer)+10 as nvarchar(max))))
+	            +cast(cast(right(MAX(trim(plancode)),3) as integer)+10 as nvarchar(max)) as maxplancode
+	            FROM Cruise';
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchColumn();
