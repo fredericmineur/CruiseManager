@@ -178,6 +178,10 @@ function addAutocompleteForStation (indexTStations, categTstation)
             return data;
         },
         list: {
+            maxNumberOfElements: 50,
+            match: {
+                enabled: true
+            },
             onChooseEvent: function () {
                 if (categTstation == 'new') {
                     var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;

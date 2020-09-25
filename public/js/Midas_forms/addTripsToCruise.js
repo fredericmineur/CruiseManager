@@ -226,6 +226,10 @@ function addAutocompleteForStation(indexTrip, indexTStations, categTStation){
         //https://stackoverflow.com/questions/35502054/jquery-easyautocomplete-not-working-properly
         //http://easyautocomplete.com/example/select-event
         list: {
+            maxNumberOfElements: 50,
+            match: {
+                enabled: true
+            },
             onChooseEvent: function() {
                 if (categTStation == 'new') {
                     var latForSelectedItemValue = $('#' + tripstationCodeID).getSelectedItemData().Lat;
