@@ -60,7 +60,8 @@ let fillTablePeriods = (function () {
                         "targets": 3,
                         "render": function (data, type, row){
                             if(data !== null && data !== ''){
-                                return data + ' ('+ row.colorhexcode + ')';
+                                return data + '&nbsp;&nbsp;<mark style="background-color: '+ data +';"> '
+                                    + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp' + '</mark>';
                             }else {return '';}
                         }
                     }

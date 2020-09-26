@@ -33,6 +33,7 @@ function cloneTrip(contextElement){
 
         $('div#cruise_trips').append(clonedTripElement);
 
+
         //Initialize the new tripinvestigators counter for the cloned trip
         // with the number of tripinvestigators in the cloned trip
         const countTripInvestigator = $('[id^=block_cruise_trips_'+index+'_tripinvestigators]').length;
@@ -41,6 +42,9 @@ function cloneTrip(contextElement){
 
         //Updating the number of trips
         window.counter.countTrip = index +1;
+
+        fillNextDate(index);
+
 
         /// !!!!! context ELEMENT?????
         addTripInvestigatorsHandler(clonedTripElement);
@@ -438,6 +442,31 @@ function warningEmptyStations (contextElement) {
     });
 }
 
+//https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+function formatDate(date) {
+    var d = new Date(date), month = '' + (d.getMonth() + 1);
+    var day = '' + d.getDate();
+    var year = d.getFullYear();
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+    return [year, month, day].join('-');
+}
+
+function fillNextDate(index) {
+    var selectorPreviousEndDate = 'input#cruise_trips_'+ (index-1) + '_enddate';
+    var selectorPresentStartDate = 'input#cruise_trips_'+ index + '_startdate';
+    var selectorPresentEndDate = 'input#cruise_trips_'+ index + '_enddate';
+    if (index >= 1 && $(selectorPreviousEndDate).val()) {
+        var dateNextTrip = new Date($(selectorPreviousEndDate).val());
+        dateNextTrip.setDate(dateNextTrip.getDate() + 1);
+        dateNextTrip = formatDate(dateNextTrip);
+        $(selectorPresentStartDate).val(dateNextTrip);
+        $(selectorPresentEndDate).val(dateNextTrip);
+    }
+}
+
 
 
 
@@ -460,6 +489,8 @@ let addTripsAndInvestigators = (function () {
             //Injection of the new code
             var elementTrip = $(tmpl);
             $('#cruise_trips').append(elementTrip);
+
+            fillNextDate(index);
 
             addAutoCompleteDestinations(index);
 
