@@ -4,8 +4,8 @@
 {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css" integrity="sha256-bLNUHzSMEvxBhoysBE7EXYlIrmo7+n7F4oJra1IgOaM=" crossorigin="anonymous" />#}
 
     {{ encore_entry_link_tags('forms_app') }}
-    <style>
 
+    <style>
         div[id^=block_cruise_trips_] {
             margin-bottom: 0px!important;
             margin-top: 0px!important;
@@ -18,15 +18,8 @@
             padding-bottom: 0px!important;
             padding-top: 0px!important;
         }
-
-        .card-header .fa {
-            transition: .3s transform ease-in-out;
-        }
-        .card-header .collapsed .fa {
-            transform: rotate(90deg);
-        }
-
     </style>
+    <link rel="stylesheet" href="{{ asset('css/form_trip.css') }}">
 
 {% endblock %}
 

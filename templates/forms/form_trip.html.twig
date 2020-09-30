@@ -5,19 +5,14 @@
 %}
 
  {% block stylesheets %}
+     {{ encore_entry_link_tags('forms_app') }}
 
      <style>
-
          .card{
              margin-bottom: 30px;
          }
-         .card-header .fa {
-             transition: .3s transform ease-in-out;
-         }
-         .card-header .collapsed .fa {
-             transform: rotate(90deg);
-         }
      </style>
+     <link rel="stylesheet" href="{{ asset('css/form_trip.css') }}">
 
 
 

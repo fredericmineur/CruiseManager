@@ -230,7 +230,7 @@ function addAutocompleteForStation(indexTrip, indexTStations, categTStation){
         //https://stackoverflow.com/questions/35502054/jquery-easyautocomplete-not-working-properly
         //http://easyautocomplete.com/example/select-event
         list: {
-            maxNumberOfElements: 50,
+            maxNumberOfElements: 100,
             match: {
                 enabled: true
             },
@@ -286,6 +286,10 @@ function addAutocompleteForInvestigator(indexTrip, indexTInvestigators, categTIn
         },
 
         list: {
+            maxNumberOfElements: 100,
+            match: {
+                enabled: true
+            },
             onChooseEvent: function() {
 
                 $("#" +tripinvestigatornrID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().investigatorid);
@@ -327,6 +331,10 @@ function addAutoCompleteForInvestigatorCampaign (indexTrip, indexTInvestigator) 
             return data;
         },
         list: {
+            maxNumberOfElements: 50,
+            match: {
+                enabled: true
+            },
             onChooseEvent: function () {
                 var valueCampaignNr = $('#' + tripinvestigatorCampaignID).getSelectedItemData().campaignid;
                 $('#' + tripinvestigatorCampaignNrID).val(valueCampaignNr);

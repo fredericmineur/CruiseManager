@@ -1,0 +1,20 @@
+
+.card-header .fa {
+    transition: .3s transform ease-in-out;
+}
+.card-header .collapsed .fa {
+    transform: rotate(90deg);
+}
+
+.easy-autocomplete-container ul {
+    background: none repeat scroll 0 0 #ffffff;
+    border-top: 1px dotted #ccc;
+    display: none;
+    margin-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    position: relative;
+    top: -1px;
+    max-height:150px; /* Set your expected height */
+    overflow-y:scroll; /* Enable vertical scrollbar */
+}

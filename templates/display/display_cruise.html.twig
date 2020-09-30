@@ -107,7 +107,7 @@
                                                 {% endif %}
                                             </td>
                                             <td>{% if tripinvestigator.investigatornr is not null %}
-                                                    &#10003; {% else %} &#10008; {% endif %}
+                                                    <i class="fa fa-link"></i> {% else %} &#10008; {% endif %}
                                             </td>
                                             <td>
 {#                                                {{ tripinvestigator.campaign | length > 25 ?#}
@@ -158,7 +158,7 @@
                                                 {% endif %}
                                             </td>
                                             <td>{% if tripstation.stationnr is not null %}
-                                                    &#10003; {% else %} &#10008;{% endif %}
+                                                    <i class="fa fa-link"></i> {% else %} &#10008;{% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}
