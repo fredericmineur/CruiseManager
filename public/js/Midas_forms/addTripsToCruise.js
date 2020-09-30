@@ -133,6 +133,8 @@ function addTripStationHandler(contextElement){
 
         warningEmptyStations (contextElement);
 
+        $('input', elementTripStation)[0].focus();
+
 
     });
 }
@@ -184,6 +186,9 @@ function  addTripInvestigatorsHandler(contextElement){
         displayCounterValues(contextElement);
         warningEmptyTripinvestigators (contextElement);
 
+
+        $('input', elementTripinvestigator)[0].focus();
+
         // console.log(counter);
 
     })
@@ -230,7 +235,7 @@ function addAutocompleteForStation(indexTrip, indexTStations, categTStation){
         //https://stackoverflow.com/questions/35502054/jquery-easyautocomplete-not-working-properly
         //http://easyautocomplete.com/example/select-event
         list: {
-            maxNumberOfElements: 100,
+            maxNumberOfElements: 200,
             match: {
                 enabled: true
             },
@@ -527,6 +532,10 @@ let addTripsAndInvestigators = (function () {
             changeAttributesForCardCollapse(elementTrip);
 
             displayCounterValues(elementTrip);
+
+
+            // focusing on start date when creating a new trip
+            $('input', elementTrip)[0].focus();
 
             // warningEmptyTripinvestigators(elementTrip);
 

@@ -40,6 +40,10 @@ let addCampaigns = (function () {
             handleDeleteButtonsCampaigns(campaignElement);
             addAutocompleteCampaignName(blockID);
             // addAutocompleteCampaignImis(blockID);
+
+            //opening search bar of campaign when creating the field
+            $('#' + blockID).select2('open');
+
         });
 
         handleDeleteButtonsCampaigns(window.document);
