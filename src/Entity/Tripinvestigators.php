@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -138,6 +140,19 @@ class Tripinvestigators
      *
      */
     private $fullname;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Tripactions", mappedBy="tripinvestigatornr")
+     */
+    private $tripactions;
+
+    public function __construct()
+    {
+        $this->tripactions = new ArrayCollection();
+    }
+
 
     /**
      * @param null|string $fullname
@@ -323,6 +338,37 @@ class Tripinvestigators
     public function setTripnr(?Trip $tripnr): self
     {
         $this->tripnr = $tripnr;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tripactions[]
+     */
+    public function getTripactions(): Collection
+    {
+        return $this->tripactions;
+    }
+
+    public function addTripaction(Tripactions $tripaction): self
+    {
+        if (!$this->tripactions->contains($tripaction)) {
+            $this->tripactions[] = $tripaction;
+            $tripaction->setTripinvestigatornr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTripaction(Tripactions $tripaction): self
+    {
+        if ($this->tripactions->contains($tripaction)) {
+            $this->tripactions->removeElement($tripaction);
+            // set the owning side to null (unless already changed)
+            if ($tripaction->getTripinvestigatornr() === $this) {
+                $tripaction->setTripinvestigatornr(null);
+            }
+        }
 
         return $this;
     }

@@ -106,9 +106,12 @@ class Tripactions
     private $actiontypenr;
 
     /**
-     * @var int|null
+     * @var \Tripinvestigators
      *
-     * @ORM\Column(name="TripInvestigatorNR", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Tripinvestigators", inversedBy="tripactions")
+     * @ORM\JoinColumns({
+     *  @ORM\JoinColumn(name="TripInvestigatorNR", referencedColumnName="ID", nullable=true)
+     * })
      */
     private $tripinvestigatornr;
 
