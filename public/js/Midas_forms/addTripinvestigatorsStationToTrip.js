@@ -6,14 +6,14 @@ function updateCounter(){
 }
 
 function handleDeleteTripInvestigatorButtons(contextElement){
-    $('button#remove-trip-investigator[data-action="delete"]').click(function(){
+    $('button.remove-trip-investigator[data-action="delete"]').click(function(){
         const target=this.dataset.target;
         $(target).parent('fieldset').remove();
     })
 }
 
 function handleDeleteTripStationButtons(contextElement){
-    $('button#remove-trip-station[data-action="delete"]').click(function(){
+    $('button.remove-trip-station[data-action="delete"]').click(function(){
         const target=this.dataset.target;
         $(target).parent('fieldset').remove();
     })

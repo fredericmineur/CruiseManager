@@ -141,7 +141,7 @@ function addTripStationHandler(contextElement){
 
 
 function deleteTripStations(contextElement) {
-    $('button#remove-trip-station[data-action="delete"]', contextElement).click(function(){
+    $('button.remove-trip-station[data-action="delete"]', contextElement).click(function(){
         const target = this.dataset.target;
         $(target).parent('fieldset').remove();
         displayCounterValues(contextElement);
@@ -195,7 +195,7 @@ function  addTripInvestigatorsHandler(contextElement){
 }
 
 function deleteTripinvestigators(contextElement){
-    $('button#remove-trip-investigator[data-action="delete"]', contextElement).click(function(){
+    $('button.remove-trip-investigator[data-action="delete"]', contextElement).click(function(){
         const target = this.dataset.target;
         $(target).parent('fieldset').remove();
 
