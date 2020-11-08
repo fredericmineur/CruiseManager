@@ -187,26 +187,11 @@ class CruiseController extends AbstractController
             $removeDeleteTripFunctionality = false;
             $tripid = $trip->getTripid();
 
-//Check for the conditions for the possibility of deleting a trip or not
-            if ($trip->getInsync()== 1){
+            //Check conditions for removing the delete trip functionality
+            if ($trip->getInsync()== 1 || trim($trip->getStatus() == 'Done') ||
+                count($trip->getTripactions())>0 || count($trip->getTripequipments())>0 ||
+                count($trip->getTripnotes())>0){
                 $removeDeleteTripFunctionality = true;
-            } elseif ($trip->getStatus() == 'planned') {
-                $removeDeleteTripFunctionality = true;
-            } else {
-                $tripTripactions = $manager->getRepository(Tripactions::class)->findBy(['tripnr' => $tripid], []);
-                if(count($tripTripactions)>0) {
-                    $removeDeleteTripFunctionality = true;
-                } else {
-                    $tripTripequipments = $manager->getRepository(Tripequipment::class)->findBy(['tripnr' => $tripid], []);
-                    if(count($tripTripequipments)>0){
-                        $removeDeleteTripFunctionality = true;
-                    } else {
-                        $tripTripnotes = $manager->getRepository(Tripnotes::class)->findBy(['tripnr' => $tripid],[]);
-                        if(count($tripTripnotes)>0){
-                            $removeDeleteTripFunctionality = true;
-                        }
-                    }
-                }
             }
 
 
