@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Tripstations
@@ -36,6 +37,7 @@ class Tripstations
      * @var string|null
      *
      * @ORM\Column(name="Code", type="string", length=15, nullable=true)
+     * @Assert\NotBlank()
      */
     private $code;
 
@@ -78,6 +80,7 @@ class Tripstations
      * @var float|null
      *
      * @ORM\Column(name="DefLatitude", type="float", precision=53, scale=0, nullable=true)
+     * @Assert\NotBlank(message="missing value")
      */
     private $deflatitude;
 
@@ -85,6 +88,7 @@ class Tripstations
      * @var float|null
      *
      * @ORM\Column(name="DefLongitude", type="float", precision=53, scale=0, nullable=true)
+     * @Assert\NotBlank(message="missing value")
      */
     private $deflongitude;
 

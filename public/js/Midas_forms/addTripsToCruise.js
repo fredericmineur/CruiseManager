@@ -131,7 +131,6 @@ function addTripStationHandler(contextElement){
         addAutocompleteForStation(idTrip, indexTStations, 'new');
         displayCounterValues(contextElement);
 
-        warningEmptyStations (contextElement);
 
         $('input', elementTripStation)[0].focus();
 
@@ -184,7 +183,7 @@ function  addTripInvestigatorsHandler(contextElement){
         addAutoCompleteForInvestigatorCampaign(idTrip, indexTInvestigators);
 
         displayCounterValues(contextElement);
-        warningEmptyTripinvestigators (contextElement);
+
 
 
         $('input', elementTripinvestigator)[0].focus();
@@ -438,22 +437,39 @@ function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctio
 // In the case of an existing trip, NULL trip investigators are automatically discarded at submission.
 
 function warningEmptyTripinvestigators (contextElement){
-    $('button[type="submit"]').click(function(eventClick){
-        if($('input[id$=_surname]').length >0 &&  $.trim($('input[id$=_surname]').val())==''  ) {
-            alert('Empty trip investigator(s) !!! \n Please WAIT after closing this warning! \n And press your browser back button if\n ' +
-                 '"Expected argument of type..." appears');
+    $('button[type="submit"]').click(function (e){
+        var flagEmtpyTripInvestigators = false;
+        if($('input[id$=_surname]').length >0) {
+            $('input[id$=_surname]').each(function(){
+                if($.trim($(this).val())==''){
+                    flagEmtpyTripInvestigators=true;
+                }
+            });
+        }
+        if(flagEmtpyTripInvestigators){
+            alert('Some tripinvestigator fields are empty \n Please fill or delete them');
+            e.preventDefault();
         }
     });
 }
 
 function warningEmptyStations (contextElement) {
-    $('button[type="submit"]').click(function(eventClick){
-        if($('input[id$=_code]').length >0 &&  $.trim($('input[id$=_code]').val())==''  ) {
-            alert('Empty trip station(s) !!! \n Please WAIT after closing this warning! \n And press your browser back button if\n ' +
-                '"Expected argument of type..." appears');
+    $('button[type="submit"]').click(function (e){
+        var flagEmptyTripStations=false;
+        if($('input[id$=_code]').length >0){
+            $('input[id$=_code]').each(function () {
+                if($.trim($(this).val())==''){
+                    flagEmptyTripStations = true;
+                }
+            });
+        }
+        if(flagEmptyTripStations){
+            alert('Some tripstation fields are empty \n Please fill or delete them');
+            e.preventDefault();
         }
     });
 }
+
 
 //https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
 function formatDate(date) {
@@ -528,18 +544,10 @@ let addTripsAndInvestigators = (function () {
 
             addTripStationHandler(elementTrip);
             deleteTripStations(elementTrip);
-
             changeAttributesForCardCollapse(elementTrip);
-
             displayCounterValues(elementTrip);
-
-
             // focusing on start date when creating a new trip
             $('input', elementTrip)[0].focus();
-
-            // warningEmptyTripinvestigators(elementTrip);
-
-            // console.log(counter);
 
         });
 
@@ -567,8 +575,8 @@ let addTripsAndInvestigators = (function () {
         changeAttributesForCardCollapse(window.document);
 
         displayCounterValues(window.document);
-
-        // warningEmptyTripinvestigators (window.document)
+        warningEmptyTripinvestigators(window.document);
+        warningEmptyStations(window.document);
 
 
 

@@ -155,7 +155,7 @@ class Trip
      *
      * @ORM\OneToMany(targetEntity="Tripinvestigators", mappedBy="tripnr", cascade={"all"}, orphanRemoval=true)
      * @Assert\Valid
-     * @Assert\All({@Assert\NotBlank()})
+     * @Assert\All({@Assert\NotBlank(), @Assert\NotNull()})
      */
     private $tripinvestigators;
 
@@ -178,6 +178,7 @@ class Trip
      *
      * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr", cascade={"persist"})
      * @Assert\Valid
+     * @Assert\All({@Assert\NotBlank(), @Assert\NotNull()})
      */
     private $tripstations;
 
