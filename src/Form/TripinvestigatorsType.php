@@ -77,7 +77,7 @@ class TripinvestigatorsType extends AbstractType
 
             ->add('campaignnr', HiddenType::class)
 
-//            ->add('id', HiddenType::class)
+            ->add('id', HiddenType::class)
             
         ;
 

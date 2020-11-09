@@ -54,6 +54,7 @@ class TripStationsType extends AbstractType
             ->add('stationnr',
                 HiddenType::class
                 )
+            ->add('id', HiddenType::class)
         ;
 
         $builder->get('stationnr')

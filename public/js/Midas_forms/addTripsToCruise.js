@@ -406,17 +406,17 @@ function addAutoCompleteDestinations(indexTrip) {
 }
 
 
-function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctionality){
+function removeDeleteTripButtons(contextElement, cruiseRemoveDelFunctionality){
 
     // console.log(allTripsRemoveDeleteTripFunctionality.length);
-    if (allTripsRemoveDeleteTripFunctionality){
+    if (cruiseRemoveDelFunctionality){
 
 
 
-    allTripsRemoveDeleteTripFunctionality.forEach(function (trip, index) {
+        cruiseRemoveDelFunctionality.forEach(function (trip, index) {
         // 'trip' has the following format: Object { 3675: true }
-        var tripId = Object.keys(trip)[0];
-        var removeTripBoolean  = Object.values(trip)[0];
+        var tripId = Object.keys(trip[0])[0];
+        var removeTripBoolean  = Object.values(trip[0])[0];
 
         if(removeTripBoolean){
             var elementTrip =  $('input[id$=_tripid][value=' + tripId + ']').parents()[2];
@@ -424,8 +424,36 @@ function removeDeleteTripButtons(contextElement, allTripsRemoveDeleteTripFunctio
             var deleteButtonColumn = $(rowWithdeleteButton).children()[3];
             var deleteButton = $(deleteButtonColumn).children()[0];
             $(deleteButton).remove();
-
         }
+
+        var tripInvestigators = Object.values(trip[1])[0];
+        tripInvestigators.forEach(function(tripinvestigator, index) {
+            var tripinvestigatorId = Object.keys(tripinvestigator)[0];
+            var removeTripInvestigatorBoolean = Object.values(tripinvestigator)[0];
+            if(removeTripInvestigatorBoolean) {
+                //get to the html row for the tripinvestigator
+                var elementTripinvestigator = $('input[id$=_id][name*=tripinvestigators][value =' + tripinvestigatorId + ']').parents()[1];
+                //get to the column deletebutton
+                var delBtnTripinvestigatorColumn = $(elementTripinvestigator).children()[4];
+                var delBtnTripinvestigator = $(delBtnTripinvestigatorColumn).children()[0];
+                $(delBtnTripinvestigator).remove();
+            }
+        });
+
+        var tripstations = Object.values(trip[2])[0];
+        tripstations.forEach(function(tripstation, index) {
+            var tripstationId = Object.keys(tripstation)[0];
+            var removeTripstationBoolean = Object.values(tripstation)[0];
+            console.log (tripstationId + ':' + removeTripstationBoolean);
+            if(removeTripstationBoolean) {
+                var elementTripstation = $('input[id$=_id][name*=tripstations][value =' + tripstationId + ']').parents()[1];
+                // console.log($(elementTripstation));
+                var delBtnTripstationColumn = $(elementTripstation).children()[3];
+                var delBtnTripstation = $(delBtnTripstationColumn).children()[0];
+                $(delBtnTripstation).remove();
+            }
+        });
+
     });
     }
 }
@@ -504,10 +532,15 @@ let addTripsAndInvestigators = (function () {
 
     let initObjectTI = {};
 
-    initObjectTI.init = function (allTripsRemoveDeleteTripFunctionality, mode){
+    initObjectTI.init = function (cruiseRemoveDelFunctionality, mode){
 
 
         window.counter = {countTrip: 0};
+
+        if(mode = 'edit') {
+            removeDeleteTripButtons(window.document, cruiseRemoveDelFunctionality);
+            console.log(cruiseRemoveDelFunctionality);
+        }
 
         $('#add-trip').click(function(e){
             //getting the number of trips from the counter
@@ -560,9 +593,7 @@ let addTripsAndInvestigators = (function () {
         deleteTrip(window.document);
 
 
-        if(mode = 'edit') {
-            removeDeleteTripButtons(window.document, allTripsRemoveDeleteTripFunctionality);
-        }
+
 
 
         cloneTrip(window.document);

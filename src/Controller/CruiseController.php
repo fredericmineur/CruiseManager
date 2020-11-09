@@ -179,13 +179,16 @@ class CruiseController extends AbstractController
 
         $originalTrips = new ArrayCollection();
 
-        //Idea: link to tripid. In twig file, relate to hidden file
-        $allTripsRemoveDeleteTripFunctionality = [];
+        //Array (to be converted in JS object for removing the delete functionality in the form
+        //Idea: id properties of entities are found in hidden fields in the form
+        $cruiseRemoveDelFunctionality =[];
 
         foreach ($cruise->getTrips() as $trip) {
 
             $removeDeleteTripFunctionality = false;
             $tripid = $trip->getTripid();
+
+            $tripRemoveDelFunctionality = [];
 
             //Check conditions for removing the delete trip functionality
             if ($trip->getInsync()== 1 || trim($trip->getStatus() == 'Done') ||
@@ -193,12 +196,33 @@ class CruiseController extends AbstractController
                 count($trip->getTripnotes())>0){
                 $removeDeleteTripFunctionality = true;
             }
+            array_push($tripRemoveDelFunctionality, [$tripid => $removeDeleteTripFunctionality]);
 
+            //Sub-array for tripinvestigators (remove delete functionality for those linked to tripactions)
+            $tripRemoveDelTripinvestigators =[];
+            foreach ($trip->getTripinvestigators() as $tripinvestigator){
+                $removeDelTripinvestigator = false;
+                if (count($tripinvestigator->getTripactions())>0){
+                    $removeDelTripinvestigator = true;
+                }
+                array_push($tripRemoveDelTripinvestigators, [$tripinvestigator->getId()=>$removeDelTripinvestigator] );
+            }
+            array_push($tripRemoveDelFunctionality, ['tripinvestigators' => $tripRemoveDelTripinvestigators]);
 
+            //Sub-array for tripstations (remove delete functionality for those linked to tripactions)
+            $tripRemoveDelTripstations=[];
+            foreach ($trip->getTripstations() as $tripstation){
+                $removeDelTripstation = false;
+                if(count($tripstation->getTripactions())>0){
+                    $removeDelTripstation = true;
+                }
+                array_push($tripRemoveDelTripstations, [$tripstation->getId() => $removeDelTripstation]);
+            }
+            array_push($tripRemoveDelFunctionality, ['tripstations' => $tripRemoveDelTripstations]);
 
-            $tripRemoveDeleteTripFunctionality = [$tripid => $removeDeleteTripFunctionality];
+            array_push($cruiseRemoveDelFunctionality, $tripRemoveDelFunctionality);
 
-
+            //Setting full name for tripinvestigators already in table 'investigator'
             foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                 if ($tripinvestigator->getInvestigatornr()!== null) {
                     $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
@@ -207,11 +231,12 @@ class CruiseController extends AbstractController
 
 
             $originalTrips->add($trip);
-            array_push($allTripsRemoveDeleteTripFunctionality, $tripRemoveDeleteTripFunctionality);
+
         }
 
         //Transforming the array into an object
-        $allTripsRemoveDeleteTripFunctionality = json_decode(json_encode($allTripsRemoveDeleteTripFunctionality), FALSE);
+//        $allTripsRemoveDeleteTripFunctionality = json_decode(json_encode($allTripsRemoveDeleteTripFunctionality), FALSE);
+        $cruiseRemoveDelFunctionality = json_decode(json_encode($cruiseRemoveDelFunctionality), FALSE);
 
 
         $form = $this ->createForm(CruiseType::class, $cruise);
@@ -262,8 +287,7 @@ class CruiseController extends AbstractController
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
             'mode' => 'edit',
-            'allTripsRemoveDeleteTripFunctionality' => $allTripsRemoveDeleteTripFunctionality
-
+            'cruiseRemoveDelFunctionality' => $cruiseRemoveDelFunctionality
         ]);
     }
 
