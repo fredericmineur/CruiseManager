@@ -163,7 +163,7 @@ class CruiseController extends AbstractController
             'formCruise' => $form->createView(),
             'mode' => 'new',
             'newplancode' =>$newplancode,
-            'allTripsRemoveDeleteTripFunctionality' => null
+            'cruiseRemoveDelFunctionality' => null
         ]);
     }
 
@@ -238,7 +238,6 @@ class CruiseController extends AbstractController
 //        $allTripsRemoveDeleteTripFunctionality = json_decode(json_encode($allTripsRemoveDeleteTripFunctionality), FALSE);
         $cruiseRemoveDelFunctionality = json_decode(json_encode($cruiseRemoveDelFunctionality), FALSE);
 
-
         $form = $this ->createForm(CruiseType::class, $cruise);
         $form->handleRequest($request);
 
@@ -284,6 +283,7 @@ class CruiseController extends AbstractController
                 'cruiseId' => $cruise->getCruiseid()
             ]);
         }
+
         return $this->render('forms/form_cruise.html.twig', [
             'formCruise' => $form->createView(),
             'mode' => 'edit',

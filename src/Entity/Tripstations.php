@@ -81,6 +81,8 @@ class Tripstations
      *
      * @ORM\Column(name="DefLatitude", type="float", precision=53, scale=0, nullable=true)
      * @Assert\NotBlank(message="missing value")
+     * @Assert\GreaterThanOrEqual(-90)
+     * @Assert\LessThanOrEqual(90)
      */
     private $deflatitude;
 
@@ -89,6 +91,8 @@ class Tripstations
      *
      * @ORM\Column(name="DefLongitude", type="float", precision=53, scale=0, nullable=true)
      * @Assert\NotBlank(message="missing value")
+     * @Assert\GreaterThanOrEqual(-180)
+     * @Assert\LessThanOrEqual(180)
      */
     private $deflongitude;
 

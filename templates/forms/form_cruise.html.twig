@@ -139,12 +139,9 @@
         $(document).ready(function () {
 
 
-            var cruiseRemoveDelFunctionality = '';
+            var cruiseRemoveDelFunctionality = {{ cruiseRemoveDelFunctionality | json_encode | raw  }};
 
             var mode = '{{ mode }}';
-            if(mode == 'edit') {
-                cruiseRemoveDelFunctionality = {{ cruiseRemoveDelFunctionality | json_encode | raw  }};
-            }
 
             //on document load (e.g. when trip blocks are already there...e.g. on edit mode, or instantiations in the controller (in the development process
             addTripsAndInvestigators.init(cruiseRemoveDelFunctionality, mode);

@@ -475,7 +475,8 @@ function warningEmptyTripinvestigators (contextElement){
             });
         }
         if(flagEmtpyTripInvestigators){
-            alert('Some tripinvestigator fields are empty \n Please fill or delete them');
+            alert('Some tripinvestigator fields are empty \n ' +
+                '(no surname) \nPlease fill or delete them');
             e.preventDefault();
         }
     });
@@ -492,7 +493,8 @@ function warningEmptyStations (contextElement) {
             });
         }
         if(flagEmptyTripStations){
-            alert('Some tripstation fields are empty \n Please fill or delete them');
+            alert('Some tripstation fields are empty \n ' +
+                '(no code) \nPlease fill or delete them');
             e.preventDefault();
         }
     });
@@ -588,13 +590,8 @@ let addTripsAndInvestigators = (function () {
             format: 'yyyy-mm-dd'
         });
 
-
         updateCounterTrips();
         deleteTrip(window.document);
-
-
-
-
 
         cloneTrip(window.document);
         addTripInvestigatorsHandler(window.document);

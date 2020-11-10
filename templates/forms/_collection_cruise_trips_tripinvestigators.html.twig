@@ -93,15 +93,20 @@
     <div class="form-group block-tripstation" id="block_{{ id }}">
         <div class="row">
             <div class="col-3">
+{#                {{ form_errors(form.code) }}#}
                 {{ form_widget(form.code) }}
+                {{ form_errors(form.code) }}
                 {{ form_widget(form.stationnr) }}
             </div>
             <div class="col-3">
+
                 {{ form_widget(form.deflatitude) }}
+                {{ form_errors(form.deflatitude) }}
                 {{ form_widget(form.id) }}
             </div>
             <div class="col-3">
                 {{ form_widget(form.deflongitude) }}
+                {{ form_errors(form.deflongitude) }}
             </div>
             <div class="col-3">
                 <button type="button"  class="remove-trip-station btn btn-danger" data-action="delete" data-id="{{ id }}"
@@ -164,10 +169,12 @@
 
             <div class="col-2">
                 {{ form_widget(form.surname) }}
+                {{ form_errors(form.surname) }}
                 {{ form_widget(form.id) }}
             </div>
             <div class="col-2">
                 {{ form_widget(form.firstname) }}
+                {{ form_errors(form.firstname) }}
             </div>
             <div class="col-3">
                 {{ form_widget(form.campaign) }}

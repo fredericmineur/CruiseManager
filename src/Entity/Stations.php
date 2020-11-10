@@ -34,6 +34,8 @@ class Stations
      * @var float|null
      *
      * @ORM\Column(name="Latitude", type="float", precision=53, scale=0, nullable=true)
+     * @Assert\GreaterThanOrEqual(-90)
+     * @Assert\LessThanOrEqual(90)
      * @Groups("read:all_stations")
      */
     private $latitude;
@@ -43,6 +45,8 @@ class Stations
      * @var float|null
      *
      * @ORM\Column(name="Longitude", type="float", precision=53, scale=0, nullable=true)
+     * @Assert\GreaterThanOrEqual(-180)
+     * @Assert\LessThanOrEqual(180)
      * @Groups("read:all_stations")
      */
     private $longitude;
