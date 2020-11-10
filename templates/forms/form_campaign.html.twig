@@ -8,8 +8,8 @@
     <div class="container my-2">
         <div class="card">
             <div class="card-header">
-                {% if mode == 'edit' %} Edit campaign
-                {% elseif  mode == 'create'%}Create campaign {% endif %}
+                <h5>{% if mode == 'edit' %} Edit campaign
+                {% elseif  mode == 'create'%}Create campaign {% endif %}</h5>
             </div>
 
             <div class="card-body">
@@ -31,14 +31,13 @@
                 </div>
 
                 {{ form_row(formCampaign.memo) }}
-
-
+            </div>
+            <div class="card-footer">
                 <button type="submit" class="btn btn-success">
                     {% if mode == 'edit' %}
-                    Save changes{% elseif mode == 'create' %}
-                    Save {% endif %}
+                        Save changes{% elseif mode == 'create' %}
+                        Save {% endif %}
                 </button>
-
                 {{ form_end(formCampaign) }}
             </div>
         </div>
