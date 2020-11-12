@@ -125,4 +125,26 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
         return new JsonResponse($jsonDestinations, 200, [], true);
     }
 
+    /**
+     * @Route("/trips/{tripId}/remove_warning", name="trip_remove_warning", options={"expose"=true})
+     * @param $tripId
+     */
+    public function warnRemoveSingleTrip(EntityManagerInterface $manager, $tripId){
+        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=> $tripId]);
+        return $this->render('remove/remove_trip.html.twig', [
+            'trip' => $trip
+        ]);
+    }
+
+    /**
+     * @Route("/trips/{tripId}/remove", name="trip_remove", options={"expose"=true})
+     * @param $tripId
+     */
+    public function removeSingleTrip(EntityManagerInterface $manager, $tripId) {
+        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=> $tripId]);
+        $manager->remove($trip);
+        $manager->flush();
+        return $this->redirectToRoute('trips_index');
+    }
+
 }

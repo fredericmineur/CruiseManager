@@ -1,7 +1,7 @@
 {% block _cruise_trips_widget %}
     <div class="card">
         <div class="card-header">
-            <h4>Manage the trips </h4>
+            <h4>Manage trips </h4>
 
         </div>
         <div class="card-body">
@@ -62,7 +62,7 @@
     <div class="card bg-secondary" >
         <div class="card-header">
             <div class="row">
-                <div class="col-3">STATIONS (<span id="{{ id }}" class="counter">0</span>)</div>
+                <div class="col-3">TripStations (<span id="{{ id }}" class="counter">0</span>)</div>
                 <div class="col-3">Latitude</div>
                 <div class="col-3">Longitude</div>
                 <div class="col-3">
@@ -78,7 +78,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripstation-to{{ id }}" class="btn btn-light ml-4 mb-3 add-tripstation" data-id="{{ id }}">Add station</button>
+                <button type="button" id="add-tripstation-to{{ id }}" class="btn btn-light ml-4 mb-3 add-tripstation" data-id="{{ id }}">Add tripstation</button>
             </div>
         </div>
 
@@ -130,7 +130,7 @@
         <div class="card-header">
             <div class="row">
 
-                <div class="col-3">INVESTIGATORS (<span id="{{ id }}" class="counter">0</span>)</div>
+                <div class="col-3">TripInvestigators (<span id="{{ id }}" class="counter">0</span>)</div>
                 <div class="col-2">Surname</div>
                 <div class="col-2">First name</div>
                 <div class="col-3">Campaign</div>
@@ -148,7 +148,7 @@
                 {{ form_widget(form) }}
             </div>
             <div class="form-group">
-                <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-secondary ml-4 mb-3 add-tripinvestigator" data-id="{{ id }}">Add investigator</button>
+                <button type="button" id="add-tripinvestigator-to{{ id }}" class="btn btn-secondary ml-4 mb-3 add-tripinvestigator" data-id="{{ id }}">Add tripinvestigator</button>
             </div>
         </div>
 

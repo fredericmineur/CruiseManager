@@ -176,7 +176,7 @@ class Trip
     /**
      * @var Collection
      *
-     * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Tripstations", mappedBy="tripnr", cascade={"all"}, orphanRemoval=true)
      * @Assert\Valid
      * @Assert\All({@Assert\NotBlank(), @Assert\NotNull()})
      */

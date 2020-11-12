@@ -8,30 +8,37 @@
 {#    <link rel="stylesheet" href="/css/datatables.min.css">#}
 {#    <link rel="stylesheet" href="/css/fixedHeader.dataTables.min.css">#}
     {{ encore_entry_link_tags('displays_app') }}
+    <style>
+        .nav-tabs>li {background-color:#ecf0f1 }
+    </style>
 
 {% endblock %}
+
+
 
 {% block body %}
 
 
     <div class="container">
-        <h1>TRIPS</h1>
-{#        <ul class="nav nav-pills">#}
+        <h3>TRIPS</h3>
+
         <ul class="nav nav-tabs">
             <li class="active">
-                <a data-toggle="tab" href="#trips-all" class="btn btn-primary mx-2">All trips</a>
+                <a data-toggle="tab" href="#trips-all" class="nav-item nav-link">All trips</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#trips-for-investigator" class="btn btn-primary mx-2">For investigators</a>
+                <a data-toggle="tab" href="#trips-for-investigator" class="nav-item nav-link">
+                    With investigators to be created</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#trips-for-station" class="btn btn-primary mx-2">For stations</a>
+                <a data-toggle="tab" href="#trips-for-station" class="nav-item nav-link">
+                    With stations to be created</a>
             </li>
 
         </ul>
         <div class="tab-content clearfix">
             <div class="tab-pane active" id="trips-all">
-                <h1>ALL</h1>
+{#                <h1>ALL</h1>#}
                 <table class="table-hover table-bordered display" id="TableAllTrips" width="100%">
                     <thead>
                     {% set headerRow =
@@ -50,7 +57,7 @@
 
             </div>
             <div class="tab-pane" id="trips-for-investigator">
-                <h1>Trips to amend (investigators to create)</h1>
+{#                <h1>Trips to amend (investigators to create)</h1>#}
                 <table class="table-hover table-bordered display" id="TableTripsInvestigators" width="100%">
                     <thead>
                     {% set headerRow =
@@ -70,7 +77,7 @@
 
             </div>
             <div class="tab-pane" id="trips-for-station">
-                <h1>Trips to amend (stations to create)</h1>
+{#                <h1>Trips to amend (stations to create)</h1>#}
                 <table class="table-hover table-bordered display" id="TableTripsStations" width="100%">
                     <thead>
                     {% set headerRow =

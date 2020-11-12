@@ -45,12 +45,17 @@ let fillTableAllTrips = (function () {
                     {
                         "targets" : 0,
                         "render" : function (data, type, row) {
+                            console.log(data);
                             var tripOutput = '';
                             if(data !== null && data !== '') {
                                 tripOutput += data;
                             } else {tripOutput += 'N.A.';}
                             tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
-                                + '"  target="_blank"><i class="fa fa-info-circle"></i></a>');
+                                + '"  target="_blank"><i class="fa fa-info-circle"></i></a>')
+                            if (!row.cruiseID) {
+                                tripOutput += (' <a href="' + Routing.generate('trip_remove_warning', {tripId : row.TripID}) + '"><i style="color:red"class="fa fa-trash"> </i></a>');
+                            }
+
                             return  tripOutput;
                         }
                     },
