@@ -189,8 +189,8 @@ let fillTableTripStations = (function () {
                         "targets" : 4,
                         "render": function(data, type, row) {
                             if(data !== null && data !== ''){
-                                var tripidoutput = 'Amend <a href="' + Routing.generate('trip_edit', {tripId: data})
-                                    + '"  target="_blank" ><i class="fa fa-edit"></i></a>';
+                                var tripidoutput = '<a href="' + Routing.generate('trip_edit', {tripId: data})
+                                    + '"  target="_blank" ><i class="fa fa-edit fa-lg"></i></a>';
                                 return tripidoutput;
 
                             } else {return '';}

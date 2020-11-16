@@ -444,7 +444,6 @@ function removeDeleteTripButtons(contextElement, cruiseRemoveDelFunctionality){
         tripstations.forEach(function(tripstation, index) {
             var tripstationId = Object.keys(tripstation)[0];
             var removeTripstationBoolean = Object.values(tripstation)[0];
-            console.log (tripstationId + ':' + removeTripstationBoolean);
             if(removeTripstationBoolean) {
                 var elementTripstation = $('input[id$=_id][name*=tripstations][value =' + tripstationId + ']').parents()[1];
                 // console.log($(elementTripstation));
@@ -541,7 +540,6 @@ let addTripsAndInvestigators = (function () {
 
         if(mode = 'edit') {
             removeDeleteTripButtons(window.document, cruiseRemoveDelFunctionality);
-            console.log(cruiseRemoveDelFunctionality);
         }
 
         $('#add-trip').click(function(e){

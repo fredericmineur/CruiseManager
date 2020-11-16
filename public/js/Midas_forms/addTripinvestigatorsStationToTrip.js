@@ -198,12 +198,42 @@ function addAutocompleteForStation (indexTStations, categTstation)
     $('#' + tripstationCodeID).easyAutocomplete(options);
 }
 
+function removeDeleteButtons(contextElement, tripRemoveDelFunctionality) {
+    var tripInvestigators = Object.values(tripRemoveDelFunctionality[0])[0];
+    tripInvestigators.forEach(function (tripinvestigator, index) {
+        var tripinvestigatorId = Object.keys(tripinvestigator)[0];
+        var removeTripInvestigatorBoolean = Object.values(tripinvestigator)[0];
+        if(removeTripInvestigatorBoolean) {
+            //get to the html row for the tripinvestigator
+            var elementTripinvestigator = $('input[id$=_id][name*=tripinvestigators][value =' + tripinvestigatorId + ']').parents()[1];
+            //get to the column deletebutton
+            var delBtnTripinvestigatorColumn = $(elementTripinvestigator).children()[4];
+            var delBtnTripinvestigator = $(delBtnTripinvestigatorColumn).children()[0];
+            $(delBtnTripinvestigator).remove();
+        }
+    });
+    var tripStations = Object.values(tripRemoveDelFunctionality[1])[0];
+    tripStations.forEach(function(tripstation, index) {
+        var tripstationId = Object.keys(tripstation)[0];
+        var removeTripstationBoolean = Object.values(tripstation)[0];
+        if(removeTripstationBoolean) {
+            var elementTripstation = $('input[id$=_id][name*=tripstations][value =' + tripstationId + ']').parents()[1];
+            // console.log($(elementTripstation));
+            var delBtnTripstationColumn = $(elementTripstation).children()[3];
+            var delBtnTripstation = $(delBtnTripstationColumn).children()[0];
+            $(delBtnTripstation).remove();
+        }
+    })
+}
 
 
 let addTripInvestigatorsStationsToTrip = (function () {
     let initObjectTI = {};
-    initObjectTI.init = function () {
+    initObjectTI.init = function (tripRemoveDelFunctionality) {
+
         window.counter = {countTripInvestigators: 0, countTripStations : 0};
+        removeDeleteButtons(window.document,tripRemoveDelFunctionality);
+
         $('#add-tripinvestigator').click(function(){
             const index = counter.countTripInvestigators;
             const tmpl = $('#trip_tripinvestigators').data('prototype').replace(/__name__/g, index);

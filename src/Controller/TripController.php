@@ -18,8 +18,9 @@ class TripController extends AbstractController
     /**
      * @Route("/trips/{tripId}", name="trip_details", options={"expose"=true})
      */
-    public function tripDetails(EntityManagerInterface $manager, $tripId){
-        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=>$tripId]);
+    public function tripDetails(EntityManagerInterface $manager, $tripId)
+    {
+        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid' => $tripId]);
 
 
         return $this->render('display/display_trip.html.twig', [
@@ -30,31 +31,52 @@ class TripController extends AbstractController
     /**
      * @Route("/trips/{tripId}/edit", name="trip_edit", options={"expose"=true})
      */
-public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
-{
+    public function editTrip($tripId, Request $request, EntityManagerInterface $manager)
+    {
         $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
-        $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
+        $trip = $repoTrips->findOneBy(['tripid' => $tripId]);
 
+        $tripRemoveDelFunctionality = [];
+        $tripRemoveDelTripinvestigators = [];
         foreach ($trip->getTripinvestigators() as $tripinvestigator) {
-            if ($tripinvestigator->getInvestigatornr()!== null) {
-                $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
+            if ($tripinvestigator->getInvestigatornr() !== null) {
+                $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname() . ' ' . $tripinvestigator->getInvestigatornr()->getFirstname());
             }
+
+            $removeDelTripinvestigator = false;
+            if (count($tripinvestigator->getTripactions()) > 0) {
+                $removeDelTripinvestigator = true;
+            }
+            array_push($tripRemoveDelTripinvestigators, [$tripinvestigator->getId() => $removeDelTripinvestigator]);
         }
+        array_push($tripRemoveDelFunctionality, ['tripinvestigators' => $tripRemoveDelTripinvestigators]);
+
+
+        //Sub-array for tripstations (remove delete functionality for those linked to tripactions)
+        $tripRemoveDelTripstations = [];
+        foreach ($trip->getTripstations() as $tripstation) {
+            $removeDelTripstation = false;
+            if (count($tripstation->getTripactions()) > 0) {
+                $removeDelTripstation = true;
+            }
+            array_push($tripRemoveDelTripstations, [$tripstation->getId() => $removeDelTripstation]);
+        }
+        array_push($tripRemoveDelFunctionality, ['tripstations' => $tripRemoveDelTripstations]);
+        $tripRemoveDelFunctionality = json_decode(json_encode($tripRemoveDelFunctionality), FALSE);
+
 
         $form = $this->createForm(TripType::class, $trip);
-        $form ->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()) {
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
             foreach ($trip->getTripinvestigators() as $tripinvestigator) {
                 if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
                     $tripinvestigator->setInvestigatornr(null);
                 }
-                if($tripinvestigator->getCampaign() === '' || $tripinvestigator->getCampaign() === null ) {
+                if ($tripinvestigator->getCampaign() === '' || $tripinvestigator->getCampaign() === null) {
                     $tripinvestigator->setCampaignnr(null)
-                    ->setCampaign(null);
+                        ->setCampaign(null);
                 }
             }
-
-
 
 
             $manager->persist($trip);
@@ -67,11 +89,12 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
 
 
         return $this->render('forms/form_trip.html.twig', [
-            'trip' =>$trip,
-            'formTrip' => $form->createView()
+            'trip' => $trip,
+            'formTrip' => $form->createView(),
+            'tripRemoveDelFunctionality' => $tripRemoveDelFunctionality
         ]);
 
-}
+    }
 
 
     /**
@@ -107,7 +130,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     /**
      * @Route("/api/gettripsdiffinvestigators", name="api_get_trips_diff_investigators", options={"expose"=true})
      */
-    public function getTripsDiffInvestigators (SerializerInterface $serializer, TripRepository $tripRepository)
+    public function getTripsDiffInvestigators(SerializerInterface $serializer, TripRepository $tripRepository)
     {
         $trips = $tripRepository->getTripsDiffTripInvestigatorsInvestigators();
         $jsonTrips = $serializer->serialize($trips, 'json');
@@ -117,11 +140,10 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
     /**
      * @Route("/trips/diffinvestigators", name="list_trips_diffinvestigators")
      */
-    public function listTripsDiffinvestigators ()
+    public function listTripsDiffinvestigators()
     {
         //TO DO
     }
-
 
 
     /**
@@ -129,7 +151,7 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
      */
     public function listTripDestinations(SerializerInterface $serializer, TripRepository $tripRepository)
     {
-        $destinations= $tripRepository->getListDestinationArea();
+        $destinations = $tripRepository->getListDestinationArea();
 
         $jsonDestinations = $serializer->serialize($destinations, 'json');
         return new JsonResponse($jsonDestinations, 200, [], true);
@@ -139,8 +161,9 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
      * @Route("/trips/{tripId}/remove_warning", name="trip_remove_warning", options={"expose"=true})
      * @param $tripId
      */
-    public function warnRemoveSingleTrip(EntityManagerInterface $manager, $tripId){
-        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=> $tripId]);
+    public function warnRemoveSingleTrip(EntityManagerInterface $manager, $tripId)
+    {
+        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid' => $tripId]);
         return $this->render('remove/remove_trip.html.twig', [
             'trip' => $trip
         ]);
@@ -150,8 +173,9 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
      * @Route("/trips/{tripId}/remove", name="trip_remove", options={"expose"=true})
      * @param $tripId
      */
-    public function removeSingleTrip(EntityManagerInterface $manager, $tripId) {
-        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid'=> $tripId]);
+    public function removeSingleTrip(EntityManagerInterface $manager, $tripId)
+    {
+        $trip = $manager->getRepository(Trip::class)->findOneBy(['tripid' => $tripId]);
         $manager->remove($trip);
         $manager->flush();
         return $this->redirectToRoute('trips_index');

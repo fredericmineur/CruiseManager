@@ -77,7 +77,9 @@
 
     <script>
         $(document).ready(function () {
-            addTripInvestigatorsStationsToTrip.init();
+
+            var tripRemoveDelFunctionality = {{ tripRemoveDelFunctionality | json_encode | raw }};
+            addTripInvestigatorsStationsToTrip.init(tripRemoveDelFunctionality);
         });
     </script>
 
