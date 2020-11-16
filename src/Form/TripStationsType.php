@@ -65,6 +65,7 @@ class TripStationsType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Tripstations::class,
+            'error_bubbling' => true
         ]);
     }
 }
