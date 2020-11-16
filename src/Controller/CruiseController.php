@@ -261,11 +261,11 @@ class CruiseController extends AbstractController
                             $tripinvestigator->setInvestigatornr(null);
                         }
                         if (trim($tripinvestigator->getCampaign()) === '' || $tripinvestigator->getCampaignnr() === null) {
-                            $tripinvestigator->setCampaignnr($mainCampaign->getCampaignid())
-                                ->setCampaign($mainCampaign->getCampaign());
+                            $tripinvestigator->setCampaignnr(null)
+                                ->setCampaign(null);
                         }
-                        $manager->persist($tripinvestigator);
 
+                        $manager->persist($tripinvestigator);
                     }
                 }
 

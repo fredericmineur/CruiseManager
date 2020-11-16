@@ -35,21 +35,16 @@ let fillTableAllTrips = (function () {
                                 var plancodeOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId : row.cruiseID})
                                     + '">' + data + '</a>';
                                 return  plancodeOutput;
-                            } else if (row.cruiseID) {
-                                var plancodeOutput = '<a href="' + Routing.generate('cruise_details', {cruiseId : row.cruiseID})
-                                    + '">' + 'N.A.' + '</a>';
-                                return  plancodeOutput;
-                            } else  {return 'N.A.';}
+                            } else  {return 'n/a';}
                         }
                     },
                     {
                         "targets" : 0,
                         "render" : function (data, type, row) {
-                            console.log(data);
                             var tripOutput = '';
                             if(data !== null && data !== '') {
                                 tripOutput += data;
-                            } else {tripOutput += 'N.A.';}
+                            } else {tripOutput += 'n/a';}
                             tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
                                 + '"  target="_blank"><i class="fa fa-info-circle"></i></a>')
                             if (!row.cruiseID) {
@@ -124,8 +119,8 @@ let fillTableTripInvestigators = (function () {
                         "targets" : 4,
                         "render": function(data, type, row) {
                             if(data !== null && data !== ''){
-                                var tripidoutput = 'Amend <a href="' + Routing.generate('trip_edit', {tripId: data})
-                                    + '"  target="_blank"><i class="fa fa-edit"></i></a>';
+                                var tripidoutput = '<a href="' + Routing.generate('trip_edit', {tripId: data})
+                                    + '"  target="_blank"><i class="fa fa-edit fa-lg"></i></a>';
                                 return tripidoutput;
 
                             } else {return '';}

@@ -4,10 +4,12 @@
 {% block body %}
     <div class="container">
         <h5>You are about to remove the trip: </h5>
-        <h3>Start: {{ trip.startdate |date ("Y-m-d") }} || End: {{ trip.enddate |date ("Y-m-d")}}</h3>
-        <h3>Cruise:
-            {% if not trip.cruiseid %}N.A.{% else %}{{ trip.cruiseid }}{% endif %}
-            </h3>
+        <h5>Start: {% if trip.startdate %}{{ trip.startdate |date ("Y-m-d") }}{% else %}N/A{% endif %}</h5>
+        <h5>End: {% if trip.enddate %}{{ trip.enddate |date ("Y-m-d")}}{% else %}N/A {% endif %}</h5>
+
+        <h5>Cruise:
+            {% if not trip.cruiseid %}N/A{% else %}{{ trip.cruiseid }}{% endif %}
+            </h5>
         <h5>Do you really want to proceed?</h5>
         <a href="{{ path('trip_remove', {'tripId': trip.tripid}) }} " class="btn btn-danger">Yes</a>
 

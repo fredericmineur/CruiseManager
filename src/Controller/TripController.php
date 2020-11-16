@@ -35,16 +35,27 @@ public function editTrip($tripId, Request $request, EntityManagerInterface $mana
         $repoTrips = $this->getDoctrine()->getRepository(Trip::class);
         $trip = $repoTrips->findOneBy(['tripid'=>$tripId]);
 
+        foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+            if ($tripinvestigator->getInvestigatornr()!== null) {
+                $tripinvestigator->setFullname($tripinvestigator->getInvestigatornr()->getSurname(). ' '  . $tripinvestigator->getInvestigatornr()->getFirstname());
+            }
+        }
 
         $form = $this->createForm(TripType::class, $trip);
         $form ->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()) {
 
             foreach ($trip->getTripinvestigators() as $tripinvestigator) {
+                if ($tripinvestigator->getFullname() === '' || $tripinvestigator->getFullname() === null) {
+                    $tripinvestigator->setInvestigatornr(null);
+                }
                 if($tripinvestigator->getCampaign() === '' || $tripinvestigator->getCampaign() === null ) {
-                    $tripinvestigator->setCampaignnr(null);
+                    $tripinvestigator->setCampaignnr(null)
+                    ->setCampaign(null);
                 }
             }
+
+
 
 
             $manager->persist($trip);
