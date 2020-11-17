@@ -46,7 +46,7 @@ let fillTableAllTrips = (function () {
                                 tripOutput += data;
                             } else {tripOutput += 'n/a';}
                             tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
-                                + '"  target="_blank"><i class="fa fa-info-circle"></i></a>')
+                                + '"><i class="fa fa-info-circle"></i></a>')
                             if (!row.cruiseID) {
                                 tripOutput += (' <a href="' + Routing.generate('trip_remove_warning', {tripId : row.TripID}) + '"><i style="color:red"class="fa fa-trash"> </i></a>');
                             }
@@ -120,7 +120,7 @@ let fillTableTripInvestigators = (function () {
                         "render": function(data, type, row) {
                             if(data !== null && data !== ''){
                                 var tripidoutput = '<a href="' + Routing.generate('trip_edit', {tripId: data})
-                                    + '"  target="_blank"><i class="fa fa-edit fa-lg"></i></a>';
+                                    + '"><i class="fa fa-edit fa-lg"></i></a>';
                                 return tripidoutput;
 
                             } else {return '';}
@@ -190,7 +190,7 @@ let fillTableTripStations = (function () {
                         "render": function(data, type, row) {
                             if(data !== null && data !== ''){
                                 var tripidoutput = '<a href="' + Routing.generate('trip_edit', {tripId: data})
-                                    + '"  target="_blank" ><i class="fa fa-edit fa-lg"></i></a>';
+                                    + '"><i class="fa fa-edit fa-lg"></i></a>';
                                 return tripidoutput;
 
                             } else {return '';}

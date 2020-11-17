@@ -6,13 +6,21 @@
 
         <div class="card border-dark">
             <div class="card-header">
-                <div style="float: left; display: inline-block">
-                    <h3>Cruise <strong>{{ cruise.plancode }}</strong><span
-                                style="font-size: x-small"> [MIDAS ID {{ cruise.cruiseid }}]</span></h3>
+                <div class="row">
+                    <div class="col-3">
+                        <h3>Cruise <strong>{{ cruise.plancode }}</strong></h3>
+                    </div>
+                    <div>
+                        {% set cruiseLink = 'http://www.vliz.be/vmdcdata/midas/report.php?cruise=' %}
+                        <a href="{{ cruiseLink }}{{ cruise.cruiseid }}" target="_blank">Report<i
+                                    class="fa fa-link"></i></a>
+                    </div>
                 </div>
-                {% set cruiseLink = 'http://www.vliz.be/vmdcdata/midas/report.php?cruise=' %}
-                <a href="{{ cruiseLink }}{{ cruise.cruiseid }}" target="_blank"><i
-                            class="fa fa-link fa-2x"></i></a>
+{#                <div style="float: left; display: inline-block">#}
+{#                    #}
+{#                </div>#}
+
+
             </div>
             <div class="card-body">
                 <div class="row">
@@ -108,7 +116,9 @@
                                                 {% endif %}
                                             </td>
                                             <td>{% if tripinvestigator.investigatornr is not null %}
-                                                    <i class="fa fa-link"></i> {% else %} &#10008; {% endif %}
+                                                    <a href="{{ path('investigator_details', {'investigatorId': tripinvestigator.investigatornr.investigatorid}) }}" >
+                                                        <i class="fa fa-link"></i></a>
+                                                     {% else %} &#10008; {% endif %}
                                             </td>
                                             <td>
 {#                                                {{ tripinvestigator.campaign | length > 25 ?#}
@@ -159,7 +169,9 @@
                                                 {% endif %}
                                             </td>
                                             <td>{% if tripstation.stationnr is not null %}
-                                                    <i class="fa fa-link"></i> {% else %} &#10008;{% endif %}
+                                                    <a href="{{ path('display_station', {'stationId': tripstation.stationnr.nr}) }}" >
+                                                        <i class="fa fa-link"></i></a>
+                                                {% else %} &#10008;{% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

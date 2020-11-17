@@ -36,22 +36,38 @@
 
                     </div>
                     <div class="card-body">
-                        <h5>Trip investigators</h5>
+                        <h5>Trip Investigators</h5>
                         <table class="table">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>First name</th>
                                     <th>Surname</th>
-                                    <th>ID</th>
+                                    <th>Investigator</th>
                                     <th>Campaign</th>
                                 </tr>
                             </thead>
                             <tbody>
                             {% for tripinvestigator in trip.tripinvestigators %}
                                 <tr>
-                                    <td>{{ tripinvestigator.firstname }}</td>
-                                    <td>{{tripinvestigator.surname}}</td>
-                                    <td>{% if tripinvestigator.investigatornr is not null %}yes{% endif %}</td>
+                                    <td>{{ tripinvestigator.firstname }}
+                                        {% if tripinvestigator.investigatornr is not null %}
+                                            {% if tripinvestigator.firstname|trim != tripinvestigator.investigatornr.firstname|trim %}
+                                                &#9888;
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{tripinvestigator.surname}}
+                                        {% if tripinvestigator.investigatornr is not null %}
+                                            {% if tripinvestigator.surname|trim != tripinvestigator.investigatornr.surname|trim %}
+                                                &#9888;
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{% if tripinvestigator.investigatornr is not null %}
+                                            <a href="{{ path('investigator_details', {'investigatorId': tripinvestigator.investigatornr.investigatorid}) }}" >
+                                                <i class="fa fa-link"></i></a>
+                                        {% else %} &#10008; {% endif %}
+                                    </td>
                                     <td>
                                         {#                                                {{ tripinvestigator.campaign | length > 25 ?#}
                                         {#                                                       tripinvestigator.campaign|slice(0,22) ~ '...' : tripinvestigator.campaign }}#}
@@ -64,24 +80,46 @@
                         </table>
                     </div>
                     <div class="card-body">
-                        <h5>Trip stations</h5>
+                        <h5>Trip Stations</h5>
                         <table class="table">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Code</th>
                                     <th>Latitude</th>
                                     <th>Longitude</th>
-                                    <th>ID</th>
+                                    <th>Station</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                             {% for tripstation in trip.tripstations %}
                                 <tr>
-                                    <td>{{tripstation.code}}</td>
-                                    <td>{{tripstation.deflatitude | number_format(3)}}</td>
-                                    <td>{{tripstation.deflongitude | number_format(3)}}</td>
-                                    <td>{% if tripstation.stationnr is not null %}yes{% endif %}</td>
+                                    <td>{{tripstation.code}}
+                                        {% if tripstation.stationnr is not null %}
+                                            {% if tripstation.code|trim != tripstation.stationnr.code|trim %}
+                                                &#9888;
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{tripstation.deflatitude | number_format(3)}}
+                                        {% if tripstation.stationnr is not null %}
+                                            {% if (tripstation.deflatitude - tripstation.stationnr.latitude)|abs > 0.01  %}
+                                                &#9888;
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{tripstation.deflongitude | number_format(3)}}
+                                        {% if tripstation.stationnr is not null %}
+                                            {% if (tripstation.deflongitude - tripstation.stationnr.longitude)|abs > 0.01  %}
+                                                &#9888;
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                    <td>{% if tripstation.stationnr is not null %}
+                                            <a href="{{ path('display_station', {'stationId': tripstation.stationnr.nr}) }}" >
+                                                <i class="fa fa-link"></i></a>
+                                        {% else %} &#10008;{% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
 
