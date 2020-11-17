@@ -126,6 +126,19 @@ let fillTableTripInvestigators = (function () {
                             } else {return '';}
 
                         }
+                    },
+                    {
+                        "targets" : 0,
+                        "render" : function (data, type, row) {
+                            var tripOutput = '';
+                            if(data !== null && data !== '') {
+                                tripOutput += data;
+                            } else {tripOutput += 'n/a';}
+                            tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
+                                + '"><i class="fa fa-info-circle"></i></a>')
+
+                            return  tripOutput;
+                        }
                     }
                 ]
             });
@@ -195,6 +208,19 @@ let fillTableTripStations = (function () {
 
                             } else {return '';}
 
+                        }
+                    },
+                    {
+                        "targets" : 0,
+                        "render" : function (data, type, row) {
+                            var tripOutput = '';
+                            if(data !== null && data !== '') {
+                                tripOutput += data;
+                            } else {tripOutput += 'n/a';}
+                            tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
+                                + '"><i class="fa fa-info-circle"></i></a>')
+
+                            return  tripOutput;
                         }
                     }
                 ]
