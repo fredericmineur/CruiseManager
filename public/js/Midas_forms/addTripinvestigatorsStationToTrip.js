@@ -92,6 +92,10 @@ function addAutocompleteForInvestigator(indexTInvestigator, categTInvestigator) 
             return data;
         },
         list: {
+            maxNumberOfElements: 100,
+            match: {
+                enabled: true
+            },
             onChooseEvent: function() {
                 if (categTInvestigator == 'new') {
                     $("#" +tripinvestigatorFirstnameID).val($("#"+tripinvestigatorFullNameID).getSelectedItemData().firstname);
@@ -178,7 +182,7 @@ function addAutocompleteForStation (indexTStations, categTstation)
             return data;
         },
         list: {
-            maxNumberOfElements: 50,
+            maxNumberOfElements: 300,
             match: {
                 enabled: true
             },

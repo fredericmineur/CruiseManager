@@ -234,7 +234,7 @@ function addAutocompleteForStation(indexTrip, indexTStations, categTStation){
         //https://stackoverflow.com/questions/35502054/jquery-easyautocomplete-not-working-properly
         //http://easyautocomplete.com/example/select-event
         list: {
-            maxNumberOfElements: 200,
+            maxNumberOfElements: 300,
             match: {
                 enabled: true
             },

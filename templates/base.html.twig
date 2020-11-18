@@ -26,47 +26,47 @@
                 <ul class="navbar-nav mr-auto">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('cruises_index') }}">Cruises</a>
+                        <a class="nav-link" href="{{ path('cruises_index') }}" data-toggle="tooltip" title="List of cruises">Cruises</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('cruise_create') }}"><span><i class="fa fa-plus-square"></i></span>
+                        <a class="nav-link" href="{{ path('cruise_create') }}" data-toggle="tooltip" title="Create cruise"><span><i class="fa fa-plus-square"></i></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('campaigns_index') }}">Campaigns</a>
+                        <a class="nav-link" href="{{ path('campaigns_index') }}" data-toggle="tooltip" title="List of campaigns">Campaigns</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('campaign_create') }}"><span><i class="fa fa-plus-square"></i></span>
+                        <a class="nav-link" href="{{ path('campaign_create') }}" data-toggle="tooltip" title="Create campaign"><span><i class="fa fa-plus-square"></i></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{path('investigators_index')}}">Investigators</a>
+                        <a class="nav-link" href="{{path('investigators_index')}}" data-toggle="tooltip" title="List of investigators">Investigators</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('create_investigator') }}"><span><i class="fa fa-plus-square"></i></span>
+                        <a class="nav-link" href="{{ path('create_investigator') }}" data-toggle="tooltip" title="Create investigator"><span><i class="fa fa-plus-square"></i></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{path('display_all_stations')}}">Stations</a>
+                        <a class="nav-link" href="{{path('display_all_stations')}}" data-toggle="tooltip" title="List of stations">Stations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('create_station') }}"><span><i class="fa fa-plus-square"></i></span>
+                        <a class="nav-link" href="{{ path('create_station') }}" data-toggle="tooltip" title="Create station"><span><i class="fa fa-plus-square"></i></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('display_periods') }}">Periods</a>
+                        <a class="nav-link" href="{{ path('display_periods') }}" data-toggle="tooltip" title="List of periods">Periods</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('create_period') }}"><span><i class="fa fa-plus-square"></i></span>
+                        <a class="nav-link" href="{{ path('create_period') }}" data-toggle="tooltip" title="Create period"><span><i class="fa fa-plus-square"></i></span>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{{path('trips_index')}}">Trips</a>
+                        <a class="nav-link" href="{{path('trips_index')}}" data-toggle="tooltip" title="List of trips, with links to create missing investigators and stations">Trips</a>
                     </li>
 
 
@@ -92,7 +92,14 @@
         {% block body %}{% endblock %}
 
 
+
+
         {{ encore_entry_script_tags('base_app') }}
+
+        <script>$(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })</script>
+
         {% block javascripts %}
 
         {% endblock %}
