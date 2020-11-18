@@ -46,7 +46,9 @@ let fillTableAllTrips = (function () {
                                 tripOutput += data;
                             } else {tripOutput += 'n/a';}
                             tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
-                                + '"><i class="fa fa-info-circle"></i></a>')
+                                + '"><i class="fa fa-info-circle"></i></a>&nbsp;');
+                            tripOutput += '<a href="' + Routing.generate('trip_edit', {tripId: row.TripID})
+                                + '"><i class="fa fa-edit fa-lg"></i></a>&nbsp;';
                             if (!row.cruiseID) {
                                 tripOutput += (' <a href="' + Routing.generate('trip_remove_warning', {tripId : row.TripID}) + '"><i style="color:red"class="fa fa-trash"> </i></a>');
                             }
@@ -218,7 +220,7 @@ let fillTableTripStations = (function () {
                                 tripOutput += data;
                             } else {tripOutput += 'n/a';}
                             tripOutput += (' <a href="' + Routing.generate('trip_details', {tripId: row.TripID})
-                                + '"><i class="fa fa-info-circle"></i></a>')
+                                + '"><i class="fa fa-info-circle"></i></a>');
 
                             return  tripOutput;
                         }
