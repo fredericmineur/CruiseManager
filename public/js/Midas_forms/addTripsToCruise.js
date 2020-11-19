@@ -4,6 +4,7 @@ function cloneTrip(contextElement){
 
         //gets the target of the click on button event
         const target = this.dataset.target;
+
         //Select every input inside the target...loop through them ....copy the value of the input, and set it as value into the innerHTML  (attr() is the HTML attribute)
         $("input", target).each(function (idx, inputElement) {
              var ie = $(inputElement);
@@ -33,15 +34,34 @@ function cloneTrip(contextElement){
 
         $('div#cruise_trips').append(clonedTripElement);
 
+        //update number of trips in the counter object
+        window.counter.countTrip = index +1;
+        window.counter['block_cruise_trips_' + index]={};
 
         //Initialize the new tripinvestigators counter for the cloned trip
         // with the number of tripinvestigators in the cloned trip
         const countTripInvestigator = $('[id^=block_cruise_trips_'+index+'_tripinvestigators]').length;
+        window.counter['block_cruise_trips_' + index]['investigators']=countTripInvestigator;
 
-        window.counter['block_cruise_trips_' + index]=countTripInvestigator;
+        const countTripStations = $('[id^=block_cruise_trips_'+index+'_tripstations]').length;
+        window.counter['block_cruise_trips_' + index]['stations']=countTripStations;
 
-        //Updating the number of trips
-        window.counter.countTrip = index +1;
+        addAutoCompleteDestinations(index);
+
+        $('[id^=block_cruise_trips_'+index+'_tripinvestigators]').each(function(){
+            const blockTripInv = $(this).attr('id');
+            const indexTripInv = blockTripInv.slice(blockTripInv.indexOf('_tripinvestigators_') + 19);
+            addAutocompleteForInvestigator(index, indexTripInv, 'new');
+            addAutoCompleteForInvestigatorCampaign(index, indexTripInv);
+        });
+
+        $('[id^=block_cruise_trips_'+index+'_tripstations]').each(function(){
+            const blockTripStation = $(this).attr('id');
+            const indexTripStation = blockTripStation.slice(blockTripStation.indexOf('_tripstations_') + 14);
+            addAutocompleteForStation(index, indexTripStation, 'new');
+        });
+
+
 
         fillNextDate(index);
 
@@ -624,8 +644,6 @@ let addTripsAndInvestigators = (function () {
                 }
             }
         }
-
-
 
     }
 
